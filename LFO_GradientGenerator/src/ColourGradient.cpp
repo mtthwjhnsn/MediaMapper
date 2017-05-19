@@ -27,7 +27,11 @@ void ColourGradient::setup(int w, int h) {
 	params.num_bands = 1.0;
 	params.animate_speed = 0.15;
 
-	params.palette_lfo_type = 0;
+	params.palette_lfo_red = 0;
+	params.palette_lfo_green = 0;
+	params.palette_lfo_blue = 0;
+
+
 	params.amp_lfo_type = 0;
 	params.freq_lfo_type = 0;
 	params.phase_lfo_type = 0;
@@ -175,7 +179,11 @@ ofVec3f ColourGradient::lfo(int type, ofVec3f x) {
 //--------- Colour Palette
 ofVec3f ColourGradient::pal(float t, ofVec3f a, ofVec3f b, ofVec3f c, ofVec3f d)
 {
-	return a + b*lfo(params.palette_lfo_type, (6.28318*(c*t + d)));
+	ofVec3f out_pal = ofVec3f(a.x + b.x*lfo(params.palette_lfo_red, (6.28318*(c.x*t + d.x))),
+		a.y + b.y*lfo(params.palette_lfo_green, (6.28318*(c.y*t + d.y))),
+			a.z + b.z*lfo(params.palette_lfo_blue, (6.28318*(c.z*t + d.z))));
+
+	return out_pal;
 }
 
 //--------------------------------------------------------------

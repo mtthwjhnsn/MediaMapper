@@ -22,7 +22,9 @@ struct GradientParams {
 	ofVec3f phase;
 	float num_bands;
 	float animate_speed;
-	int palette_lfo_type;
+	int palette_lfo_red;
+	int palette_lfo_green;
+	int palette_lfo_blue;
 	int amp_lfo_type;
 	int freq_lfo_type;
 	int phase_lfo_type;
