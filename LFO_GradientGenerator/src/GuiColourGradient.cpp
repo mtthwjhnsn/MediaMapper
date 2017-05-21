@@ -35,37 +35,6 @@ void GuiColourGradient::lfo_selection(int* type_param) {
 }
 
 //--------------------------------------------------------------
-void GuiColourGradient::lfo_selection_red(int* type_param_red) {
-	vector<string> types = { "sine","tri","saw","sqr","rnd" };
-	ImGui::Columns(types.size());
-	for (int i = 0; i < types.size(); i++) {
-		ImGui::RadioButton(ofxImGui::GetUniqueName(types[i]), type_param_red, i);
-		ImGui::NextColumn();
-	}
-	ImGui::Columns(1);
-}
-
-void GuiColourGradient::lfo_selection_green(int* type_param_green) {
-	vector<string> types = { "sine","tri","saw","sqr","rnd" };
-	ImGui::Columns(types.size());
-	for (int i = 0; i < types.size(); i++) {
-		ImGui::RadioButton(ofxImGui::GetUniqueName(types[i]), type_param_green, i);
-		ImGui::NextColumn();
-	}
-	ImGui::Columns(1);
-}
-
-void GuiColourGradient::lfo_selection_blue(int* type_param_blue) {
-	vector<string> types = { "sine","tri","saw","sqr","rnd" };
-	ImGui::Columns(types.size());
-	for (int i = 0; i < types.size(); i++) {
-		ImGui::RadioButton(ofxImGui::GetUniqueName(types[i]), type_param_blue, i);
-		ImGui::NextColumn();
-	}
-	ImGui::Columns(1);
-}
-
-//--------------------------------------------------------------
 bool GuiColourGradient::imGui()
 {
 	int gui_width = 350;
@@ -80,14 +49,13 @@ bool GuiColourGradient::imGui()
 
 			if (ofxImGui::BeginTree("Master", mainSettings))
 			{
-				//lfo_selection(&colour->params.palette_lfo_type);
+				lfo_selection(&colour->params.palette_lfo_type);
 				ImGui::SliderFloat("num bands", &colour->params.num_bands, 1, 100);
 				ImGui::SliderFloat("animate speed", &colour->params.animate_speed, 0.0, 1.0);
 				ofxImGui::EndTree(mainSettings);
 			}
 			//----RED
 			if (ofxImGui::BeginTree("RED", mainSettings)) {
-				lfo_selection_red(&colour->params.palette_lfo_red);
 				ImGui::SliderFloat("dc", &colour->params.dc[0], 0.0, 1.0);
 				ImGui::SliderFloat("amp", &colour->params.amp[0], 0.0, 1.0);
 				ImGui::SliderFloat("freq", &colour->params.freq[0], 0.0, 1.0);
@@ -97,7 +65,6 @@ bool GuiColourGradient::imGui()
 			}
 			//----GREEN
 			if (ofxImGui::BeginTree("GREEN", mainSettings)) {
-				lfo_selection_green(&colour->params.palette_lfo_green);
 				ImGui::SliderFloat("dc", &colour->params.dc[1], 0.0, 1.0);
 				ImGui::SliderFloat("amp", &colour->params.amp[1], 0.0, 1.0);
 				ImGui::SliderFloat("freq", &colour->params.freq[1], 0.0, 1.0);
@@ -107,7 +74,6 @@ bool GuiColourGradient::imGui()
 			}
 			//----BLUE
 			if (ofxImGui::BeginTree("BLUE", mainSettings)) {
-				lfo_selection_blue(&colour->params.palette_lfo_blue);
 				ImGui::SliderFloat("dc", &colour->params.dc[2], 0.0, 1.0);
 				ImGui::SliderFloat("amp", &colour->params.amp[2], 0.0, 1.0);
 				ImGui::SliderFloat("freq", &colour->params.freq[2], 0.0, 1.0);
@@ -142,6 +108,8 @@ bool GuiColourGradient::imGui()
 					colour->params.phase[2] = ofRandom(-1.00, 1.00);
 				}
 
+				ImGui::NextColumn();
+				
 				if (ImGui::Button("rand_all"))
 				{
 					colour->params.dc[0] = ofRandom(-1.00, 1.00);
