@@ -29,7 +29,9 @@ uniform Params {
     vec3 phase;
     float num_bands;
     float animate_speed;
-    int palette_lfo_type;
+    int palette_lfo_red;
+    int palette_lfo_green;
+    int palette_lfo_blue;
     int amp_lfo_type;
     int freq_lfo_type;
     int phase_lfo_type;
@@ -93,26 +95,33 @@ vec3 lfo(int type, vec3 x){
 //--------- Colour Palette
 vec3 pal( in float t, in vec3 a, in vec3 b, in vec3 c, in vec3 d )
 {
-    return a + b*lfo(params.palette_lfo_type, (6.28318*(c*t+d)));
+//    return a + b*lfo(params.palette_lfo_type, (6.28318*(c*t+d)));
+
+  vec3 out_pal = vec3(a.x + b.x*lfo(params.palette_lfo_red, (6.28318*(c.x*t+d.x))),
+                      a.y + b.y*lfo(params.palette_lfo_green, (6.28318*(c.y*t+d.y))),
+                      a.z + b.z*lfo(params.palette_lfo_blue, (6.28318*(c.z*t+d.z))));
+
+  return out_pal;
+
 }
 
 void main( void )
 {
     //vec2 p = vec2(gl_FragCoord.xy - 0.5* iResolution.xy) / iResolution.y;
     vec2 p = gl_FragCoord.xy / iResolution.xy;
-    
+
     // animate
     float t = iGlobalTime;
     p.x += (params.animate_speed*3.0)*t;
-    
+
     // compute colors
     float idx = ceil(p.y*params.num_bands) / params.num_bands;
-    
+
     vec3 col = pal( p.x, params.dc,
                    (idx*lfo(params.amp_lfo_type,t*params.amp_lfo_speed)*params.amp_lfo_amp) + params.amp + (t*(params.amp_cycle_speed*0.1)),
                    (idx*lfo(params.freq_lfo_type,t*params.freq_lfo_speed)*params.freq_lfo_amp) + params.freq + (t*(params.freq_cycle_speed*0.1)) ,
                    (idx*lfo(params.phase_lfo_type,t*params.phase_lfo_speed)*params.phase_lfo_amp) + params.phase + (t*(params.phase_cycle_speed*0.1)));
-    
+
     // band
     float f = fract(p.y*params.num_bands);
     // borders
@@ -121,6 +130,6 @@ void main( void )
     col *= 0.5 + 0.5*sqrt(4.0*f*(1.0-f));
     // dithering
     //col += (1.0/255.0)*texture( iChannel0, gl_FragCoord.xy/iChannelResolution[0].xy ).xyz;
-    
+
     outputColor = vec4( col, 1.0 );
 }
