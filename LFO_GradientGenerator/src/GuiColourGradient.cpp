@@ -32,6 +32,12 @@ void GuiColourGradient::setup(ColourGradient *_colour) {
 	
 	gui.setup();
 	guiVisible = true;
+
+	//mesh
+	mesh.setMode(OF_PRIMITIVE_POINTS);
+	glEnable(GL_POINT_SMOOTH);
+	glPointSize(1);
+
 }
 
 GLuint GuiColourGradient::getTextureID() {
@@ -43,11 +49,9 @@ void GuiColourGradient::draw() {
 	if (guiVisible) {
 		
 		//IMGUI		
-		
 		imGui();
 
 		//FBO
-		
 		fbo.begin();
 
 		ofSetColor(50, 50, 50, 50);
@@ -56,10 +60,6 @@ void GuiColourGradient::draw() {
 
 		float H = h * .5;
 		int spacing = 50;
-		
-		ofSetColor(255, 0, 0);
-		ofNoFill();
-		ofBeginShape();
 
 		float dc1 = colour->params.dc.x;
 		float amp1 = colour->params.amp.x;
@@ -75,22 +75,29 @@ void GuiColourGradient::draw() {
 		float amp3 = colour->params.amp.z;
 		float freq3 = colour->params.freq.z;
 		float phase3 = colour->params.phase.z;
-		
+
 		for (int i = 0; i < w; i++) {
 
 			float xval = ofMap(i, 0, w, 0.00, 1.00, true);
 
-			ofSetColor(255, 0, 0);
-			ofCircle(i, dc1 * H + H * amp1 * sin(6.28318*(freq1*xval + phase1)), 1);
-			ofSetColor(0, 255, 0);
-			ofCircle(i, dc2 * H + H * amp2 * sin(6.28318*(freq2*xval + phase2)), 1);
-			ofSetColor(0, 0, 255);
-			ofCircle(i, dc3 * H + H * amp3 * sin(6.28318*(freq3*xval + phase3)), 1);
-		
+			float red_wave = colour->ColourGradient::lfo(colour->params.palette_lfo_red, 6.28318*(freq1*xval + phase1));
+			float green_wave = colour->ColourGradient::lfo(colour->params.palette_lfo_green, 6.28318*(freq2*xval + phase2));
+			float blue_wave = colour->ColourGradient::lfo(colour->params.palette_lfo_blue, 6.28318*(freq3*xval + phase3));
+
+			mesh.addVertex(ofVec2f(i, dc1 * H + H * amp1 * red_wave));
+			mesh.addColor(ofFloatColor(1.0, 0.0, 0.0));
+
+			mesh.addVertex(ofVec2f(i, dc2 * H + H * amp2 * green_wave));
+			mesh.addColor(ofFloatColor(0.0, 1.0, 0.0));
+
+			mesh.addVertex(ofVec2f(i, dc3 * H + H * amp3 * blue_wave));
+			mesh.addColor(ofFloatColor(0.0, 0.0, 1.0));
+			
 		}
-
+		mesh.drawVertices();
+		mesh.clearVertices();
+		mesh.clearColors();
 		fbo.end();
-
 	}
 }
 

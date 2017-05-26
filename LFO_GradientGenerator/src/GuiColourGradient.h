@@ -41,6 +41,7 @@ private:
 	ofxImGui::Gui gui;
 	bool guiVisible;
 	bool mouseOverGui;
+	ofMesh mesh;
 
 	
 };
