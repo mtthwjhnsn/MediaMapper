@@ -6,6 +6,8 @@ void ofApp::setup() {
 	colour.setup(ofGetWidth(), ofGetHeight());
 	gui.setup(&colour);
 	
+	fbo.allocate(ofGetWidth(), ofGetHeight());
+
 	sampleRate = 44100;
 	bufferSize = 512;
 	ofBackground(0);
@@ -18,12 +20,24 @@ void ofApp::setup() {
 void ofApp::update() {
 	ofSetWindowTitle(ofToString(ofGetFrameRate()));
 	
+	fbo.begin();
+	ofClear(0, 0, 0, 255);
+	colour.draw();
+	fbo.end();
+
+	spout.sendTexture(fbo.getTexture(), "colour");
+
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-	colour.draw();
+	
+	ofClear(0, 0, 0, 255);
+	fbo.draw(0, 0);
 
+
+
+	//remove for glsl
 
 	/*for (int i = 0; i < ofGetWidth(); i++) {
 		ofSetColor(c[i]);
@@ -32,10 +46,14 @@ void ofApp::draw() {
 
 	gui.draw();
 
-	//sound.audioOut(this, bufferSize, 2);
 
 
 }
+
+void ofApp::exit() {
+	spout.exit();
+}
+
 //--------------------------------------------------------------
 void ofApp::audioOut(float * output, int bufferSize, int nChannels) {
 

@@ -4,6 +4,7 @@
 #include "GuiColourGradient.h"
 #include "ColourGradient.h"
 #include "ofxMaxim.h"
+#include "ofxSpout2Sender.h"
 
 class ofApp : public ofBaseApp {
 
@@ -11,6 +12,8 @@ public:
 	void setup();
 	void update();
 	void draw();
+
+	void exit();
 
 	void keyPressed(int key);
 	void keyReleased(int key);
@@ -33,7 +36,11 @@ public:
 	maxiOsc osc, modulator;
 	maxiMix mix;
 
+	ofFbo fbo;
+
 	ColourGradient colour;
 	GuiColourGradient gui;
+
+	ofxSpout2::Sender spout;
 
 };
