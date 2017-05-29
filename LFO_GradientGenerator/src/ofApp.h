@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "GuiColourGradient.h"
 #include "ColourGradient.h"
+#include "ofxMaxim.h"
 
 class ofApp : public ofBaseApp {
 
@@ -23,7 +24,16 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 
-	GuiColourGradient gui;
+	void audioOut(float * output, int bufferSize, int nChannels);
+
+	double outputs[2];
+	unsigned bufferSize, sampleRate;
+
+	double frequency, modSpeed, currentSample;
+	maxiOsc osc, modulator;
+	maxiMix mix;
+
 	ColourGradient colour;
+	GuiColourGradient gui;
 
 };

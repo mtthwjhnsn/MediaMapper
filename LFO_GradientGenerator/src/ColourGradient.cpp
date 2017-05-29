@@ -53,6 +53,7 @@ void ColourGradient::setup(int w, int h) {
 	fboSettings.textureTarget = GL_TEXTURE_2D;
 	fbo.allocate(fboSettings);
 	videoButtonID = fbo.getTexture().texData.textureID;
+
 }
 
 //--------------------------------------------------------------

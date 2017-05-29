@@ -9,7 +9,7 @@
 #include "GuiColourGradient.h"
 #define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
-int w = 400;
+int w = 800;
 
 int h = 180;
 
@@ -191,14 +191,17 @@ bool GuiColourGradient::imGui()
 				ImGui::SliderFloat("animate speed", &colour->params.animate_speed, 0.0, 1.0);
 				ofxImGui::EndTree(mainSettings);
 			}
+			ofxImGui::EndWindow(mainSettings);
+		}
 
-
+		if (ofxImGui::BeginWindow("Colours", mainSettings, false))
+		{
 			//----COLOURS
 			if (ofxImGui::BeginTree("COLOURS", mainSettings))
 			{
 
-				ImGui::ImageButton(TEX_ID getTextureID(), ofVec2f(400, 180));
-				
+				ImGui::ImageButton(TEX_ID getTextureID(), ofVec2f(w, h));
+
 				//ImGui::PlotLines("LFO", , 100);
 
 
@@ -230,14 +233,14 @@ bool GuiColourGradient::imGui()
 				{
 					colour->params.dc[0] = ofRandom(-1.00, 1.00);
 					colour->params.amp[0] = ofRandom(-1.00, 1.00);
-					colour->params.freq[0] = ofRandom(-1.00, 1.00);
-					colour->params.phase[0] = ofRandom(-1.00, 1.00);
+					colour->params.freq[0] = ofRandom(0.00, 1.00);
+					colour->params.phase[0] = ofRandom(0.00, 1.00);
 				}
 
 				ImGui::NextColumn();
-				ImGui::SliderFloat("R_dc", &colour->params.dc[0], 0.0, 1.0);
+				ImGui::SliderFloat("R_dc", &colour->params.dc[0], -1.0, 1.0);
 				ImGui::NextColumn();
-				ImGui::SliderFloat("R_amp", &colour->params.amp[0], 0.0, 1.0);
+				ImGui::SliderFloat("R_amp", &colour->params.amp[0], -1.0, 1.0);
 				ImGui::NextColumn();
 				ImGui::SliderFloat("R_freq", &colour->params.freq[0], 0.0, 1.0);
 				ImGui::NextColumn();
@@ -255,16 +258,16 @@ bool GuiColourGradient::imGui()
 				ImGui::Separator();
 				if (ImGui::Button("rand_green"))
 				{
-					colour->params.dc[1] = ofRandom(-1.00, 1.00);
+					colour->params.dc[1] = ofRandom(0.00, 1.00);
 					colour->params.amp[1] = ofRandom(-1.00, 1.00);
-					colour->params.freq[1] = ofRandom(-1.00, 1.00);
-					colour->params.phase[1] = ofRandom(-1.00, 1.00);
+					colour->params.freq[1] = ofRandom(0.00, 1.00);
+					colour->params.phase[1] = ofRandom(0.00, 1.00);
 				}
 
 				ImGui::NextColumn();
 				ImGui::SliderFloat("G_dc", &colour->params.dc[1], 0.0, 1.0);
 				ImGui::NextColumn();
-				ImGui::SliderFloat("G_amp", &colour->params.amp[1], 0.0, 1.0);
+				ImGui::SliderFloat("G_amp", &colour->params.amp[1], -1.0, 1.0);
 				ImGui::NextColumn();
 				ImGui::SliderFloat("G_freq", &colour->params.freq[1], 0.0, 1.0);
 				ImGui::NextColumn();
@@ -282,15 +285,15 @@ bool GuiColourGradient::imGui()
 
 				if (ImGui::Button("rand_blue"))
 				{
-					colour->params.dc[2] = ofRandom(-1.00, 1.00);
+					colour->params.dc[2] = ofRandom(0.00, 1.00);
 					colour->params.amp[2] = ofRandom(-1.00, 1.00);
-					colour->params.freq[2] = ofRandom(-1.00, 1.00);
-					colour->params.phase[2] = ofRandom(-1.00, 1.00);
+					colour->params.freq[2] = ofRandom(0.00, 1.00);
+					colour->params.phase[2] = ofRandom(0.00, 1.00);
 				}
 				ImGui::NextColumn();
 				ImGui::SliderFloat("B_dc", &colour->params.dc[2], 0.0, 1.0);
 				ImGui::NextColumn();
-				ImGui::SliderFloat("B_amp", &colour->params.amp[2], 0.0, 1.0);
+				ImGui::SliderFloat("B_amp", &colour->params.amp[2], -1.0, 1.0);
 				ImGui::NextColumn();
 				ImGui::SliderFloat("B_freq", &colour->params.freq[2], 0.0, 1.0);
 				ImGui::NextColumn();
@@ -303,27 +306,27 @@ bool GuiColourGradient::imGui()
 				ImGui::Separator();
 				if (ImGui::Button("rand_all"))
 				{
-					colour->params.dc[0] = ofRandom(-1.00, 1.00);
+					colour->params.dc[0] = ofRandom(0.00, 1.00);
 					colour->params.amp[0] = ofRandom(-1.00, 1.00);
-					colour->params.freq[0] = ofRandom(-1.00, 1.00);
-					colour->params.phase[0] = ofRandom(-1.00, 1.00);
+					colour->params.freq[0] = ofRandom(0.00, 1.00);
+					colour->params.phase[0] = ofRandom(0.00, 1.00);
 
-					colour->params.dc[1] = ofRandom(-1.00, 1.00);
+					colour->params.dc[1] = ofRandom(0.00, 1.00);
 					colour->params.amp[1] = ofRandom(-1.00, 1.00);
-					colour->params.freq[1] = ofRandom(-1.00, 1.00);
-					colour->params.phase[1] = ofRandom(-1.00, 1.00);
+					colour->params.freq[1] = ofRandom(0.00, 1.00);
+					colour->params.phase[1] = ofRandom(0.00, 1.00);
 
-					colour->params.dc[2] = ofRandom(-1.00, 1.00);
+					colour->params.dc[2] = ofRandom(0.00, 1.00);
 					colour->params.amp[2] = ofRandom(-1.00, 1.00);
-					colour->params.freq[2] = ofRandom(-1.00, 1.00);
-					colour->params.phase[2] = ofRandom(-1.00, 1.00);
+					colour->params.freq[2] = ofRandom(0.00, 1.00);
+					colour->params.phase[2] = ofRandom(0.00, 1.00);
 				}
 				ImGui::NextColumn();
 				if (ImGui::Button("rand_dc"))
 				{
-					colour->params.dc[0] = ofRandom(-1.00, 1.00);
-					colour->params.dc[1] = ofRandom(-1.00, 1.00);
-					colour->params.dc[2] = ofRandom(-1.00, 1.00);
+					colour->params.dc[0] = ofRandom(0.00, 1.00);
+					colour->params.dc[1] = ofRandom(0.00, 1.00);
+					colour->params.dc[2] = ofRandom(0.00, 1.00);
 				}
 				ImGui::NextColumn();
 				if (ImGui::Button("rand_amp"))
@@ -335,23 +338,27 @@ bool GuiColourGradient::imGui()
 				ImGui::NextColumn();
 				if (ImGui::Button("rand_freq"))
 				{
-					colour->params.freq[0] = ofRandom(-1.00, 1.00);
-					colour->params.freq[1] = ofRandom(-1.00, 1.00);
-					colour->params.freq[2] = ofRandom(-1.00, 1.00);
+					colour->params.freq[0] = ofRandom(0.00, 1.00);
+					colour->params.freq[1] = ofRandom(0.00, 1.00);
+					colour->params.freq[2] = ofRandom(0.00, 1.00);
 				}
 				ImGui::NextColumn();
 				if (ImGui::Button("rand_phase"))
 				{
-					colour->params.phase[0] = ofRandom(-1.00, 1.00);
-					colour->params.phase[1] = ofRandom(-1.00, 1.00);
-					colour->params.phase[2] = ofRandom(-1.00, 1.00);
+					colour->params.phase[0] = ofRandom(0.00, 1.00);
+					colour->params.phase[1] = ofRandom(0.00, 1.00);
+					colour->params.phase[2] = ofRandom(0.00, 1.00);
 				}
 				ImGui::Columns(1);
 				ImGui::Separator();
 
 				ofxImGui::EndTree(mainSettings);
 			}
+			ofxImGui::EndWindow(mainSettings);
+		}
 
+			if (ofxImGui::BeginWindow("LFOS", mainSettings, false))
+			{
 			//----ALL
 			if (ofxImGui::BeginTree("LFOs", mainSettings)) {
 
