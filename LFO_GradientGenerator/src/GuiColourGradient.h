@@ -29,9 +29,11 @@ private:
 	ColourGradient *colour;
 
 	ofFbo fbo;
+	
 	GLuint textureid;
 	ofShader shader;
 	ofImage image;
+	
 	ofPixels fboPixels;
 	ofTexture texture;
 	

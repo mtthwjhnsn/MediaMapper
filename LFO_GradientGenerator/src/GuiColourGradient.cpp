@@ -242,7 +242,7 @@ bool GuiColourGradient::imGui()
 				ImGui::NextColumn();
 				ImGui::SliderFloat("R_amp", &colour->params.amp[0], -1.0, 1.0);
 				ImGui::NextColumn();
-				ImGui::SliderFloat("R_freq", &colour->params.freq[0], 0.0, 1.0);
+				ImGui::SliderFloat("R_freq", &colour->params.freq[0], 0.0, 10.0);
 				ImGui::NextColumn();
 				ImGui::SliderFloat("R_phase", &colour->params.phase[0], 0.0, 1.0);
 				ImGui::Columns(1);
@@ -269,7 +269,7 @@ bool GuiColourGradient::imGui()
 				ImGui::NextColumn();
 				ImGui::SliderFloat("G_amp", &colour->params.amp[1], -1.0, 1.0);
 				ImGui::NextColumn();
-				ImGui::SliderFloat("G_freq", &colour->params.freq[1], 0.0, 1.0);
+				ImGui::SliderFloat("G_freq", &colour->params.freq[1], 0.0, 10.0);
 				ImGui::NextColumn();
 				ImGui::SliderFloat("G_phase", &colour->params.phase[1], 0.0, 1.0);
 				ImGui::Columns(1);
@@ -295,7 +295,7 @@ bool GuiColourGradient::imGui()
 				ImGui::NextColumn();
 				ImGui::SliderFloat("B_amp", &colour->params.amp[2], -1.0, 1.0);
 				ImGui::NextColumn();
-				ImGui::SliderFloat("B_freq", &colour->params.freq[2], 0.0, 1.0);
+				ImGui::SliderFloat("B_freq", &colour->params.freq[2], 0.0, 10.0);
 				ImGui::NextColumn();
 				ImGui::SliderFloat("B_phase", &colour->params.phase[2], 0.0, 1.0);
 				ImGui::Columns(1);

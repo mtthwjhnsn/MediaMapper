@@ -1,12 +1,24 @@
 #include "ofApp.h"
 
+
 //--------------------------------------------------------------
 void ofApp::setup() {
 	
+	int w = ofGetWidth();
+	int h = ofGetHeight();
+
 	colour.setup(ofGetWidth(), ofGetHeight());
 	gui.setup(&colour);
 	
-	fbo.allocate(ofGetWidth(), ofGetHeight());
+	ofFbo::Settings fboSettings;
+	fboSettings.width = w;
+	fboSettings.height = h;
+	fboSettings.internalformat = GL_RGBA;
+	fboSettings.textureTarget = GL_TEXTURE_2D;
+	fbo.allocate(fboSettings);
+	
+	
+	//fbo.allocate(ofGetWidth(), ofGetHeight());
 
 	sampleRate = 44100;
 	bufferSize = 512;

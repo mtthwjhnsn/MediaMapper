@@ -10,6 +10,7 @@ class ofApp : public ofBaseApp {
 
 public:
 	void setup();
+
 	void update();
 	void draw();
 
@@ -37,6 +38,7 @@ public:
 	maxiMix mix;
 
 	ofFbo fbo;
+	GLuint textureid;
 
 	ColourGradient colour;
 	GuiColourGradient gui;
