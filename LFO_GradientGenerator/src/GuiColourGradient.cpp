@@ -174,14 +174,30 @@ bool GuiColourGradient::imGui()
 {
 	int gui_width = 700;
 	auto mainSettings = ofxImGui::Settings();
-	mainSettings.windowPos = ofVec2f(ofGetWidth() - gui_width, 10);
-	
-	//mainSettings.windowSize = ofVec2f(ofGetWidth(), ofGetHeight());
+	ofVec2f pos(100, 100);
+	ofVec2f pos1(450, 100);
+	ofVec2f pos2(1310, 100);
+	mainSettings.windowPos = pos;
 
+	ImVec4 col = ImColor::HSV(0.14f, 0.24f, 0.42f);
+	ImVec4 col1 = ImColor::HSV(0.14f, 0.24f, 0.30f);
+	ImGui::PushStyleColor(ImGuiCol_Header, col);
+	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, col1);
+	//ImGui::PushStyleColor(ImGuiCol_Button, col);
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, col1);
+	ImGui::PushStyleColor(ImGuiCol_SliderGrab, col);
+	ImGui::PushStyleColor(ImGuiCol_SliderGrabActive, col1);
+	ImGui::PushStyleColor(ImGuiCol_CheckMark, col);
+	ImGui::PushStyleColor(ImGuiCol_TitleBgActive, col1);
+	
 	this->gui.begin();
 	{
+		
 		if (ofxImGui::BeginWindow("Gradient Generator", mainSettings, false))
 		{
+
+			pos = ImGui::GetWindowPos();
+
 			ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
 
 			if (ofxImGui::BeginTree("Master", mainSettings))
@@ -194,8 +210,14 @@ bool GuiColourGradient::imGui()
 			ofxImGui::EndWindow(mainSettings);
 		}
 
+
+		//ImGui::SetNextWindowPos(pos1);
+		mainSettings.windowPos = pos1;
 		if (ofxImGui::BeginWindow("Colours", mainSettings, false))
 		{
+
+			pos1 = ImGui::GetWindowPos();
+
 			//----COLOURS
 			if (ofxImGui::BeginTree("COLOURS", mainSettings))
 			{
@@ -357,8 +379,13 @@ bool GuiColourGradient::imGui()
 			ofxImGui::EndWindow(mainSettings);
 		}
 
+		//ImGui::SetNextWindowPos(pos1);
+		mainSettings.windowPos = pos2;
 			if (ofxImGui::BeginWindow("LFOS", mainSettings, false))
 			{
+
+				pos2 = ImGui::GetWindowPos();
+
 			//----ALL
 			if (ofxImGui::BeginTree("LFOs", mainSettings)) {
 
@@ -368,7 +395,7 @@ bool GuiColourGradient::imGui()
 					lfo_selection(&colour->params.freq_lfo_type);
 					ImGui::SliderFloat("amp", &colour->params.freq_lfo_amp, 0.0, 1.0);
 					ImGui::SliderFloat("speed", &colour->params.freq_lfo_speed, 0.0, 1.0);
-					ImGui::SliderFloat("freq", &colour->params.freq_cycle_speed, 0.0, 1.0);
+					ImGui::SliderFloat("freq", &colour->params.freq_cycle_speed, 0.0, 10.0);
 					ofxImGui::EndTree(mainSettings);
 				}
 				//----AMP LFO
@@ -376,7 +403,7 @@ bool GuiColourGradient::imGui()
 					lfo_selection(&colour->params.amp_lfo_type);
 					ImGui::SliderFloat("amp", &colour->params.amp_lfo_amp, 0.0, 1.0);
 					ImGui::SliderFloat("speed", &colour->params.amp_lfo_speed, 0.0, 1.0);
-					ImGui::SliderFloat("freq", &colour->params.amp_cycle_speed, 0.0, 1.0);
+					ImGui::SliderFloat("freq", &colour->params.amp_cycle_speed, 0.0, 10.0);
 					ofxImGui::EndTree(mainSettings);
 				}
 				//----PHASE LFO
@@ -384,7 +411,7 @@ bool GuiColourGradient::imGui()
 					lfo_selection(&colour->params.phase_lfo_type);
 					ImGui::SliderFloat("amp", &colour->params.phase_lfo_amp, 0.0, 1.0);
 					ImGui::SliderFloat("speed", &colour->params.phase_lfo_speed, 0.0, 1.0);
-					ImGui::SliderFloat("freq", &colour->params.phase_cycle_speed, 0.0, 1.0);
+					ImGui::SliderFloat("freq", &colour->params.phase_cycle_speed, 0.0, 10.0);
 					ofxImGui::EndTree(mainSettings);
 				}
 				ofxImGui::EndTree(mainSettings);
@@ -394,6 +421,9 @@ bool GuiColourGradient::imGui()
 		}
 		this->gui.end();
 		return mainSettings.mouseOverGui;
+
+		
+
 	}
 }
 
