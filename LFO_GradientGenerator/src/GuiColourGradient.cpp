@@ -61,10 +61,16 @@ void GuiColourGradient::draw() {
 		float H = h * .5;
 		int spacing = 50;
 
+		//float speed = colour->params.animate_speed;
+
+		float t = ofGetElapsedTimef();
+		float speed = (colour->params.animate_speed*3.0)*t;
+
 		float dc1 = colour->params.dc.x;
 		float amp1 = colour->params.amp.x;
 		float freq1 = colour->params.freq.x;
 		float phase1 = colour->params.phase.x;
+
 
 		float dc2 = colour->params.dc.y;
 		float amp2 = colour->params.amp.y;
@@ -80,9 +86,9 @@ void GuiColourGradient::draw() {
 
 			float xval = ofMap(i, 0, w, 0.00, 1.00, true);
 
-			float red_wave = colour->ColourGradient::lfo(colour->params.palette_lfo_red, 6.28318*(freq1*xval + phase1));
-			float green_wave = colour->ColourGradient::lfo(colour->params.palette_lfo_green, 6.28318*(freq2*xval + phase2));
-			float blue_wave = colour->ColourGradient::lfo(colour->params.palette_lfo_blue, 6.28318*(freq3*xval + phase3));
+			float red_wave = (colour->ColourGradient::lfo(colour->params.palette_lfo_red, 6.28318*(freq1*(speed + xval) + phase1)));
+			float green_wave = colour->ColourGradient::lfo(colour->params.palette_lfo_green, 6.28318*(freq2*(speed + xval) + phase2));
+			float blue_wave = colour->ColourGradient::lfo(colour->params.palette_lfo_blue, 6.28318*(freq3*(speed + xval) + phase3));
 
 			mesh.addVertex(ofVec2f(i, dc1 * H + H * amp1 * red_wave));
 			mesh.addColor(ofFloatColor(1.0, 0.0, 0.0));
@@ -260,7 +266,7 @@ bool GuiColourGradient::imGui()
 				}
 
 				ImGui::NextColumn();
-				ImGui::SliderFloat("R_dc", &colour->params.dc[0], -1.0, 1.0);
+				ImGui::SliderFloat("R_dc", &colour->params.dc[0], -1.0, 2.0);
 				ImGui::NextColumn();
 				ImGui::SliderFloat("R_amp", &colour->params.amp[0], -1.0, 1.0);
 				ImGui::NextColumn();
@@ -287,7 +293,7 @@ bool GuiColourGradient::imGui()
 				}
 
 				ImGui::NextColumn();
-				ImGui::SliderFloat("G_dc", &colour->params.dc[1], 0.0, 1.0);
+				ImGui::SliderFloat("G_dc", &colour->params.dc[1], 0.0, 2.0);
 				ImGui::NextColumn();
 				ImGui::SliderFloat("G_amp", &colour->params.amp[1], -1.0, 1.0);
 				ImGui::NextColumn();
@@ -313,7 +319,7 @@ bool GuiColourGradient::imGui()
 					colour->params.phase[2] = ofRandom(0.00, 1.00);
 				}
 				ImGui::NextColumn();
-				ImGui::SliderFloat("B_dc", &colour->params.dc[2], 0.0, 1.0);
+				ImGui::SliderFloat("B_dc", &colour->params.dc[2], 0.0, 2.0);
 				ImGui::NextColumn();
 				ImGui::SliderFloat("B_amp", &colour->params.amp[2], -1.0, 1.0);
 				ImGui::NextColumn();
