@@ -22,8 +22,20 @@ void GuiColourGradient::setup(ColourGradient *_colour) {
 	fboSettings.height = h;
 	fboSettings.internalformat = GL_RGBA;
 	fboSettings.textureTarget = GL_TEXTURE_2D;
+	
 	fbo.allocate(fboSettings);
+	
+	fboSettings.width = w/2;
+	fboSettings.height = h/2;
+
+	fbo2.allocate(fboSettings);
+	fbo3.allocate(fboSettings);
+	fbo4.allocate(fboSettings);
+
 	textureid = fbo.getTexture().texData.textureID;
+	textureid2 = fbo2.getTexture().texData.textureID;
+	textureid3 = fbo3.getTexture().texData.textureID;
+	textureid4 = fbo4.getTexture().texData.textureID;
 
 	//fbo.allocate(wwidth, hheight);
 	fbo.begin();
@@ -44,6 +56,18 @@ GLuint GuiColourGradient::getTextureID() {
 	return textureid;
 }
 
+GLuint GuiColourGradient::getTextureID2() {
+	return textureid2;
+}
+
+GLuint GuiColourGradient::getTextureID3() {
+	return textureid3;
+}
+
+GLuint GuiColourGradient::getTextureID4() {
+	return textureid4;
+}
+
 //-------------------------------------------------
 void GuiColourGradient::draw() {
 	if (guiVisible) {
@@ -51,17 +75,7 @@ void GuiColourGradient::draw() {
 		//IMGUI		
 		imGui();
 
-		//FBO
-		fbo.begin();
-
-		ofSetColor(50, 50, 50, 50);
-		ofRect(0, 0, w, h);
-
-
 		float H = h * .5;
-		int spacing = 50;
-
-		//float speed = colour->params.animate_speed;
 
 		float t = ofGetElapsedTimef();
 		float speed = (colour->params.animate_speed*3.0)*t;
@@ -81,6 +95,26 @@ void GuiColourGradient::draw() {
 		float amp3 = colour->params.amp.z;
 		float freq3 = colour->params.freq.z;
 		float phase3 = colour->params.phase.z;
+
+		float freq_lfo_amp = colour->params.freq_lfo_amp;
+		float freq_lfo_speed = colour->params.freq_lfo_speed;
+		float freq_cycle_speed = colour->params.freq_cycle_speed;
+
+		float amp_lfo_amp = colour->params.amp_lfo_amp;
+		float amp_lfo_speed = colour->params.amp_lfo_speed;
+		float amp_cycle_speed = colour->params.amp_cycle_speed;
+
+		float phase_lfo_amp = colour->params.phase_lfo_amp;
+		float phase_lfo_speed = colour->params.phase_lfo_speed;
+		float phase_cycle_speed = colour->params.phase_cycle_speed;
+
+		//float phase3 = colour->params.phase.z;
+
+		//FBO
+		fbo.begin();
+
+		ofSetColor(50, 50, 50, 50);
+		ofRect(0, 0, w, h);
 
 		for (int i = 0; i < w; i++) {
 
@@ -104,6 +138,55 @@ void GuiColourGradient::draw() {
 		mesh.clearVertices();
 		mesh.clearColors();
 		fbo.end();
+
+		int _w = w / 2;
+		int _h = h / 2;
+		int _H = _h * .5;
+
+		//frequency lfo
+		fbo2.begin();
+		ofSetColor(50, 50, 50, 50);
+		ofRect(0, 0, _w, _h);
+		for (int i = 0; i < _w; i++) {
+			float xval = ofMap(i, 0, _w, 0.00, 1.00, true);
+			float freq_wave = (colour->ColourGradient::lfo(colour->params.freq_lfo_type, 6.28318*(freq_cycle_speed * xval+1)));
+			mesh.addVertex(ofVec2f(i, H/2 + H * freq_lfo_amp * freq_wave));
+			mesh.addColor(ofFloatColor(1.0, 1.0, 1.0));
+		}
+		mesh.drawVertices();
+		mesh.clearVertices();
+		mesh.clearColors();
+		fbo2.end();
+
+		// amp lfo
+		fbo3.begin();
+		ofSetColor(50, 50, 50, 50);
+		ofRect(0, 0, _w, _h);
+		for (int i = 0; i < _w; i++) {
+			float xval = ofMap(i, 0, _w, 0.00, 1.00, true);
+			float amp_wave = (colour->ColourGradient::lfo(colour->params.amp_lfo_type, 6.28318*(amp_cycle_speed * xval + 1)));
+			mesh.addVertex(ofVec2f(i, H / 2 + H * amp_lfo_amp * amp_wave));
+			mesh.addColor(ofFloatColor(1.0, 1.0, 1.0));
+		}
+		mesh.drawVertices();
+		mesh.clearVertices();
+		mesh.clearColors();
+		fbo3.end();
+
+		// phase lfo
+		fbo4.begin();
+		ofSetColor(50, 50, 50, 50);
+		ofRect(0, 0, _w, _h);
+		for (int i = 0; i < _w; i++) {
+			float xval = ofMap(i, 0, _w, 0.00, 1.00, true);
+			float phase_wave = (colour->ColourGradient::lfo(colour->params.phase_lfo_type, 6.28318*(phase_cycle_speed * xval + 1)));
+			mesh.addVertex(ofVec2f(i, H / 2 + H * phase_lfo_amp * phase_wave));
+			mesh.addColor(ofFloatColor(1.0, 1.0, 1.0));
+		}
+		mesh.drawVertices();
+		mesh.clearVertices();
+		mesh.clearColors();
+		fbo4.end();
 	}
 }
 
@@ -176,6 +259,12 @@ void GuiColourGradient::lfo_selection_blue(int* type_param_blue) {
 
 #define TEX_ID (ImTextureID)(uintptr_t)
 
+#define TEX_ID2 (ImTextureID)(uintptr_t)
+
+#define TEX_ID3 (ImTextureID)(uintptr_t)
+
+#define TEX_ID4 (ImTextureID)(uintptr_t)
+
 bool GuiColourGradient::imGui()
 {
 	int gui_width = 700;
@@ -202,7 +291,6 @@ bool GuiColourGradient::imGui()
 		if (ofxImGui::BeginWindow("Gradient Generator", mainSettings, false))
 		{
 
-			pos = ImGui::GetWindowPos();
 
 			ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
 
@@ -222,8 +310,7 @@ bool GuiColourGradient::imGui()
 		if (ofxImGui::BeginWindow("Colours", mainSettings, false))
 		{
 
-			pos1 = ImGui::GetWindowPos();
-
+			
 			//----COLOURS
 			if (ofxImGui::BeginTree("COLOURS", mainSettings))
 			{
@@ -390,11 +477,11 @@ bool GuiColourGradient::imGui()
 			if (ofxImGui::BeginWindow("LFOS", mainSettings, false))
 			{
 
-				pos2 = ImGui::GetWindowPos();
-
+				
 			//----ALL
 			if (ofxImGui::BeginTree("LFOs", mainSettings)) {
 
+				ImGui::ImageButton(TEX_ID2 getTextureID2(), ofVec2f(w/2, h/2));
 
 				//----FREQ LFO
 				if (ofxImGui::BeginTree("FREQ LFO", mainSettings)) {
@@ -404,6 +491,9 @@ bool GuiColourGradient::imGui()
 					ImGui::SliderFloat("freq", &colour->params.freq_cycle_speed, 0.0, 10.0);
 					ofxImGui::EndTree(mainSettings);
 				}
+
+				ImGui::ImageButton(TEX_ID3 getTextureID3(), ofVec2f(w/2, h/2));
+
 				//----AMP LFO
 				if (ofxImGui::BeginTree("AMP LFO", mainSettings)) {
 					lfo_selection(&colour->params.amp_lfo_type);
@@ -412,6 +502,9 @@ bool GuiColourGradient::imGui()
 					ImGui::SliderFloat("freq", &colour->params.amp_cycle_speed, 0.0, 10.0);
 					ofxImGui::EndTree(mainSettings);
 				}
+
+				ImGui::ImageButton(TEX_ID4 getTextureID4(), ofVec2f(w/2, h/2));
+
 				//----PHASE LFO
 				if (ofxImGui::BeginTree("PHASE LFO", mainSettings)) {
 					lfo_selection(&colour->params.phase_lfo_type);

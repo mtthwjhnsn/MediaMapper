@@ -19,6 +19,9 @@ public:
 	void draw();
 
 	GLuint getTextureID();
+	GLuint getTextureID2();
+	GLuint getTextureID3();
+	GLuint getTextureID4();
 
 	void lfo_selection(int* type_param);
 	void lfo_selection_red(int* type_param_red);
@@ -28,22 +31,32 @@ public:
 private:
 	ColourGradient *colour;
 
+	ofMesh mesh;
+
 	ofFbo fbo;
-	
+	ofFbo fbo2;
+
+	ofFbo fbo3;
+	ofFbo fbo4;
+
+
 	GLuint textureid;
+	GLuint textureid2;
+	GLuint textureid3;
+	GLuint textureid4;
+
 	ofShader shader;
 	ofImage image;
 	
-	ofPixels fboPixels;
-	ofTexture texture;
-	
+
 	// Gui
 	bool imGui();
 
 	ofxImGui::Gui gui;
 	bool guiVisible;
 	bool mouseOverGui;
-	ofMesh mesh;
+
+	
 
 	
 };

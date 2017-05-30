@@ -28,12 +28,15 @@ struct GradientParams {
 	int amp_lfo_type;
 	int freq_lfo_type;
 	int phase_lfo_type;
+
 	float amp_lfo_speed;
 	float freq_lfo_speed;
 	float phase_lfo_speed;
+	
 	float amp_lfo_amp;
 	float freq_lfo_amp;
 	float phase_lfo_amp;
+	
 	float amp_cycle_speed;
 	float freq_cycle_speed;
 	float phase_cycle_speed;
