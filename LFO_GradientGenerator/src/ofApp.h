@@ -4,7 +4,14 @@
 #include "GuiColourGradient.h"
 #include "ColourGradient.h"
 #include "ofxMaxim.h"
-#include "ofxSpout2Sender.h"
+//#include "ofxSpout2Sender.h"
+#include "ofxNDI.h"
+
+// BGRA definition should be in glew.h
+// but define it here just in case it is not
+#ifndef GL_BGRA_EXT
+#define GL_BGRA_EXT 0x80E1
+#endif
 
 class ofApp : public ofBaseApp {
 
@@ -37,12 +44,28 @@ public:
 	maxiOsc osc, modulator;
 	maxiMix mix;
 
-	ofFbo fbo;
+	//ofFbo fbo;
 	GLuint textureid;
 
 	ColourGradient colour;
 	GuiColourGradient gui;
 
-	ofxSpout2::Sender spout;
+	//ofxSpout2::Sender spout;
+
+	ofxNDIsender ndiSender;    // NDI sender object
+	char senderName[256];      // Sender name
+	unsigned int senderWidth;  // Width of the sender output
+	unsigned int senderHeight; // Height of the sender output
+	ofFbo ndiFbo;              // Fbo used for data transfer
+	ofPixels ndiBuffer[2];     // Two pixel buffers for async sending
+	int idx;                   // Index used for async buffer swapping
+	ofImage textureImage;      // Texture image for the 3D cube graphics
+	float rotX, rotY;          // Cube rotation increment
+
+	GLuint ndiPbo[2];
+	int PboIndex;
+	int NextPboIndex;
+	bool bUsePBO;
+	bool ReadFboPixels(ofFbo fbo, unsigned int width, unsigned int height, unsigned char *data);
 
 };
