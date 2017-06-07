@@ -11,6 +11,7 @@
 #include "ofMain.h"
 #include "ofxImGui.h"
 #include "ColourGradient.h"
+//#include "ofxMaxim.h"
 
 
 class GuiColourGradient {
@@ -56,7 +57,7 @@ private:
 	bool guiVisible;
 	bool mouseOverGui;
 
-	
+
 
 	
 };

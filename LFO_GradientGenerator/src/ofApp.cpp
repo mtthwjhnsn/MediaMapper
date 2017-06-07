@@ -4,31 +4,56 @@
 //--------------------------------------------------------------
 void ofApp::setup() {
 	
+
+	//sound
+	sampleRate = 44100;
+	bufferSize = 512;
+	ofBackground(0);
+
+	//ofSoundStreamSetup(2, 0, this, sampleRate, bufferSize, 4);
+	//ofSoundStreamListDevices();
+	//ofSoundStreamStart();
+	ofSoundStreamSetup(2, 0, this, sampleRate, bufferSize, 4);
+
+	// red
+
+	frequency_red = 440;
+	modulationFrequency_red = 0;
+	modulationIndex_red = 100;
+
+	env_red.setAttack(2000);
+	env_red.setDecay(1);
+	env_red.setSustain(1);
+	env_red.setRelease(3000);
+
 	int w = ofGetWidth();
 	int h = ofGetHeight();
 
 	colour.setup(ofGetWidth(), ofGetHeight());
 	gui.setup(&colour);
-	
+
+	// green
+
+	frequency_green = 440;
+	modulationFrequency_green = 0;
+	modulationIndex_green = 100;
+
+	env_green.setAttack(2000);
+	env_green.setDecay(1);
+	env_green.setSustain(1);
+	env_green.setRelease(3000);
+
+// blue
+	frequency_blue = 440;
+	modulationFrequency_blue = 0;
+	modulationIndex_blue = 100;
+
+	env_blue.setAttack(2000);
+	env_blue.setDecay(1);
+	env_blue.setSustain(1);
+	env_blue.setRelease(3000);
+
 	/*
-	ofFbo::Settings fboSettings;
-	fboSettings.width = w;
-	fboSettings.height = h;
-	fboSettings.internalformat = GL_RGBA;
-	fboSettings.textureTarget = GL_TEXTURE_2D;
-	fbo.allocate(fboSettings);
-	*/
-	
-	//fbo.allocate(ofGetWidth(), ofGetHeight());
-
-	sampleRate = 44100;
-	bufferSize = 512;
-	ofBackground(0);
-	ofSoundStreamSetup(2, 0, this, sampleRate, bufferSize, 4);
-	frequency = 440;
-	modSpeed = 2;
-
-
 
 	//NDI
 
@@ -58,13 +83,13 @@ void ofApp::setup() {
 	cout << "Created NDI sender [" << senderName << "] (" << senderWidth << "x" << senderHeight << ")" << endl;
 	idx = 0; // index used for buffer swapping
 
-			 // 3D drawing setup for the demo graphics
-	glEnable(GL_DEPTH_TEST);                           // enable depth comparisons and update the depth buffer
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // Really Nice Perspective Calculations
-	ofDisableArbTex();                                 // needed for textures to work
-	textureImage.loadImage("NDI_Box.png");             // Load a texture image for the demo
-	rotX = 0; // Cube rotation
-	rotY = 0;
+	// 3D drawing setup for the demo graphics
+	//glEnable(GL_DEPTH_TEST);                           // enable depth comparisons and update the depth buffer
+	//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // Really Nice Perspective Calculations
+	//ofDisableArbTex();                                 // needed for textures to work
+	//textureImage.loadImage("NDI_Box.png");             // Load a texture image for the demo
+	//rotX = 0; // Cube rotation
+	//rotY = 0;
 
 	// Initialize OpenGL pbos for asynchronous read of fbo data
 	glGenBuffers(2, ndiPbo);
@@ -76,46 +101,27 @@ void ofApp::setup() {
 
 	PboIndex = NextPboIndex = 0;
 	bUsePBO = true; // Change to false to compare
-
+	*/
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
-	//ofSetWindowTitle("COLOUR TOOL");
-	
-	/*
-	fbo.begin();
-	ofClear(0, 0, 0, 255);
-	colour.draw();
-	fbo.end();
-
-	spout.sendTexture(fbo.getTexture(), "colour");
-	*/
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
 	
-	//ofClear(0, 0, 0, 255);
-	//fbo.draw(0, 0);
-
-
-
-	//remove for glsl
-
-	/*for (int i = 0; i < ofGetWidth(); i++) {
-		ofSetColor(c[i]);
-		ofDrawRectangle(i, ofGetHeight() / 2, 1, ofGetHeight() / 2);
-	}*/
-
+	/*
 	ndiFbo.begin();
 	ofClear(13, 25, 76, 255); // background as required
-
+	*/
 	// ============ your application draw goes here ===============
+	
 	colour.draw();
+
 	// =============================================================
 
-
+	/*
 	// End the fbo
 	ndiFbo.end();
 
@@ -151,24 +157,17 @@ void ofApp::draw() {
 		sprintf(str, "fps: %3.3d", (int)ofGetFrameRate());
 		ofDrawBitmapString(str, ofGetWidth() - 120, 30);
 	}
-
+	*/
 	gui.draw();
 
 }
-
-
-/*
-void ofApp::exit() {
-	spout.exit();
-}
-*/
-
 
 //
 // Asynchronous Read-back
 //
 // adapted from : http://www.songho.ca/opengl/gl_pbo.html
 //
+/*
 bool ofApp::ReadFboPixels(ofFbo fbo, unsigned int width, unsigned int height, unsigned char *data)
 {
 	void *pboMemory;
@@ -216,22 +215,60 @@ void ofApp::exit() {
 	if (ndiPbo[0]) glDeleteBuffers(2, ndiPbo);
 }
 
+
+
+*/
+
+//--------------------------------------------------------------
 //--------------------------------------------------------------
 void ofApp::audioOut(float * output, int bufferSize, int nChannels) {
 
-	float red_sound = ofMap(colour.get_colour(0)[0], 0, 255, 0, 100);
-	float green_sound = ofMap(colour.get_colour(0)[1], 0, 255, 0, 100);
-	float blue_sound = ofMap(colour.get_colour(0)[2], 0, 255, 0, 100);
+	for (int i = 0; i < bufferSize; i++) {
+		frequency_red = 150;
+		modulationFrequency_red = ofMap(colour.get_colour(0)[0], 0, 255, 0, 50);
+		modulationIndex_red = 150;
+		
+		frequency_green = 150;
+		modulationFrequency_green = ofMap(colour.get_colour(1)[1], 0, 255, 0, 50);
+		modulationIndex_green = 150;
+		
 
-	for (unsigned i = 0; i < bufferSize; i++) {
-		currentSample = osc.coswave(frequency) * red_sound * green_sound * blue_sound;
+		frequency_blue = 150;
+		modulationFrequency_blue = ofMap(colour.get_colour(2)[2], 0, 255, 0, 50);
+		modulationIndex_blue = 150;
+
+		int player = 1;
+
+		float redsample = osc_red.sinewave(frequency_red + env_red.adsr(mod_red.sinewave(modulationFrequency_red), env_red.trigger) * modulationIndex_red);
+		float greensample = currentSample = osc_green.sinewave(frequency_green + env_green.adsr(mod_green.sinewave(modulationFrequency_green), env_green.trigger) * modulationIndex_green);
+		float bluesample = currentSample = osc_blue.sinewave(frequency_blue + env_blue.adsr(mod_blue.sinewave(modulationFrequency_blue), env_blue.trigger) * modulationIndex_blue);
+
+		if (player == 0) {
+			currentSample = redsample;
+			env_red.trigger = 1;
+			env_green.trigger = 0;
+			env_blue.trigger = 0;
+		}
+		else if (player == 1) {
+			currentSample = greensample;
+			env_red.trigger = 0;
+			env_green.trigger = 1;
+			env_blue.trigger = 0;
+		}
+		else if (player == 2) {
+			currentSample = bluesample;
+			env_red.trigger = 0;
+			env_green.trigger = 0;
+			env_blue.trigger = 1;
+		}
+
+
 		mix.stereo(currentSample, outputs, 0.5);
 		output[i * nChannels] = outputs[0];
 		output[i * nChannels + 1] = outputs[1];
+
 	}
-
 }
-
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
@@ -242,6 +279,9 @@ void ofApp::keyPressed(int key) {
 void ofApp::keyReleased(int key) {
 
 }
+
+
+
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y) {

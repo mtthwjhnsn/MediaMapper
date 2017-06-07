@@ -15,6 +15,9 @@ int h = 180;
 
 //-------------------------------------------------
 void GuiColourGradient::setup(ColourGradient *_colour) {
+	
+
+	
 	colour = _colour;
 
 	ofFbo::Settings fboSettings;
@@ -50,6 +53,7 @@ void GuiColourGradient::setup(ColourGradient *_colour) {
 	glEnable(GL_POINT_SMOOTH);
 	glPointSize(1);
 
+
 }
 
 GLuint GuiColourGradient::getTextureID() {
@@ -71,10 +75,10 @@ GLuint GuiColourGradient::getTextureID4() {
 //-------------------------------------------------
 void GuiColourGradient::draw() {
 	if (guiVisible) {
-		
+
 		//IMGUI		
 		imGui();
-
+	}
 		float H = h * .5;
 
 		float t = ofGetElapsedTimef();
@@ -187,7 +191,7 @@ void GuiColourGradient::draw() {
 		mesh.clearVertices();
 		mesh.clearColors();
 		fbo4.end();
-	}
+	
 }
 
 //--------------------------------------------------------------
@@ -299,6 +303,10 @@ bool GuiColourGradient::imGui()
 				//lfo_selection(&colour->params.palette_lfo_type);
 				ImGui::SliderFloat("num bands", &colour->params.num_bands, 1, 100);
 				ImGui::SliderFloat("animate speed", &colour->params.animate_speed, 0.0, 1.0);
+				//ImGui::SliderFloat("freq", &colour->frequency, 10, 400);
+				//ImGui::SliderFloat("modFreq", modulationFrequency, 0, 20);
+				//ImGui::SliderFloat("modIndex", modulationIndex, 0.0, 200.);
+				
 				ofxImGui::EndTree(mainSettings);
 			}
 			ofxImGui::EndWindow(mainSettings);
@@ -524,6 +532,11 @@ bool GuiColourGradient::imGui()
 		
 
 	}
+
+
+
 }
+
+
 
 
