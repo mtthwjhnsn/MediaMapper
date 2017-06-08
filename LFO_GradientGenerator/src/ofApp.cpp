@@ -3,55 +3,16 @@
 
 //--------------------------------------------------------------
 void ofApp::setup() {
-	
-
-	//sound
-	sampleRate = 44100;
-	bufferSize = 512;
-	ofBackground(0);
-
-	//ofSoundStreamSetup(2, 0, this, sampleRate, bufferSize, 4);
-	//ofSoundStreamListDevices();
-	//ofSoundStreamStart();
-	ofSoundStreamSetup(2, 0, this, sampleRate, bufferSize, 4);
-
-	// red
-
-	frequency_red = 440;
-	modulationFrequency_red = 0;
-	modulationIndex_red = 100;
-
-	env_red.setAttack(2000);
-	env_red.setDecay(1);
-	env_red.setSustain(1);
-	env_red.setRelease(3000);
-
 	int w = ofGetWidth();
 	int h = ofGetHeight();
 
+	sampleRate = 44100;
+	bufferSize = 512;
+	ofSoundStreamSetup(2, 0, this, sampleRate, bufferSize, 4);
+
 	colour.setup(ofGetWidth(), ofGetHeight());
-	gui.setup(&colour);
+	gui.setup(&colour, &sound);
 
-	// green
-
-	frequency_green = 440;
-	modulationFrequency_green = 0;
-	modulationIndex_green = 100;
-
-	env_green.setAttack(2000);
-	env_green.setDecay(1);
-	env_green.setSustain(1);
-	env_green.setRelease(3000);
-
-// blue
-	frequency_blue = 440;
-	modulationFrequency_blue = 0;
-	modulationIndex_blue = 100;
-
-	env_blue.setAttack(2000);
-	env_blue.setDecay(1);
-	env_blue.setSustain(1);
-	env_blue.setRelease(3000);
 
 	/*
 
@@ -159,7 +120,6 @@ void ofApp::draw() {
 	}
 	*/
 	gui.draw();
-
 }
 
 //
@@ -221,66 +181,35 @@ void ofApp::exit() {
 
 //--------------------------------------------------------------
 //--------------------------------------------------------------
-void ofApp::audioOut(float * output, int bufferSize, int nChannels) {
 
-	for (int i = 0; i < bufferSize; i++) {
-		frequency_red = 150;
-		modulationFrequency_red = ofMap(colour.get_colour(0)[0], 0, 255, 0, 50);
-		modulationIndex_red = 150;
-		
-		frequency_green = 150;
-		modulationFrequency_green = ofMap(colour.get_colour(1)[1], 0, 255, 0, 50);
-		modulationIndex_green = 150;
-		
-
-		frequency_blue = 150;
-		modulationFrequency_blue = ofMap(colour.get_colour(2)[2], 0, 255, 0, 50);
-		modulationIndex_blue = 150;
-
-		int player = 1;
-
-		float redsample = osc_red.sinewave(frequency_red + env_red.adsr(mod_red.sinewave(modulationFrequency_red), env_red.trigger) * modulationIndex_red);
-		float greensample = currentSample = osc_green.sinewave(frequency_green + env_green.adsr(mod_green.sinewave(modulationFrequency_green), env_green.trigger) * modulationIndex_green);
-		float bluesample = currentSample = osc_blue.sinewave(frequency_blue + env_blue.adsr(mod_blue.sinewave(modulationFrequency_blue), env_blue.trigger) * modulationIndex_blue);
-
-		if (player == 0) {
-			currentSample = redsample;
-			env_red.trigger = 1;
-			env_green.trigger = 0;
-			env_blue.trigger = 0;
-		}
-		else if (player == 1) {
-			currentSample = greensample;
-			env_red.trigger = 0;
-			env_green.trigger = 1;
-			env_blue.trigger = 0;
-		}
-		else if (player == 2) {
-			currentSample = bluesample;
-			env_red.trigger = 0;
-			env_green.trigger = 0;
-			env_blue.trigger = 1;
-		}
-
-
-		mix.stereo(currentSample, outputs, 0.5);
-		output[i * nChannels] = outputs[0];
-		output[i * nChannels + 1] = outputs[1];
-
-	}
-}
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
-
+	if (sound.s_params.sound_colour == 0) {
+		env_red.trigger = 1;
+		env_green.trigger = 0;
+		env_blue.trigger = 0;
+	}
+	else if (sound.s_params.sound_colour == 1) {
+		env_green.trigger = 1;
+		env_red.trigger = 0;
+		env_blue.trigger = 0;
+	}
+	else if (sound.s_params.sound_colour == 2) {
+		env_blue.trigger = 1;
+		env_red.trigger = 0;
+		env_green.trigger = 0;
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {
 
+		env_red.trigger = 0;
+		env_green.trigger = 0;
+		env_blue.trigger = 0;
+
 }
-
-
 
 
 //--------------------------------------------------------------
@@ -326,4 +255,59 @@ void ofApp::gotMessage(ofMessage msg) {
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo) {
 
+}
+
+void ofApp::audioOut(float * output, int bufferSize, int nChannels) {
+	
+	env_red.setAttack(sound.s_params.red_Attack);
+	env_red.setDecay(sound.s_params.red_Decay);
+	env_red.setSustain(sound.s_params.red_Sustain);
+	env_red.setRelease(sound.s_params.red_Release);
+
+	env_green.setAttack(sound.s_params.green_Attack);
+	env_green.setDecay(sound.s_params.green_Decay);
+	env_green.setSustain(sound.s_params.green_Sustain);
+	env_green.setRelease(sound.s_params.green_Release);
+
+	env_blue.setAttack(sound.s_params.blue_Attack);
+	env_blue.setDecay(sound.s_params.blue_Decay);
+	env_blue.setSustain(sound.s_params.blue_Sustain);
+	env_blue.setRelease(sound.s_params.blue_Release);
+
+	
+	frequency_red = sound.s_params.frequency_red;
+	modulationFrequency_red = ofMap(colour.get_colour(0)[0], 0, 255, sound.s_params.modFreq_min_red, sound.s_params.modFreq_max_red);
+	modulationIndex_red = sound.s_params.modIndex_red;
+
+	frequency_green = sound.s_params.frequency_green;
+	modulationFrequency_green = ofMap(colour.get_colour(0)[0], 0, 255, sound.s_params.modFreq_min_green, sound.s_params.modFreq_max_green);
+	modulationIndex_green = sound.s_params.modIndex_green;
+
+	frequency_blue = sound.s_params.frequency_blue;
+	modulationFrequency_blue = ofMap(colour.get_colour(0)[0], 0, 255, sound.s_params.modFreq_min_blue, sound.s_params.modFreq_max_blue);
+	modulationIndex_blue = sound.s_params.modIndex_blue;
+
+
+	for (int i = 0; i < bufferSize; i++) {
+
+		float red_modulation = frequency_red + env_red.adsr(mod_red.sinewave(modulationFrequency_red), env_red.trigger) * modulationIndex_red;
+		float green_modulation = frequency_green + env_green.adsr(mod_green.sinewave(modulationFrequency_green), env_green.trigger) * modulationIndex_green;
+		float blue_modulation = frequency_blue + env_blue.adsr(mod_blue.sinewave(modulationFrequency_blue), env_blue.trigger) * modulationIndex_blue;
+
+
+		if (sound.s_params.sound_colour == 0) {
+			currentSample = osc_red.sinewave(red_modulation);
+		}
+		else if (sound.s_params.sound_colour == 1) {
+			currentSample = osc_green.sinewave(green_modulation);
+		}
+		else if (sound.s_params.sound_colour == 2) {
+			currentSample = osc_blue.sinewave(blue_modulation);
+		}
+
+		mix.stereo(currentSample, outputs, 0.5);
+		output[i * nChannels] = outputs[0];
+		output[i * nChannels + 1] = outputs[1];
+
+	}
 }

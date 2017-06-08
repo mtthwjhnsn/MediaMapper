@@ -1,8 +1,6 @@
 //
-//  GuiColourGradient.hpp
-//  Kortex_Laser_Jen
-//
-//  Created by Joshua Batty on 4/4/17.
+//Matthew Johnson
+//Colour Sound Synth
 //
 //
 
@@ -11,14 +9,19 @@
 #include "ofMain.h"
 #include "ofxImGui.h"
 #include "ColourGradient.h"
+#include "Sound.h"
+
 //#include "ofxMaxim.h"
+
+
 
 
 class GuiColourGradient {
 public:
-	void setup(ColourGradient *_colour);
+	void setup(ColourGradient *_colour, Sound *_sound);
 	void draw();
 
+	
 	GLuint getTextureID();
 	GLuint getTextureID2();
 	GLuint getTextureID3();
@@ -28,12 +31,15 @@ public:
 	void lfo_selection_red(int* type_param_red);
 	void lfo_selection_green(int* type_param_green);
 	void lfo_selection_blue(int* type_param_blue);
+	void sound_selection(int* sound_param);
+
+
 
 private:
 	ColourGradient *colour;
+	Sound *sound;
 
 	ofMesh mesh;
-
 	ofFbo fbo;
 	ofFbo fbo2;
 
@@ -56,8 +62,6 @@ private:
 	ofxImGui::Gui gui;
 	bool guiVisible;
 	bool mouseOverGui;
-
-
 
 	
 };

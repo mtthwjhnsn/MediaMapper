@@ -3,7 +3,9 @@
 #include "ofMain.h"
 #include "GuiColourGradient.h"
 #include "ColourGradient.h"
+#include "Sound.h"
 #include "ofxMaxim.h"
+
 //#include "ofxSpout2Sender.h"
 //#include "ofxNDI.h"
 
@@ -13,9 +15,12 @@
 #define GL_BGRA_EXT 0x80E1
 #endif
 
+
+
 class ofApp : public ofBaseApp {
 
 public:
+
 	void setup();
 
 	void update();
@@ -35,28 +40,29 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 
-
-
-	//ofFbo fbo;
-	GLuint textureid;
-
-	ColourGradient colour;
-	GuiColourGradient gui;
-
 	//sound 
 	void audioOut(float * output, int bufferSize, int nChannels);
 
 	unsigned bufferSize, sampleRate;
 	double currentSample;
-	float frequency_red, modulationIndex_red, modulationFrequency_red, frequency_green, modulationIndex_green, modulationFrequency_green, frequency_blue, modulationIndex_blue, modulationFrequency_blue;
+	float frequency_red, modulationIndex_red, modulationFrequency_red,   frequency_green, modulationIndex_green, modulationFrequency_green, frequency_blue, modulationIndex_blue, modulationFrequency_blue;
 	double outputs[2];
 
-	maxiOsc osc_red, osc_green, osc_blue, mod_red, mod_green, mod_blue; // phaser;
+	maxiOsc osc_red, mod_red, osc_green, mod_green, osc_blue, mod_blue, phaser;
 	maxiMix mix;
 	maxiEnv env_red, env_green, env_blue;
+	
 
-//	void keyPressed(int key);
-	//void keyReleased(int key);
+	//ofFbo fbo;
+	GLuint textureid;
+
+	ColourGradient colour;
+	Sound sound;
+	GuiColourGradient gui;
+
+private:
+	//GuiColourGradient *guiColour;
+
 
 	//ofxSpout2::Sender spout;
 

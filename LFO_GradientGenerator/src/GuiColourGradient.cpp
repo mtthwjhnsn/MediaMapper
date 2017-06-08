@@ -14,11 +14,9 @@ int w = 800;
 int h = 180;
 
 //-------------------------------------------------
-void GuiColourGradient::setup(ColourGradient *_colour) {
-	
-
-	
+void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound) {
 	colour = _colour;
+	sound = _sound;
 
 	ofFbo::Settings fboSettings;
 	fboSettings.width = w;
@@ -52,9 +50,8 @@ void GuiColourGradient::setup(ColourGradient *_colour) {
 	mesh.setMode(OF_PRIMITIVE_POINTS);
 	glEnable(GL_POINT_SMOOTH);
 	glPointSize(1);
-
-
 }
+
 
 GLuint GuiColourGradient::getTextureID() {
 	return textureid;
@@ -259,6 +256,18 @@ void GuiColourGradient::lfo_selection_blue(int* type_param_blue) {
 	}
 }
 
+void GuiColourGradient::sound_selection(int* sound_param) {
+	vector<string> types = { "red","green","blue" };
+	ImGui::Columns(types.size());
+	for (int i = 0; i < types.size(); i++) {
+		ImGui::RadioButton(ofxImGui::GetUniqueName(types[i]), sound_param, i);
+		ImGui::NextColumn();
+	}
+	ImGui::Columns(1);
+	ImGui::Separator();
+}
+
+
 //--------------------------------------------------------------
 
 #define TEX_ID (ImTextureID)(uintptr_t)
@@ -276,6 +285,7 @@ bool GuiColourGradient::imGui()
 	ofVec2f pos(100, 100);
 	ofVec2f pos1(450, 100);
 	ofVec2f pos2(1310, 100);
+	ofVec2f pos3(100, 300);
 	mainSettings.windowPos = pos;
 
 	ImVec4 col = ImColor::HSV(0.14f, 0.24f, 0.42f);
@@ -525,7 +535,70 @@ bool GuiColourGradient::imGui()
 				
 			}
 			ofxImGui::EndWindow(mainSettings);
+
 		}
+
+
+			mainSettings.windowPos = pos3;
+			if (ofxImGui::BeginWindow("sound", mainSettings, false))
+			{
+
+
+				//----ALL
+				if (ofxImGui::BeginTree("LFOs", mainSettings)) {
+
+					//ImGui::ImageButton(TEX_ID2 getTextureID2(), ofVec2f(w / 2, h / 2));
+
+					sound_selection(&sound->s_params.sound_colour);
+
+					//----FREQ LFO
+					if (ofxImGui::BeginTree("Red Sound", mainSettings)) {
+						//lfo_selection(&colour->params.freq_lfo_type);
+						ImGui::SliderFloat("red_Attack", &sound->s_params.red_Attack, 0.0, 10000.0);
+						ImGui::SliderFloat("red_Decay", &sound->s_params.red_Decay, 0.0, 10000.0);
+						ImGui::SliderFloat("red_Sustain", &sound->s_params.red_Sustain, 0.0, 10000.0);
+						ImGui::SliderFloat("red_Release", &sound->s_params.red_Release, 0.0, 10000.0);
+						ImGui::SliderFloat("frequency_red", &sound->s_params.frequency_red, 0.10, 500);
+						ImGui::SliderFloat("modFreq_max_red", &sound->s_params.modFreq_max_red, 0.0, 500);
+						ImGui::SliderFloat("modFreq_min_red", &sound->s_params.modFreq_min_red, 0.0, 500);
+						ImGui::SliderFloat("modIndex_red", &sound->s_params.modIndex_red, 0.0, 500);
+						ofxImGui::EndTree(mainSettings);
+					}
+
+					//ImGui::ImageButton(TEX_ID3 getTextureID3(), ofVec2f(w / 2, h / 2));
+					
+					//----AMP LFO
+					if (ofxImGui::BeginTree("Green Sound", mainSettings)) {
+						ImGui::SliderFloat("green_Attack", &sound->s_params.green_Attack, 0.0, 10000.0);
+						ImGui::SliderFloat("green_Decay", &sound->s_params.green_Decay, 0.0, 10000.0);
+						ImGui::SliderFloat("green_Sustain", &sound->s_params.green_Sustain, 0.0, 10000.0);
+						ImGui::SliderFloat("green_Release", &sound->s_params.green_Release, 0.0, 10000.0);
+						ImGui::SliderFloat("frequency_green", &sound->s_params.frequency_green, 0.10, 500);
+						ImGui::SliderFloat("modFreq_max_green", &sound->s_params.modFreq_max_green, 0.0, 500);
+						ImGui::SliderFloat("modFreq_min_green", &sound->s_params.modFreq_min_green, 0.0, 500);
+						ImGui::SliderFloat("modIndex_green", &sound->s_params.modIndex_green, 0.0, 500);
+
+						ofxImGui::EndTree(mainSettings);
+					}
+
+					//ImGui::ImageButton(TEX_ID4 getTextureID4(), ofVec2f(w / 2, h / 2));
+
+					//----PHASE LFO
+					if (ofxImGui::BeginTree("Blue Sound", mainSettings)) {
+						ImGui::SliderFloat("blue_Attack", &sound->s_params.blue_Attack, 0.0, 10000.0);
+						ImGui::SliderFloat("blue_Decay", &sound->s_params.blue_Decay, 0.0, 10000.0);
+						ImGui::SliderFloat("blue_Sustain", &sound->s_params.blue_Sustain, 0.0, 10000.0);
+						ImGui::SliderFloat("blue_Release", &sound->s_params.blue_Release, 0.0, 10000.0);
+						ImGui::SliderFloat("frequency_blue", &sound->s_params.frequency_blue, 0.10, 500);
+						ImGui::SliderFloat("modFreq_max_blue", &sound->s_params.modFreq_max_blue, 0.0, 500);
+						ImGui::SliderFloat("modFreq_min_blue", &sound->s_params.modFreq_min_blue, 0.0, 500);
+						ImGui::SliderFloat("modIndex_blue", &sound->s_params.modIndex_blue, 0.0, 500);
+						ofxImGui::EndTree(mainSettings);
+					}
+					ofxImGui::EndTree(mainSettings);
+				}
+				ofxImGui::EndWindow(mainSettings);
+			}
 		this->gui.end();
 		return mainSettings.mouseOverGui;
 
