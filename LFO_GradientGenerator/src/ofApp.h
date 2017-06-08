@@ -1,3 +1,13 @@
+//---------------
+//----ofApp.h---
+//---------------
+//--- MATTHEWJOHNSON
+//--- COLOUR GRADIENT AND SYNTH
+//---------------
+//---- 9/06/17
+//---------------
+//---------------
+
 #pragma once
 
 #include "ofMain.h"
@@ -6,7 +16,6 @@
 #include "Sound.h"
 #include "ofxMaxim.h"
 
-//#include "ofxSpout2Sender.h"
 //#include "ofxNDI.h"
 
 // BGRA definition should be in glew.h
@@ -14,7 +23,6 @@
 #ifndef GL_BGRA_EXT
 #define GL_BGRA_EXT 0x80E1
 #endif
-
 
 
 class ofApp : public ofBaseApp {
@@ -61,10 +69,6 @@ public:
 	GuiColourGradient gui;
 
 private:
-	//GuiColourGradient *guiColour;
-
-
-	//ofxSpout2::Sender spout;
 
 	/*
 	ofxNDIsender ndiSender;    // NDI sender object

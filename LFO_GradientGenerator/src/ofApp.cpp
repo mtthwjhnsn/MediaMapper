@@ -1,3 +1,14 @@
+
+//---------------
+//----ofApp.cpp
+//---------------
+//--- MATTHEWJOHNSON
+//--- COLOUR GRADIENT AND SYNTH
+//---------------
+//---- 9/06/17
+//---------------
+//---------------
+
 #include "ofApp.h"
 
 
@@ -12,7 +23,7 @@ void ofApp::setup() {
 
 	colour.setup(ofGetWidth(), ofGetHeight());
 	gui.setup(&colour, &sound);
-
+	sound.setup();
 
 	/*
 
@@ -186,16 +197,21 @@ void ofApp::exit() {
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
 	if (sound.s_params.sound_colour == 0) {
+		env_red.trigger = 0;
+		env_green.trigger = 0;
+		env_blue.trigger = 0;
+	}
+	if (sound.s_params.sound_colour == 1) {
 		env_red.trigger = 1;
 		env_green.trigger = 0;
 		env_blue.trigger = 0;
 	}
-	else if (sound.s_params.sound_colour == 1) {
+	else if (sound.s_params.sound_colour == 2) {
 		env_green.trigger = 1;
 		env_red.trigger = 0;
 		env_blue.trigger = 0;
 	}
-	else if (sound.s_params.sound_colour == 2) {
+	else if (sound.s_params.sound_colour == 3) {
 		env_blue.trigger = 1;
 		env_red.trigger = 0;
 		env_green.trigger = 0;
@@ -280,11 +296,11 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels) {
 	modulationIndex_red = sound.s_params.modIndex_red;
 
 	frequency_green = sound.s_params.frequency_green;
-	modulationFrequency_green = ofMap(colour.get_colour(0)[0], 0, 255, sound.s_params.modFreq_min_green, sound.s_params.modFreq_max_green);
+	modulationFrequency_green = ofMap(colour.get_colour(1)[1], 0, 255, sound.s_params.modFreq_min_green, sound.s_params.modFreq_max_green);
 	modulationIndex_green = sound.s_params.modIndex_green;
 
 	frequency_blue = sound.s_params.frequency_blue;
-	modulationFrequency_blue = ofMap(colour.get_colour(0)[0], 0, 255, sound.s_params.modFreq_min_blue, sound.s_params.modFreq_max_blue);
+	modulationFrequency_blue = ofMap(colour.get_colour(2)[2], 0, 255, sound.s_params.modFreq_min_blue, sound.s_params.modFreq_max_blue);
 	modulationIndex_blue = sound.s_params.modIndex_blue;
 
 
@@ -293,16 +309,60 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels) {
 		float red_modulation = frequency_red + env_red.adsr(mod_red.sinewave(modulationFrequency_red), env_red.trigger) * modulationIndex_red;
 		float green_modulation = frequency_green + env_green.adsr(mod_green.sinewave(modulationFrequency_green), env_green.trigger) * modulationIndex_green;
 		float blue_modulation = frequency_blue + env_blue.adsr(mod_blue.sinewave(modulationFrequency_blue), env_blue.trigger) * modulationIndex_blue;
-
-
+		
 		if (sound.s_params.sound_colour == 0) {
-			currentSample = osc_red.sinewave(red_modulation);
+			currentSample = 0;
 		}
 		else if (sound.s_params.sound_colour == 1) {
-			currentSample = osc_green.sinewave(green_modulation);
+			if (sound.s_params.oscillator_type_red == 0) {
+				currentSample = osc_red.sinewave(red_modulation);
+			}
+			if (sound.s_params.oscillator_type_red == 1) {
+				currentSample = osc_red.triangle(red_modulation);
+			}
+			if (sound.s_params.oscillator_type_red == 2) {
+				currentSample = osc_red.saw(red_modulation);
+			}
+			if (sound.s_params.oscillator_type_red == 3) {
+				currentSample = osc_red.square(red_modulation);
+			}
+			if (sound.s_params.oscillator_type_red == 4) {
+				currentSample = osc_red.noise();
+			}
 		}
 		else if (sound.s_params.sound_colour == 2) {
-			currentSample = osc_blue.sinewave(blue_modulation);
+			if (sound.s_params.oscillator_type_green == 0) {
+				currentSample = osc_green.sinewave(green_modulation);
+			}
+			if (sound.s_params.oscillator_type_green == 1) {
+				currentSample = osc_green.triangle(green_modulation);
+			}
+			if (sound.s_params.oscillator_type_green == 2) {
+				currentSample = osc_green.saw(green_modulation);
+			}
+			if (sound.s_params.oscillator_type_green == 3) {
+				currentSample = osc_green.square(green_modulation);
+			}
+			if (sound.s_params.oscillator_type_green == 4) {
+				currentSample = osc_green.noise();
+			}
+		}
+		else if (sound.s_params.sound_colour == 3) {
+			if (sound.s_params.oscillator_type_blue == 0) {
+				currentSample = osc_blue.sinewave(blue_modulation);
+			}
+			if (sound.s_params.oscillator_type_blue == 1) {
+				currentSample = osc_blue.triangle(blue_modulation);
+			}
+			if (sound.s_params.oscillator_type_blue == 2) {
+				currentSample = osc_blue.saw(blue_modulation);
+			}
+			if (sound.s_params.oscillator_type_blue == 3) {
+				currentSample = osc_blue.square(blue_modulation);
+			}
+			if (sound.s_params.oscillator_type_blue == 4) {
+				currentSample = osc_blue.noise();
+			}
 		}
 
 		mix.stereo(currentSample, outputs, 0.5);

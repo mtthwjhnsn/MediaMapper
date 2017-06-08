@@ -1,3 +1,13 @@
+//---------------
+//----Sound.cpp
+//---------------
+//--- MATTHEWJOHNSON
+//--- COLOUR GRADIENT AND SYNTH
+//---------------
+//---- 9/06/17
+//---------------
+//---------------
+
 #include "Sound.h"
 
 #include "ofMain.h"

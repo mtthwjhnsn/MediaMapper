@@ -3,8 +3,14 @@
 //  ColourGradientTool
 //
 //  Created by Joshua Batty on 14/4/17.
-//
-//
+//---------------
+//----ADAPTED BY
+//--- MATTHEWJOHNSON
+//--- COLOUR GRADIENT AND SYNTH
+//---------------
+//---- 9/06/17
+//---------------
+//---------------
 
 #pragma once 
 #include "ofMain.h"

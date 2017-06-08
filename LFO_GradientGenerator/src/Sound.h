@@ -1,3 +1,13 @@
+//---------------
+//----Sound.h---
+//---------------
+//--- MATTHEWJOHNSON
+//--- COLOUR GRADIENT AND SYNTH
+//---------------
+//---- 9/06/17
+//---------------
+//---------------
+
 #pragma once
 #include "ofMain.h"
 
@@ -31,9 +41,11 @@ struct SoundParams {
 	float modIndex_blue;
 
 	int sound_colour;
+	int oscillator_type_red;
+	int oscillator_type_green;
+	int oscillator_type_blue;
 
 };
-
 
 
 class Sound
