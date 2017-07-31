@@ -5,6 +5,7 @@
 #include "VideoLoader.h"
 #include "ImageLoader.h"
 #include "CamLoader.h"
+#include "ColourGradient.h"
 
 struct InputParams {
 
@@ -20,12 +21,13 @@ public:
 	void draw();
 	void selection();
 
-	VideoLoader player;
-	ImageLoader image;
+	VideoLoader vid;
+	ImageLoader img;
 	CamLoader cam;
+	ColourGradient gradient;
 
 	InputParams params;
 	
-	bool camera, video, img;
+	bool camera, video, image, colour;
 };
 

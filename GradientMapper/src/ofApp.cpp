@@ -21,9 +21,9 @@ void ofApp::setup() {
 	bufferSize = 512;
 	ofSoundStreamSetup(2, 0, this, sampleRate, bufferSize, 4);
 
-	colour.setup(ofGetWidth(), ofGetHeight());
-	gui.setup(&colour, &sound);
+	gui.setup(&colour, &sound, &input);
 	sound.setup();
+	input.setup();
 
 	
 
@@ -88,8 +88,8 @@ void ofApp::draw() {
 	ofClear(13, 25, 76, 255); // background as required
 	
 	// ============ your application draw goes here ===============
-	
-	colour.draw();
+
+	input.draw();
 
 	// =============================================================
 

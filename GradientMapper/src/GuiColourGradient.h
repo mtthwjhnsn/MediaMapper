@@ -18,7 +18,7 @@
 
 class GuiColourGradient {
 public:
-	void setup(ColourGradient *_colour, Sound *_sound);
+	void setup(ColourGradient *_colour, Sound *_sound, input_selector *_inputs);
 	void draw();
 
 	
@@ -37,13 +37,13 @@ public:
 	void lfo_selection_blue(int* type_param_blue);
 	void sound_selection(int* sound_param);
 	void oscillator(int* oscillator_param);
-	void input(int* input_type);
+	//void input(int* input_type_param);
 
 
 private:
 	ColourGradient *colour;
 	Sound *sound;
-	input_selector *input;
+	input_selector *inputs;
 
 	ofMesh mesh;
 	ofFbo fbo;

@@ -52,6 +52,7 @@ class ColourGradient {
 public:
 	void setup(int w, int h);
 	void draw();
+
 	vector<ofColor> get_pixel_colours(int num_points);
 
 	ofTexture& getTexture();

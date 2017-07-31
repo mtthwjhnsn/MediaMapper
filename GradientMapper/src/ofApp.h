@@ -15,6 +15,7 @@
 #include "ColourGradient.h"
 #include "Sound.h"
 #include "ofxMaxim.h"
+#include "input_selector.h"
 
 #include "ofxNDI.h"
 
@@ -67,6 +68,7 @@ public:
 	ColourGradient colour;
 	Sound sound;
 	GuiColourGradient gui;
+	input_selector input;
 
 private:
 

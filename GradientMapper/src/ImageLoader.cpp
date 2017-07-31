@@ -12,7 +12,7 @@ void ImageLoader::setup() {
 }
 
 void ImageLoader::draw() {
-	image.draw(ofGetWidth() * 1 / 3, 0, ofGetWidth(), ofGetHeight());
+	image.draw(0, 0, ofGetWidth(), ofGetHeight());
 }
 
 void ImageLoader::clear() {

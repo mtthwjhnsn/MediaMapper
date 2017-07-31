@@ -8,7 +8,7 @@ void CamLoader::setup() {
 
 void CamLoader::draw() {
 	cam.update();
-	cam.draw(ofGetWidth() * 2 / 3, 0, ofGetWidth(), ofGetHeight());
+	cam.draw(0, 0, ofGetWidth(), ofGetHeight());
 
 }
 

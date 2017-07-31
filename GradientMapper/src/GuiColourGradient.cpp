@@ -20,9 +20,10 @@ int w = 800;
 int h = 180;
 
 //-------------------------------------------------
-void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound) {
+void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_selector *_inputs) {
 	colour = _colour;
 	sound = _sound;
+	inputs = _inputs;
 
 	ofFbo::Settings fboSettings;
 	fboSettings.width = w;
@@ -352,18 +353,19 @@ ImGui::Separator();
 }
 //--------------------------------------------------------------
 
-void GuiColourGradient::input(int* input_type) {
-	vector<string> types = { "video","image","camera", "colour_gradient"};
+/*void GuiColourGradient::input(int* input_type_param) {
+	vector<string> types = { "player", "image", "camera", "gradient" };
 	ImGui::Columns(types.size());
+	
 	for (int i = 0; i < types.size(); i++) {
-		ImGui::RadioButton(ofxImGui::GetUniqueName(types[i]), input_type, i);
-		ImGui::NextColumn();
+		if (ImGui::Button(ofxImGui::GetUniqueName(types[i])) {
+
+		}
 	}
 	ImGui::Columns(1);
 	ImGui::Separator();
 }
-
-
+*/
 
 //--------------------------------------------------------------
 
@@ -381,6 +383,7 @@ bool GuiColourGradient::imGui()
 	int gui_width = 700;
 	auto mainSettings = ofxImGui::Settings();
 	ofVec2f pos(640, 140);
+	ofVec2f pos4(680, 180);
 	ofVec2f pos1(640, 290);
 	ofVec2f pos2(1500, 140);
 	ofVec2f pos3(25, 140);
@@ -402,18 +405,68 @@ bool GuiColourGradient::imGui()
 	{
 
 		//input selector
-
-		if (ofxImGui::BeginWindow("Input Selector", mainSettings, false))
+		/*
+		if (ofxImGui::BeginWindow("Input_Selector", mainSettings, false))
 		{
-			if (ofxImGui::BeginTree("Input Selector", mainSettings))
+			if (ofxImGui::BeginTree("Input_Type", mainSettings))
 			{
-				input(&input->params);
+
+				//input(&inputs->params.input_type);
+
+				ofxImGui::EndTree(mainSettings);
+				vector<string> types = { "video","image","camera", "colour" };
+				for (int i = 0; i < types.size(); i++) {
+					if (ImGui::Button(ofxImGui::GetUniqueName(types[i])))
+					{
+						inputs->params.input_type = i;
+						ImGui::NextColumn();
+					}
+				}
 				ofxImGui::EndTree(mainSettings);
 			}
 			ofxImGui::EndWindow(mainSettings);
 		}
+		*/
 
+		//input selector
+		
+		if (ofxImGui::BeginWindow("Input_Selector", mainSettings, false))
+		{
+			if (ofxImGui::BeginTree("Input_Type", mainSettings))
+			{
 
+				//input(&inputs->params.input_type);
+
+				//vector<string> types = { "video","image","camera", "colour" };
+				//for (int i = 0; i < types.size(); i++) {
+
+				if (ImGui::Button("video")) {
+					inputs->params.input_type = 0;
+					inputs->selection();
+					ImGui::NextColumn;
+				}
+				if (ImGui::Button("image")) {
+					inputs->params.input_type = 1;
+					inputs->selection();
+					ImGui::NextColumn;
+				}
+				if (ImGui::Button("camera")) {
+					inputs->params.input_type = 2;
+					inputs->selection();
+					ImGui::NextColumn;
+				}
+				if (ImGui::Button("colour")) {
+					inputs->params.input_type = 3;
+					inputs->selection();
+					ImGui::NextColumn;
+				}
+				ofxImGui::EndTree(mainSettings);
+			}
+		ofxImGui::EndWindow(mainSettings);
+		}
+		//*/
+
+		mainSettings.windowPos = pos4;
 
 		//BANDS AND SPEED------------------------------------------------------
 		//BANDS AND SPEED------------------------------------------------------

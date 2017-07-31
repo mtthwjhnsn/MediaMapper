@@ -1,16 +1,14 @@
 #include "input_selector.h"
 
-
-
-
-
-
 //-----------------------------
 void input_selector::setup() {
 
-	params.img = false;
-	params.camera = false;
-	params.video = false;
+	
+
+	image = false;
+	camera = false;
+	video = false;
+	colour = false;
 
 }
 
@@ -18,65 +16,76 @@ void input_selector::setup() {
 //----------------------
 void input_selector::draw() {
 	
-	if (params.input_type == 0) {
-
-		image.clear();
+	if (video == true) {
+		img.clear();
 		cam.close();
 
-		player.draw();
+		vid.draw();
 	}
 
-	else if (params.input_type == 1) {
-		player.close();
+	else if (image == true) {
+		vid.close();
 		cam.close();
 
-		image.draw();
+		img.draw();
 	}
 
-	else if (params.input_type == 2) {
-		image.clear();
-		player.close();
+	else if (camera == true) {
+		img.clear();
+		vid.close();
 
 		cam.draw();
 	}
 
-	else if (params.input_type == 3) {
-		image.clear();
-		player.close();
+	else if (colour == true) {
+		img.clear();
+		vid.close();
+		cam.close();
 
-		cam.draw();
+		gradient.draw();
 	}
 
 }
 
 void input_selector::selection() {
+	
+	if (params.input_type == 0) {
 
-	if (ofGetMouseX() <= ofGetWidth() / 2) {
+		video = true;
+		image = false;
+		camera = false;
+		colour = false;
 
-		params.video = true;
-		params.img = false;
-		params.camera = false;
-
-		player.setup();
-	}
-	else if (ofGetMouseX() > ofGetWidth() * 1 / 3 && ofGetMouseX() < ofGetWidth() * 2 / 3) {
-
-		params.video = false;
-		params.img = true;
-		params.camera = false;
-
-		image.setup();
+		vid.setup();
 	}
 
-	else if (ofGetMouseX() > ofGetWidth() * 2 / 3) {
+	else if (params.input_type == 1) {
 
-		params.video = false;
-		params.img = false;
-		params.camera = true;
+		video = false;
+		image = true;
+		camera = false;
+		colour = false;
 
+		img.setup();
+	}
+
+	else if (params.input_type == 2) {
+
+		video = false;
+		image = false;
+		camera = true;
+		colour = false;
 
 		cam.setup();
+	}
 
+	else if (params.input_type == 3) {
 
+		video = false;
+		image = false;
+		camera = false;
+		colour = true;
+
+		gradient.setup(ofGetWidth(), ofGetHeight());
 	}
 }

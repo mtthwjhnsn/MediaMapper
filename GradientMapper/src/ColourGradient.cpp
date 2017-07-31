@@ -229,4 +229,6 @@ ofColor ColourGradient::get_colour(float pos) {
 		return ofColor(solid_colour[0] * 255, solid_colour[1] * 255, solid_colour[2] * 255);
 	}
 
+
+
 }
