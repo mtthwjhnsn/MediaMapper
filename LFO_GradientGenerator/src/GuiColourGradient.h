@@ -14,6 +14,7 @@
 #include "ofxImGui.h"
 #include "ColourGradient.h"
 #include "Sound.h"
+#include "input_selector.h"
 
 class GuiColourGradient {
 public:
@@ -36,11 +37,13 @@ public:
 	void lfo_selection_blue(int* type_param_blue);
 	void sound_selection(int* sound_param);
 	void oscillator(int* oscillator_param);
+	void input(int* input_type);
 
 
 private:
 	ColourGradient *colour;
 	Sound *sound;
+	input_selector *input;
 
 	ofMesh mesh;
 	ofFbo fbo;

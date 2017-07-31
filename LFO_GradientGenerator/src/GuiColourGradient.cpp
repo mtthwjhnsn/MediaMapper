@@ -352,6 +352,22 @@ ImGui::Separator();
 }
 //--------------------------------------------------------------
 
+void GuiColourGradient::input(int* input_type) {
+	vector<string> types = { "video","image","camera", "colour_gradient"};
+	ImGui::Columns(types.size());
+	for (int i = 0; i < types.size(); i++) {
+		ImGui::RadioButton(ofxImGui::GetUniqueName(types[i]), input_type, i);
+		ImGui::NextColumn();
+	}
+	ImGui::Columns(1);
+	ImGui::Separator();
+}
+
+
+
+//--------------------------------------------------------------
+
+
 #define TEX_ID (ImTextureID)(uintptr_t)
 #define TEX_ID2 (ImTextureID)(uintptr_t)
 #define TEX_ID3 (ImTextureID)(uintptr_t)
@@ -384,6 +400,19 @@ bool GuiColourGradient::imGui()
 
 	this->gui.begin();
 	{
+
+		//input selector
+
+		if (ofxImGui::BeginWindow("Input Selector", mainSettings, false))
+		{
+			if (ofxImGui::BeginTree("Input Selector", mainSettings))
+			{
+				input(&input->params);
+				ofxImGui::EndTree(mainSettings);
+			}
+			ofxImGui::EndWindow(mainSettings);
+		}
+
 
 
 		//BANDS AND SPEED------------------------------------------------------

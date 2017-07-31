@@ -16,7 +16,7 @@
 #include "Sound.h"
 #include "ofxMaxim.h"
 
-//#include "ofxNDI.h"
+#include "ofxNDI.h"
 
 // BGRA definition should be in glew.h
 // but define it here just in case it is not
@@ -34,7 +34,7 @@ public:
 	void update();
 	void draw();
 
-	//void exit();
+	void exit();
 
 	void keyPressed(int key);
 	void keyReleased(int key);
@@ -70,7 +70,7 @@ public:
 
 private:
 
-	/*
+	
 	ofxNDIsender ndiSender;    // NDI sender object
 	char senderName[256];      // Sender name
 	unsigned int senderWidth;  // Width of the sender output
@@ -85,7 +85,7 @@ private:
 	int PboIndex;
 	int NextPboIndex;
 	bool bUsePBO;
-	bool ReadFboPixels(ofFbo fbo, unsigned int width, unsigned int height, unsigned char *data);*/
+	bool ReadFboPixels(ofFbo fbo, unsigned int width, unsigned int height, unsigned char *data);
 
 
 };
