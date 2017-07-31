@@ -1,0 +1,290 @@
+<?xml version="1.0"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup Label="ProjectConfigurations">
+		<ProjectConfiguration Include="Debug|Win32">
+			<Configuration>Debug</Configuration>
+			<Platform>Win32</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Debug|x64">
+			<Configuration>Debug</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|Win32">
+			<Configuration>Release</Configuration>
+			<Platform>Win32</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|x64">
+			<Configuration>Release</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+	</ItemGroup>
+	<PropertyGroup Label="Globals">
+		<ProjectGuid>{7FD42DF7-442E-479A-BA76-D0022F99702A}</ProjectGuid>
+		<Keyword>Win32Proj</Keyword>
+		<RootNamespace>GradientMapper</RootNamespace>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+		<ConfigurationType>Application</ConfigurationType>
+		<CharacterSet>Unicode</CharacterSet>
+		<PlatformToolset>v140</PlatformToolset>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+		<ConfigurationType>Application</ConfigurationType>
+		<CharacterSet>Unicode</CharacterSet>
+		<PlatformToolset>v140</PlatformToolset>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+		<ConfigurationType>Application</ConfigurationType>
+		<CharacterSet>Unicode</CharacterSet>
+		<WholeProgramOptimization>true</WholeProgramOptimization>
+		<PlatformToolset>v140</PlatformToolset>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+		<ConfigurationType>Application</ConfigurationType>
+		<CharacterSet>Unicode</CharacterSet>
+		<WholeProgramOptimization>true</WholeProgramOptimization>
+		<PlatformToolset>v140</PlatformToolset>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="../../../../libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="../../../../libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="../../../../libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="../../../../libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+	</ImportGroup>
+	<PropertyGroup Label="UserMacros" />
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+		<OutDir>bin\</OutDir>
+		<IntDir>obj\$(Configuration)\</IntDir>
+		<TargetName>$(ProjectName)_debug</TargetName>
+		<LinkIncremental>true</LinkIncremental>
+		<GenerateManifest>true</GenerateManifest>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<OutDir>bin\</OutDir>
+		<IntDir>obj\$(Configuration)\</IntDir>
+		<TargetName>$(ProjectName)_debug</TargetName>
+		<LinkIncremental>true</LinkIncremental>
+		<GenerateManifest>true</GenerateManifest>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+		<OutDir>bin\</OutDir>
+		<IntDir>obj\$(Configuration)\</IntDir>
+		<LinkIncremental>false</LinkIncremental>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<OutDir>bin\</OutDir>
+		<IntDir>obj\$(Configuration)\</IntDir>
+		<LinkIncremental>false</LinkIncremental>
+	</PropertyGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+		<ClCompile>
+			<Optimization>Disabled</Optimization>
+			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+			<WarningLevel>Level3</WarningLevel>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\..\addons\ofxImGui\libs;..\..\..\..\addons\ofxImGui\libs\imgui;..\..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\..\addons\ofxImGui\src;..\..\..\..\addons\ofxMaxim\libs;..\..\..\..\addons\ofxMaxim\src;..\..\..\..\addons\ofxNDI\libs;..\..\..\..\addons\ofxNDI\libs\NDI;..\..\..\..\addons\ofxNDI\libs\NDI\Libs;..\..\..\..\addons\ofxNDI\libs\NDI\Libs\x64;..\..\..\..\addons\ofxNDI\libs\NDI\Libs\x86;..\..\..\..\addons\ofxNDI\src;..\..\..\..\addons\ofxSpout2\libs;..\..\..\..\addons\ofxSpout2\libs\include;..\..\..\..\addons\ofxSpout2\libs\src;..\..\..\..\addons\ofxSpout2\src;..\..\..\..\addons\ofxUbo\src</AdditionalIncludeDirectories>
+			<CompileAs>CompileAsCpp</CompileAs>
+		</ClCompile>
+		<Link>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+			<SubSystem>Console</SubSystem>
+			<RandomizedBaseAddress>false</RandomizedBaseAddress>
+			<AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+		</Link>
+		<PostBuildEvent />
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<ClCompile>
+			<Optimization>Disabled</Optimization>
+			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+			<WarningLevel>Level3</WarningLevel>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\..\addons\ofxImGui\libs;..\..\..\..\addons\ofxImGui\libs\imgui;..\..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\..\addons\ofxImGui\src;..\..\..\..\addons\ofxMaxim\libs;..\..\..\..\addons\ofxMaxim\src;..\..\..\..\addons\ofxNDI\libs;..\..\..\..\addons\ofxNDI\libs\NDI;..\..\..\..\addons\ofxNDI\libs\NDI\Libs;..\..\..\..\addons\ofxNDI\libs\NDI\Libs\x64;..\..\..\..\addons\ofxNDI\libs\NDI\Libs\x86;..\..\..\..\addons\ofxNDI\src;..\..\..\..\addons\ofxSpout2\libs;..\..\..\..\addons\ofxSpout2\libs\include;..\..\..\..\addons\ofxSpout2\libs\src;..\..\..\..\addons\ofxSpout2\src;..\..\..\..\addons\ofxUbo\src</AdditionalIncludeDirectories>
+			<CompileAs>CompileAsCpp</CompileAs>
+			<MultiProcessorCompilation>true</MultiProcessorCompilation>
+		</ClCompile>
+		<Link>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+			<SubSystem>Console</SubSystem>
+			<RandomizedBaseAddress>false</RandomizedBaseAddress>
+			<AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+		</Link>
+		<PostBuildEvent />
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+		<ClCompile>
+			<WholeProgramOptimization>false</WholeProgramOptimization>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+			<WarningLevel>Level3</WarningLevel>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\..\addons\ofxImGui\libs;..\..\..\..\addons\ofxImGui\libs\imgui;..\..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\..\addons\ofxImGui\src;..\..\..\..\addons\ofxMaxim\libs;..\..\..\..\addons\ofxMaxim\src;..\..\..\..\addons\ofxNDI\libs;..\..\..\..\addons\ofxNDI\libs\NDI;..\..\..\..\addons\ofxNDI\libs\NDI\Libs;..\..\..\..\addons\ofxNDI\libs\NDI\Libs\x64;..\..\..\..\addons\ofxNDI\libs\NDI\Libs\x86;..\..\..\..\addons\ofxNDI\src;..\..\..\..\addons\ofxSpout2\libs;..\..\..\..\addons\ofxSpout2\libs\include;..\..\..\..\addons\ofxSpout2\libs\src;..\..\..\..\addons\ofxSpout2\src;..\..\..\..\addons\ofxUbo\src</AdditionalIncludeDirectories>
+			<CompileAs>CompileAsCpp</CompileAs>
+			<MultiProcessorCompilation>true</MultiProcessorCompilation>
+		</ClCompile>
+		<Link>
+			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+			<GenerateDebugInformation>false</GenerateDebugInformation>
+			<SubSystem>Console</SubSystem>
+			<OptimizeReferences>true</OptimizeReferences>
+			<EnableCOMDATFolding>true</EnableCOMDATFolding>
+			<RandomizedBaseAddress>false</RandomizedBaseAddress>
+			<AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+		</Link>
+		<PostBuildEvent />
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<ClCompile>
+			<WholeProgramOptimization>false</WholeProgramOptimization>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+			<WarningLevel>Level3</WarningLevel>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\..\addons\ofxImGui\libs;..\..\..\..\addons\ofxImGui\libs\imgui;..\..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\..\addons\ofxImGui\src;..\..\..\..\addons\ofxMaxim\libs;..\..\..\..\addons\ofxMaxim\src;..\..\..\..\addons\ofxNDI\libs;..\..\..\..\addons\ofxNDI\libs\NDI;..\..\..\..\addons\ofxNDI\libs\NDI\Libs;..\..\..\..\addons\ofxNDI\libs\NDI\Libs\x64;..\..\..\..\addons\ofxNDI\libs\NDI\Libs\x86;..\..\..\..\addons\ofxNDI\src;..\..\..\..\addons\ofxSpout2\libs;..\..\..\..\addons\ofxSpout2\libs\include;..\..\..\..\addons\ofxSpout2\libs\src;..\..\..\..\addons\ofxSpout2\src;..\..\..\..\addons\ofxUbo\src</AdditionalIncludeDirectories>
+			<CompileAs>CompileAsCpp</CompileAs>
+		</ClCompile>
+		<Link>
+			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+			<GenerateDebugInformation>false</GenerateDebugInformation>
+			<SubSystem>Console</SubSystem>
+			<OptimizeReferences>true</OptimizeReferences>
+			<EnableCOMDATFolding>true</EnableCOMDATFolding>
+			<RandomizedBaseAddress>false</RandomizedBaseAddress>
+			<AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+		</Link>
+		<PostBuildEvent />
+	</ItemDefinitionGroup>
+	<ItemGroup>
+		<ClCompile Include="src\main.cpp" />
+		<ClCompile Include="src\ofApp.cpp" />
+		<ClCompile Include="src\CamLoader.cpp" />
+		<ClCompile Include="src\ColourGradient.cpp" />
+		<ClCompile Include="src\GuiColourGradient.cpp" />
+		<ClCompile Include="src\ImageLoader.cpp" />
+		<ClCompile Include="src\input_selector.cpp" />
+		<ClCompile Include="src\Sound.cpp" />
+		<ClCompile Include="src\VideoLoader.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxImGui\src\BaseEngine.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxImGui\src\BaseTheme.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxImGui\src\EngineGLFW.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxImGui\src\EngineOpenGLES.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxImGui\src\Gui.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxImGui\src\Helpers.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxImGui\libs\imgui\src\imgui.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxImGui\libs\imgui\src\imgui_demo.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxImGui\libs\imgui\src\imgui_draw.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxMaxim\libs\fft.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxMaxim\libs\maxiAtoms.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxMaxim\libs\maxiBark.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxMaxim\libs\maxiFFT.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxMaxim\libs\maxiGrains.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxMaxim\libs\maxiMFCC.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxMaxim\libs\maximilian.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxMaxim\libs\stb_vorbis.c" />
+		<ClCompile Include="..\..\..\..\addons\ofxNDI\src\ofxNDIdialog.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxNDI\src\ofxNDIreceiver.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxNDI\src\ofxNDIsender.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxNDI\src\ofxNDIutils.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxNDI\src\resource.rc" />
+		<ClCompile Include="..\..\..\..\addons\ofxSpout2\src\ofxSpout2Receiver.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxSpout2\src\ofxSpout2Sender.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxSpout2\libs\src\SpoutDirectX.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxSpout2\libs\src\SpoutGLDXinterop.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxSpout2\libs\src\SpoutGLextensions.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxSpout2\libs\src\SpoutMemoryShare.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxSpout2\libs\src\SpoutReceiver.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxSpout2\libs\src\SpoutSDK.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxSpout2\libs\src\SpoutSender.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxSpout2\libs\src\SpoutSenderNames.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxSpout2\libs\src\SpoutSharedMemory.cpp" />
+		<ClCompile Include="..\..\..\..\addons\ofxUbo\src\ofxUbo.cpp" />
+	</ItemGroup>
+	<ItemGroup>
+		<ClInclude Include="src\ofApp.h" />
+		<ClInclude Include="src\CamLoader.h" />
+		<ClInclude Include="src\ColourGradient.h" />
+		<ClInclude Include="src\GuiColourGradient.h" />
+		<ClInclude Include="src\ImageLoader.h" />
+		<ClInclude Include="src\input_selector.h" />
+		<ClInclude Include="src\Sound.h" />
+		<ClInclude Include="src\VideoLoader.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxImGui\src\BaseEngine.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxImGui\src\BaseTheme.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxImGui\src\EngineGLFW.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxImGui\src\EngineOpenGLES.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxImGui\src\Gui.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxImGui\src\Helpers.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxImGui\src\imconfig.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxImGui\src\ofxImGui.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxImGui\src\ThemeTest.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxImGui\libs\imgui\src\imgui.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxImGui\libs\imgui\src\imgui_internal.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxImGui\libs\imgui\src\stb_rect_pack.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxImGui\libs\imgui\src\stb_textedit.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxImGui\libs\imgui\src\stb_truetype.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxMaxim\src\ofxMaxim.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxMaxim\libs\fft.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxMaxim\libs\maxiAtoms.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxMaxim\libs\maxiBark.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxMaxim\libs\maxiFFT.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxMaxim\libs\maxiGrains.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxMaxim\libs\maxiMFCC.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxMaxim\libs\maximilian.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxMaxim\libs\sineTable.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxMaxim\libs\stb_vorbis.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxNDI\src\ofxNDI.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxNDI\src\ofxNDIdialog.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxNDI\src\ofxNDIreceiver.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxNDI\src\ofxNDIsender.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxNDI\src\ofxNDIutils.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxNDI\src\resource.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxSpout2\src\ofxSpout2Receiver.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxSpout2\src\ofxSpout2Sender.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxSpout2\libs\include\Spout.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxSpout2\libs\include\SpoutCommon.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxSpout2\libs\include\SpoutDirectX.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxSpout2\libs\include\SpoutGLDXinterop.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxSpout2\libs\include\SpoutGLextensions.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxSpout2\libs\include\SpoutMemoryShare.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxSpout2\libs\include\SpoutReceiver.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxSpout2\libs\include\SpoutSDK.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxSpout2\libs\include\SpoutSender.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxSpout2\libs\include\SpoutSenderNames.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxSpout2\libs\include\SpoutSharedMemory.h" />
+		<ClInclude Include="..\..\..\..\addons\ofxUbo\src\ofxUbo.h" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
+			<Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
+		</ProjectReference>
+	</ItemGroup>
+	<ItemGroup>
+		<ResourceCompile Include="icon.rc">
+			<AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
+			<AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
+			<AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
+		</ResourceCompile>
+	</ItemGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties RESOURCE_FILE="icon.rc" />
+		</VisualStudio>
+	</ProjectExtensions>
+</Project>
