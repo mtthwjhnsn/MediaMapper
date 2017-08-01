@@ -6,6 +6,7 @@
 #include "ImageLoader.h"
 #include "CamLoader.h"
 #include "ColourGradient.h"
+#include "Spout2Reciever.h"
 
 struct InputParams {
 
@@ -26,7 +27,10 @@ public:
 	CamLoader cam;
 	ColourGradient gradient;
 	InputParams params;
+	Spout2Reciever spout;
 	
-	bool camera, video, image, colour, no_input;
+	bool camera, video, image, colour, no_input, Spout2;
+	
+	
 };
 

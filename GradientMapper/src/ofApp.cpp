@@ -25,6 +25,7 @@ void ofApp::setup() {
 	sound.setup();
 	input.setup();
 
+	fbo.allocate(ofGetWidth(), ofGetHeight());
 	
 	
 	/*
@@ -80,6 +81,19 @@ void ofApp::setup() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
+	ofSetWindowTitle(ofToString(ofGetFrameRate()));
+
+	//SPOUT
+	fbo.begin();
+	// ============ your application draw goes here ===============
+
+	input.draw();
+
+	// =============================================================
+	//SPOUT
+	fbo.end();
+
+	spout.sendTexture(fbo.getTexture(), "GradientMapper");
 }
 
 //--------------------------------------------------------------
@@ -88,10 +102,13 @@ void ofApp::draw() {
 	
 	//ndiFbo.begin();
 	//ofClear(13, 25, 76, 255); // background as required
-	
+
+
 	// ============ your application draw goes here ===============
 
-	input.draw();
+	ofSetColor(255);
+	ofClear(0, 0, 0, 255);
+	fbo.draw(0, 0);
 
 	// =============================================================
 
@@ -194,6 +211,11 @@ void ofApp::exit() {
 
 
 //--------------------------------------------------------------
+void ofApp::exit() {
+	
+	spout.exit();
+
+}
 //--------------------------------------------------------------
 
 

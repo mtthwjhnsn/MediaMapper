@@ -10,6 +10,7 @@ void input_selector::setup() {
 	video = false;
 	colour = false;
 	no_input = false;
+	Spout2 = false;
 
 }
 
@@ -21,12 +22,14 @@ void input_selector::draw() {
 		img.clear();
 		cam.close();
 		vid.close();
+		spout.exit();
 
 	}
 
 	if (video == true) {
 		img.clear();
 		cam.close();
+		spout.exit();
 
 		vid.draw();
 	}
@@ -34,6 +37,7 @@ void input_selector::draw() {
 	else if (image == true) {
 		vid.close();
 		cam.close();
+		spout.exit();
 
 		img.draw();
 	}
@@ -41,6 +45,7 @@ void input_selector::draw() {
 	else if (camera == true) {
 		img.clear();
 		vid.close();
+		spout.exit();
 
 		cam.draw();
 	}
@@ -49,8 +54,17 @@ void input_selector::draw() {
 		img.clear();
 		vid.close();
 		cam.close();
+		spout.exit();
 
 		gradient.draw();
+	}
+
+	else if (Spout2 == true) {
+		img.clear();
+		vid.close();
+		cam.close();
+
+		spout.draw();
 	}
 
 }
@@ -64,6 +78,7 @@ void input_selector::selection() {
 		camera = false;
 		colour = false;
 		no_input = true;
+		Spout2 = false;
 
 	}
 
@@ -74,6 +89,7 @@ void input_selector::selection() {
 		camera = false;
 		colour = false;
 		no_input = false;
+		Spout2 = false;
 
 		vid.setup();
 	}
@@ -85,6 +101,7 @@ void input_selector::selection() {
 		camera = false;
 		colour = false;
 		no_input = false;
+		Spout2 = false;
 
 		img.setup();
 	}
@@ -96,6 +113,7 @@ void input_selector::selection() {
 		camera = true;
 		colour = false;
 		no_input = false;
+		Spout2 = false;
 
 		cam.setup();
 	}
@@ -107,7 +125,23 @@ void input_selector::selection() {
 		camera = false;
 		colour = true;
 		no_input = false;
+		Spout2 = false;
 
 		gradient.setup(ofGetWidth(), ofGetHeight());
 	}
+
+	else if (params.input_type == 5) {
+
+		video = false;
+		image = false;
+		camera = false;
+		colour = false;
+		no_input = false;
+		Spout2 = true;
+
+		spout.setup();
+	}
+
+
+
 }

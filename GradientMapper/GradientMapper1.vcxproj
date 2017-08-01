@@ -179,6 +179,7 @@
     <ClCompile Include="src\ImageLoader.cpp" />
     <ClCompile Include="src\input_selector.cpp" />
     <ClCompile Include="src\Sound.cpp" />
+    <ClCompile Include="src\Spout2Reciever.cpp" />
     <ClCompile Include="src\VideoLoader.cpp" />
     <ClCompile Include="..\..\..\..\addons\ofxImGui\src\BaseEngine.cpp" />
     <ClCompile Include="..\..\..\..\addons\ofxImGui\src\BaseTheme.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="src\ImageLoader.h" />
     <ClInclude Include="src\input_selector.h" />
     <ClInclude Include="src\Sound.h" />
+    <ClInclude Include="src\Spout2Reciever.h" />
     <ClInclude Include="src\VideoLoader.h" />
     <ClInclude Include="..\..\..\..\addons\ofxImGui\src\BaseEngine.h" />
     <ClInclude Include="..\..\..\..\addons\ofxImGui\src\BaseTheme.h" />

@@ -16,6 +16,7 @@
 #include "Sound.h"
 #include "ofxMaxim.h"
 #include "input_selector.h"
+#include "ofxSpout2Sender.h"
 
 #include "ofxNDI.h"
 
@@ -37,7 +38,7 @@ public:
 	void update();
 	void draw();
 
-	//void exit();
+	void exit();
 
 	void keyPressed(int key);
 	void keyReleased(int key);
@@ -71,6 +72,12 @@ public:
 	Sound sound;
 	GuiColourGradient gui;
 	input_selector input;
+
+
+	//Spout2Sender
+
+	ofFbo fbo;
+	ofxSpout2::Sender spout;
 
 private:
 

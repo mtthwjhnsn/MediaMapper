@@ -407,26 +407,25 @@ bool GuiColourGradient::imGui()
 					inputs->selection();
 				}
 
-				ImGui::NextColumn;
-				
 				if (ImGui::Button("image")) {
 					inputs->params.input_type = 2;
 					inputs->selection();
 					ImGui::NextColumn;
 				}
 
-				ImGui::NextColumn;
-				
 				if (ImGui::Button("camera")) {
 					inputs->params.input_type = 3;
 					inputs->selection();
 					ImGui::NextColumn;
 				}
 
-				ImGui::NextColumn;
-				
 				if (ImGui::Button("colour")) {
 					inputs->params.input_type = 4;
+					inputs->selection();
+				}
+
+				if (ImGui::Button("Spout2")) {
+					inputs->params.input_type = 5;
 					inputs->selection();
 				}
 
