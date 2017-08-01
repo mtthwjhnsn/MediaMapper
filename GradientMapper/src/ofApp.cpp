@@ -27,6 +27,7 @@ void ofApp::setup() {
 
 	
 	
+	/*
 	//NDI
 
 	strcpy(senderName, "Openframeworks NDI Sender"); // Set the sender name
@@ -73,6 +74,7 @@ void ofApp::setup() {
 
 	PboIndex = NextPboIndex = 0;
 	bUsePBO = true; // Change to false to compare
+	*/
 	
 }
 
@@ -84,8 +86,8 @@ void ofApp::update() {
 void ofApp::draw() {
 	
 	
-	ndiFbo.begin();
-	ofClear(13, 25, 76, 255); // background as required
+	//ndiFbo.begin();
+	//ofClear(13, 25, 76, 255); // background as required
 	
 	// ============ your application draw goes here ===============
 
@@ -93,7 +95,7 @@ void ofApp::draw() {
 
 	// =============================================================
 
-	
+	/*
 	// End the fbo
 	ndiFbo.end();
 
@@ -129,7 +131,7 @@ void ofApp::draw() {
 		sprintf(str, "fps: %3.3d", (int)ofGetFrameRate());
 		ofDrawBitmapString(str, ofGetWidth() - 120, 30);
 	}
-	
+	*/
 	gui.draw();
 }
 
@@ -139,7 +141,7 @@ void ofApp::draw() {
 // adapted from : http://www.songho.ca/opengl/gl_pbo.html
 //
 
-
+/*
 bool ofApp::ReadFboPixels(ofFbo fbo, unsigned int width, unsigned int height, unsigned char *data)
 {
 	void *pboMemory;
@@ -186,7 +188,7 @@ bool ofApp::ReadFboPixels(ofFbo fbo, unsigned int width, unsigned int height, un
 void ofApp::exit() {
 	if (ndiPbo[0]) glDeleteBuffers(2, ndiPbo);
 }
-
+*/
 
 
 

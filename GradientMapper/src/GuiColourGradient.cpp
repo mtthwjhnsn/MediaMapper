@@ -391,42 +391,46 @@ bool GuiColourGradient::imGui()
 		if (ofxImGui::BeginWindow("Input_Selector", mainSettings, false))
 		{
 			//ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
-			ImGui::Columns(1);
-			ImGui::Separator();
-
+			
 			if (ofxImGui::BeginTree("Input_Type", mainSettings))
 			{
-				ImGui::Columns(4);
+				ImGui::Columns(1);
 				ImGui::Separator();
 
-				if (ImGui::Button("video")) {
+				if (ImGui::Button("no_input")) {
 					inputs->params.input_type = 0;
 					inputs->selection();
-					ImGui::NextColumn;
-
-					ImGui::Separator();
 				}
-				if (ImGui::Button("image")) {
+
+				if (ImGui::Button("video")) {
 					inputs->params.input_type = 1;
 					inputs->selection();
-					ImGui::NextColumn;
-
-					ImGui::Separator();
 				}
-				if (ImGui::Button("camera")) {
+
+				ImGui::NextColumn;
+				
+				if (ImGui::Button("image")) {
 					inputs->params.input_type = 2;
 					inputs->selection();
 					ImGui::NextColumn;
-
-					ImGui::Separator();
 				}
-				if (ImGui::Button("colour")) {
+
+				ImGui::NextColumn;
+				
+				if (ImGui::Button("camera")) {
 					inputs->params.input_type = 3;
 					inputs->selection();
 					ImGui::NextColumn;
-
-					ImGui::Separator();
 				}
+
+				ImGui::NextColumn;
+				
+				if (ImGui::Button("colour")) {
+					inputs->params.input_type = 4;
+					inputs->selection();
+				}
+
+				ImGui::Separator();
 				ImGui::Columns(1);
 				ImGui::Separator();
 
@@ -443,7 +447,7 @@ bool GuiColourGradient::imGui()
 		
 		
 		
-		if (inputs->params.input_type == 3)
+		if (inputs->params.input_type == 4)
 		
 		{
 

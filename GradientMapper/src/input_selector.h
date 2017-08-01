@@ -25,9 +25,8 @@ public:
 	ImageLoader img;
 	CamLoader cam;
 	ColourGradient gradient;
-
 	InputParams params;
 	
-	bool camera, video, image, colour;
+	bool camera, video, image, colour, no_input;
 };
 

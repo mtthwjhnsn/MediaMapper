@@ -37,7 +37,7 @@ public:
 	void update();
 	void draw();
 
-	void exit();
+	//void exit();
 
 	void keyPressed(int key);
 	void keyReleased(int key);
@@ -64,8 +64,8 @@ public:
 	maxiEnv env_red, env_green, env_blue;
 	
 
-	ofFbo fbo;
-	GLuint textureid;
+	//ofFbo fbo;
+	//GLuint textureid;
 
 	ColourGradient colour;
 	Sound sound;
@@ -74,7 +74,7 @@ public:
 
 private:
 
-	
+	/*
 	ofxNDIsender ndiSender;    // NDI sender object
 	char senderName[256];      // Sender name
 	unsigned int senderWidth;  // Width of the sender output
@@ -90,6 +90,6 @@ private:
 	int NextPboIndex;
 	bool bUsePBO;
 	bool ReadFboPixels(ofFbo fbo, unsigned int width, unsigned int height, unsigned char *data);
-	
+	*/
 
 };
