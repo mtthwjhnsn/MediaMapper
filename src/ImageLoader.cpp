@@ -11,8 +11,8 @@ void ImageLoader::setup() {
 	}
 }
 
-void ImageLoader::draw() {
-	image.draw(0, 0, ofGetWidth(), ofGetHeight());
+void ImageLoader::draw(int x, int y, int w, int h) {
+	image.draw(x, y, w, h);
 }
 
 void ImageLoader::clear() {

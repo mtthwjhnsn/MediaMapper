@@ -19,6 +19,7 @@ class input_selector
 public:
 
 	void setup();
+	//void update();
 	void draw();
 	void selection();
 
@@ -29,7 +30,25 @@ public:
 	InputParams params;
 	Spout2Reciever spout;
 	
+	ofImage splash;
+	string select;
+
 	bool camera, video, image, colour, no_input, Spout2;
+
+private:
+	int x = 0;
+	int y = 0;
+	int w = ofGetWidth();
+	int h = ofGetHeight();
+
+
+	//GLuint getTextureID8();
+
+//private:
+	//ofFbo fbo8;
+	//GLuint textureid8;
+
+	
 	
 	
 };

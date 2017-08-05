@@ -11,7 +11,7 @@ class CamLoader
 public:
 
 	void setup();
-	void draw();
+	void draw(int x, int y, int w, int h);
 	void close();
 
 	ofVideoGrabber cam;

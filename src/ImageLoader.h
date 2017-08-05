@@ -11,7 +11,7 @@ class ImageLoader
 public:
 
 	void setup();
-	void draw();
+	void draw(int x, int y, int w, int h);
 	void clear();
 
 	ofImage image;

@@ -361,6 +361,7 @@ ImGui::Separator();
 #define TEX_ID6 (ImTextureID)(uintptr_t)
 #define TEX_ID7 (ImTextureID)(uintptr_t)
 
+//#define TEX_ID8 (ImTextureID)(uintptr_t)
 bool GuiColourGradient::imGui()
 {
 	int gui_width = 700;

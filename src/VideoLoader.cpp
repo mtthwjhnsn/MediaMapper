@@ -11,9 +11,9 @@ void VideoLoader::setup() {
 	}
 }
 
-void VideoLoader::draw() {
+void VideoLoader::draw(int x, int y, int w, int h) {
 	video.update();
-	video.draw(0, 0, ofGetWidth(), ofGetHeight());
+	video.draw(x, y, w, h);
 }
 
 void VideoLoader::close() {

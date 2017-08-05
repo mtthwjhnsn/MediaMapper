@@ -7,7 +7,7 @@ class Spout2Reciever
 public:
 
 	void setup();
-	void draw();
+	void draw(int x, int y, int w, int h);
 	void exit();
 
 	ofxSpout2::Receiver spoutReceiver;

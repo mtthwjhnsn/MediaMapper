@@ -6,9 +6,9 @@ void CamLoader::setup() {
 
 }
 
-void CamLoader::draw() {
+void CamLoader::draw(int x, int y, int w, int h) {
 	cam.update();
-	cam.draw(0, 0, ofGetWidth(), ofGetHeight());
+	cam.draw(x, y, w, h);
 
 }
 

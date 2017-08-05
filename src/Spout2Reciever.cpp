@@ -4,12 +4,11 @@ void Spout2Reciever::setup() {
 	spoutReceiver.setup();
 }
 
-void Spout2Reciever::draw() {
+void Spout2Reciever::draw(int x, int y, int w, int h) {
+	
 	ofClear(255, 0, 0);
-
 	spoutReceiver.updateTexture();
-	//ofRect(0, 0, ofGetWidth(), ofGetHeight());
-	spoutReceiver.getTexture().draw(0, 0, ofGetWidth(), ofGetHeight());
+	spoutReceiver.getTexture().draw(x, y, w, h);
 }
 
 void Spout2Reciever::exit() {

@@ -45,6 +45,8 @@ private:
 	Sound *sound;
 	input_selector *inputs;
 
+	input_selector inputbutton;
+
 	ofMesh mesh;
 	ofFbo fbo;
 	ofFbo fbo2;
@@ -61,6 +63,7 @@ private:
 	GLuint textureid5;
 	GLuint textureid6;
 	GLuint textureid7;
+
 
 	ofShader shader;
 	ofImage image;

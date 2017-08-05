@@ -2,30 +2,35 @@
 
 //-----------------------------
 void input_selector::setup() {
-	
-	image = false;
-	camera = false;
+
 	video = false;
+	image = false;
+	camera = true;
 	colour = false;
-	no_input = false;
+	no_input = true;
 	Spout2 = false;
+
+	select = "input1.png";
+	splash.load(select);
 
 }
 
-
-//----------------------
 void input_selector::draw() {
 
+	if (no_input == true) {
+		splash.draw(x, y, w, h);
+	}
+
 	if (video == true) {
-		vid.draw();
+		vid.draw(x, y, w, h);
 	}
 
 	else if (image == true) {
-		img.draw();
+		img.draw(x, y, w, h);
 	}
 
 	else if (camera == true) {
-		cam.draw();
+		cam.draw(x, y, w, h);
 	}
 
 	else if (colour == true) {
@@ -33,14 +38,15 @@ void input_selector::draw() {
 	}
 
 	else if (Spout2 == true) {
-		spout.draw();
+		spout.draw(x, y, w, h);
 	}
 
 }
 
 void input_selector::selection() {
+	int menu_input = params.input_type;
 
-	if (params.input_type == 0) {
+	if (menu_input == 0) {
 
 		video = false;
 		image = false;
@@ -54,9 +60,11 @@ void input_selector::selection() {
 		vid.close();
 		spout.exit();
 
+		splash.clear();
+		splash.load(select);
 	}
 
-	if (params.input_type == 1) {
+	if (menu_input == 1) {
 
 		video = true;
 		image = false;
@@ -65,14 +73,17 @@ void input_selector::selection() {
 		no_input = false;
 		Spout2 = false;
 
+		splash.clear();
+
 		img.clear();
 		cam.close();
 		spout.exit();
 
+		//vid.close();
 		vid.setup();
 	}
 
-	else if (params.input_type == 2) {
+	else if (menu_input == 2) {
 
 		video = false;
 		image = true;
@@ -81,14 +92,17 @@ void input_selector::selection() {
 		no_input = false;
 		Spout2 = false;
 
+		splash.clear();
+
 		vid.close();
 		cam.close();
 		spout.exit();
 
+		img.clear();
 		img.setup();
 	}
 
-	else if (params.input_type == 3) {
+	else if (menu_input == 3) {
 
 		video = false;
 		image = false;
@@ -97,14 +111,17 @@ void input_selector::selection() {
 		no_input = false;
 		Spout2 = false;
 
+		splash.clear();
+
 		img.clear();
 		vid.close();
 		spout.exit();
 
+		cam.close();
 		cam.setup();
 	}
 
-	else if (params.input_type == 4) {
+	else if (menu_input == 4) {
 
 		video = false;
 		image = false;
@@ -112,6 +129,8 @@ void input_selector::selection() {
 		colour = true;
 		no_input = false;
 		Spout2 = false;
+
+		splash.clear();
 
 		img.clear();
 		vid.close();
@@ -121,7 +140,7 @@ void input_selector::selection() {
 		gradient.setup(ofGetWidth(), ofGetHeight());
 	}
 
-	else if (params.input_type == 5) {
+	else if (menu_input == 5) {
 
 		video = false;
 		image = false;
@@ -130,10 +149,13 @@ void input_selector::selection() {
 		no_input = false;
 		Spout2 = true;
 
+		splash.clear();
+
 		img.clear();
 		vid.close();
 		cam.close();
 
+		spout.exit();
 		spout.setup();
 	}
 }
