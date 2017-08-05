@@ -2,9 +2,7 @@
 
 //-----------------------------
 void input_selector::setup() {
-
 	
-
 	image = false;
 	camera = false;
 	video = false;
