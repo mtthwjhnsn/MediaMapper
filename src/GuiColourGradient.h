@@ -15,21 +15,24 @@
 #include "ColourGradient.h"
 #include "Sound.h"
 #include "input_selector.h"
+#include "output_selector.h"
 
 class GuiColourGradient {
 public:
-	void setup(ColourGradient *_colour, Sound *_sound, input_selector *_inputs);
+	void setup(ColourGradient *_colour, Sound *_sound, input_selector *_inputs, output_selector *_outputs);
+	//void update();
 	void draw();
 
 	
 	GLuint getTextureID();
+	GLuint getTextureID1();
 	GLuint getTextureID2();
 	GLuint getTextureID3();
 	GLuint getTextureID4();
 	GLuint getTextureID5();
 	GLuint getTextureID6();
-	GLuint getTextureID7();
 
+	GLuint getTextureID7();
 
 	void lfo_selection(int* type_param);
 	void lfo_selection_red(int* type_param_red);
@@ -37,34 +40,37 @@ public:
 	void lfo_selection_blue(int* type_param_blue);
 	void sound_selection(int* sound_param);
 	void oscillator(int* oscillator_param);
-	//void input(int* input_type_param);
+
+	
 
 
 private:
 	ColourGradient *colour;
 	Sound *sound;
 	input_selector *inputs;
+	output_selector *outputs;
 
 	input_selector inputbutton;
 
 	ofMesh mesh;
 	ofFbo fbo;
+	ofFbo fbo1;
 	ofFbo fbo2;
 	ofFbo fbo3;
 	ofFbo fbo4;
 	ofFbo fbo5;
 	ofFbo fbo6;
 	ofFbo fbo7;
-
+	
 	GLuint textureid;
+	GLuint textureid1;
 	GLuint textureid2;
 	GLuint textureid3;
 	GLuint textureid4;
 	GLuint textureid5;
 	GLuint textureid6;
 	GLuint textureid7;
-
-
+	
 	ofShader shader;
 	ofImage image;
 	
@@ -75,6 +81,4 @@ private:
 	ofxImGui::Gui gui;
 	bool guiVisible;
 	bool mouseOverGui;
-
-	
 };

@@ -16,9 +16,17 @@
 #include "Sound.h"
 #include "ofxMaxim.h"
 #include "input_selector.h"
-#include "ofxSpout2Sender.h"
+#include "output_selector.h"
 
-//#include "ofxNDI.h"
+#include "Spout2Sender.h"
+#include "NDIoutput.h"
+
+#include "VideoLoader.h"
+#include "ImageLoader.h"
+#include "CamLoader.h"
+#include "ColourGradient.h"
+#include "Spout2Reciever.h"
+
 
 
 
@@ -37,8 +45,6 @@ public:
 
 	void update();
 	void draw();
-
-	void exit();
 
 	void keyPressed(int key);
 	void keyReleased(int key);
@@ -66,37 +72,25 @@ public:
 	
 
 	//ofFbo fbo;
-	//GLuint textureid;
+
 
 	ColourGradient colour;
 	Sound sound;
 	GuiColourGradient gui;
 	input_selector input;
+	output_selector output;
 
+	NDIoutput NDI;
+	Spout2Sender Spout2;
 
-	//Spout2Sender
-
-	ofFbo fbo;
-	ofxSpout2::Sender spout;
+	VideoLoader vid;
+	ImageLoader img;
+	CamLoader cam;
+	ColourGradient col;
+	Spout2Reciever spout;
 
 private:
 
-	/*
-	ofxNDIsender ndiSender;    // NDI sender object
-	char senderName[256];      // Sender name
-	unsigned int senderWidth;  // Width of the sender output
-	unsigned int senderHeight; // Height of the sender output
-	ofFbo ndiFbo;              // Fbo used for data transfer
-	ofPixels ndiBuffer[2];     // Two pixel buffers for async sending
-	int idx;                   // Index used for async buffer swapping
-	ofImage textureImage;      // Texture image for the 3D cube graphics
-	float rotX, rotY;          // Cube rotation increment
 
-	GLuint ndiPbo[2];
-	int PboIndex;
-	int NextPboIndex;
-	bool bUsePBO;
-	bool ReadFboPixels(ofFbo fbo, unsigned int width, unsigned int height, unsigned char *data);
-	*/
 
 };

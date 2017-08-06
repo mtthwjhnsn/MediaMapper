@@ -6,7 +6,7 @@ void VideoLoader::setup() {
 	if (result.bSuccess) {
 		string path = result.getPath();
 		// load your file at `path`
-		video.load(path);
+		video.loadMovie(path);
 		video.play();
 	}
 }
