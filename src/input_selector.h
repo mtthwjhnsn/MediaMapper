@@ -18,29 +18,26 @@ class input_selector
 {
 public:
 
-	void setup();
+	void setup(VideoLoader *_vid, ImageLoader *_img, CamLoader *_cam, ColourGradient *_gradient, Spout2Reciever *_spout);
 	//void update();
-	void draw();
+	void draw(int x, int y, int w, int h);
 	void selection();
 
-	VideoLoader vid;
-	ImageLoader img;
-	CamLoader cam;
-	ColourGradient gradient;
-	InputParams params;
-	Spout2Reciever spout;
+
 	
+	InputParams params;
+
 	ofImage splash;
 	string select;
 
 	bool camera, video, image, colour, no_input, Spout2;
 
 private:
-	int x = 0;
-	int y = 0;
-	int w = ofGetWidth();
-	int h = ofGetHeight();
-
+	VideoLoader *vid;
+	ImageLoader *img;
+	CamLoader *cam;
+	ColourGradient *gradient;
+	Spout2Reciever *spout;
 
 	//GLuint getTextureID8();
 
