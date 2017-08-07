@@ -148,7 +148,7 @@ void input_selector::selection() {
 		spout->exit();
 		cam->close();
 
-		gradient->setup(ofGetWidth(), ofGetHeight());
+		gradient->setup(1920, 1080);
 	}
 
 	else if (menu_input == 5) {

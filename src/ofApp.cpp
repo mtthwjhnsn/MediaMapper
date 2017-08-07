@@ -23,28 +23,113 @@ void ofApp::setup() {
 
 	sound.setup();
 	
-	//input.setup(&vid, &img, &cam, &col, &spout);
-	output.setup(&NDI, &Spout2);
+	input.setup(&vid, &img, &cam, &col, &spout);
+	gui.setup(&colour, &sound, &input, &outs);
+	outs.setup();
 	
-	gui.setup(&colour, &sound, &input, &output, &NDI);
-	
+	ofFbo::Settings fboSettings;
+	fboSettings.width = 1920;
+	fboSettings.height = 1080;
+	fboSettings.internalformat = GL_RGBA;
+	fboSettings.textureTarget = GL_TEXTURE_2D;
+
+	fbo.allocate(fboSettings);
+
+	fbo.begin();
+	ofClear(255, 255, 255, 0);
+	fbo.end();
+
+	//NDI.setup();
+	Spout2.setup();
 }
 
-//--------------------------------------------------------------
+
 void ofApp::update() {
 	ofSetWindowTitle(ofToString(ofGetFrameRate()));
 	
-	//input.draw(10, 10, ofGetWidth() - 20, ofGetHeight() - 20);
-	output.draw();
-	gui.draw();
-
+	fbo.begin();
+	input.draw(0, 0, 1920, 1080);
+	fbo.end();
 }
 
+////////////////////
+//////////////////
+//////////////
+/////////////////
+/////////////////
+//NDI ouput
+/*
+void ofApp::OutputController() {
+	
+	int menu_input = outs.params.output_type;
+	int switcher = outs.params.switcher;
+
+	if (menu_input == 1) {
+
+		spout2Sender = true;
+		NDIsender = false;
+		noSender = false;
+
+		NDI.exit();
+		Spout2.exit();
+		Spout2.setup();
+	}
+
+	if (menu_input == 2) {
+
+		spout2Sender = false;
+		NDIsender = true;
+		noSender = false;
+
+
+		Spout2.exit();
+		NDI.exit();
+		NDI.setup();
+	}
+
+	if (menu_input == 0) {
+
+		spout2Sender = false;
+		NDIsender = false;
+		noSender = true;
+
+		Spout2.exit();
+		NDI.exit();
+	}
+
+}
+*/
+void ofApp::output() {
+/*
+	if (outs.params.switcher == true) {
+		OutputController();
+	}
+
+	if (NDIsender == true) {
+		NDI.send(fbo);
+	}
+
+	if (spout2Sender == true) {
+		Spout2.send(fbo);
+	}
+	*/
+	Spout2.send(fbo);
+	gui.draw(fbo);
+//	NDI.send(fbo);
+}
+
+////////////////////
+///////////////////
+/////////////////////
 //--------------------------------------------------------------
 void ofApp::draw() {
-	
 
 	update();
+	
+	output();
+	
+	//fbo.draw(0, ofGetHeight()*.25, ofGetWidth()*.5, ofGetHeight()*.5);
+
 }
 
 

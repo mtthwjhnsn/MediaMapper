@@ -19,7 +19,7 @@ int w = 800;
 int h = 180;
 
 //-------------------------------------------------
-void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_selector *_inputs, output_selector *_outputs, NDIoutput *_NDI) {
+void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_selector *_inputs, output_selector *_outputs) {
 
 	//gui
 	gui.setup();
@@ -29,7 +29,6 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 	sound = _sound;
 	inputs = _inputs;
 	outputs = _outputs;
-	NDI = _NDI;
 
 	//inputbutton.setup();
 
@@ -52,6 +51,8 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 	fbo5.allocate(fboSettings);
 	fbo6.allocate(fboSettings);
 
+	fboSettings.width = 640;
+	fboSettings.height = 480;
 	fbo7.allocate(fboSettings);
 	
 	textureid = fbo.getTexture().texData.textureID;
@@ -135,7 +136,7 @@ GLuint GuiColourGradient::getTextureID7() {
 }
 
 //-------------------------------------------------
-void GuiColourGradient::draw() {
+void GuiColourGradient::draw(ofFbo fboinput) {
 
 
 	if (guiVisible) {
@@ -306,9 +307,11 @@ void GuiColourGradient::draw() {
 	fbo6.end();
 
 	fbo7.begin();
-	inputbutton.draw(0, 0, 100, 200);
+	fboinput.draw(0, 0, 640, 480);
 	fbo7.end();
+
 }
+
 //--------------------------------------------------------------
 void GuiColourGradient::lfo_selection(int* type_param) {
 	vector<string> types = { "sine","tri","saw","sqr","rnd" };
@@ -496,7 +499,6 @@ bool GuiColourGradient::imGui()
 
 					inputs->params.input_type = 0;
 					inputs->selection();
-					NDI->selection();
 
 				}
 
@@ -504,7 +506,6 @@ bool GuiColourGradient::imGui()
 
 					inputs->params.input_type = 1;
 					inputs->selection();
-					NDI->selection();
 
 
 				}
@@ -512,26 +513,22 @@ bool GuiColourGradient::imGui()
 
 					inputs->params.input_type = 2;
 					inputs->selection();
-					NDI->selection();
 				}
 				if (ImGui::MenuItem("Camera", "Ctrl+C")) {
 
 					inputs->params.input_type = 3;
 					inputs->selection();
-					NDI->selection();
 
 				}
 				if (ImGui::MenuItem("Gradient", "Ctrl+G")) {
 
 					inputs->params.input_type = 4;
 					inputs->selection();
-					NDI->selection();
 				}
 				if (ImGui::MenuItem("Spout2", "Ctrl+O")) {
 
 					inputs->params.input_type = 5;
 					inputs->selection();
-					NDI->selection();
 				}
 
 				if (ImGui::BeginMenu("Open Recent"))
@@ -592,21 +589,27 @@ bool GuiColourGradient::imGui()
 				if (ImGui::MenuItem("no_output")) {
 
 					outputs->params.output_type = 0;
-					outputs->selection();
+					outputs->params.switcher = true;
 
 				}
 				if (ImGui::MenuItem("Spout2")) {
 
 					outputs->params.output_type = 1;
-					outputs->selection();
+					outputs->params.switcher = true;
 
 				}
+
 				if (ImGui::MenuItem("NDI")) {
 
 					outputs->params.output_type = 2;
-					outputs->selection();
+					outputs->params.switcher = true;
 
 				}
+				if (outputs->params.switcher == true) {
+
+					outputs->params.switcher = false;
+				}
+
 				if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
 				if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
 				ImGui::Separator();
@@ -618,18 +621,17 @@ bool GuiColourGradient::imGui()
 			ImGui::EndMainMenuBar();
 		}
 
-		/*
-		if (inputs->params.input_type == 1) {
+		if (inputs->params.input_type == 0 || inputs->params.input_type == 1 || inputs->params.input_type == 2 || inputs->params.input_type == 3 || inputs->params.input_type == 4 || inputs->params.input_type == 5) {
 
-			if (ofxImGui::BeginWindow("Video", mainSettings, false)) {
+			if (ofxImGui::BeginWindow("Input", mainSettings, false)) {
 				
-				ImGui::Text("video");
-				ImGui::ImageButton(TEX_ID7 getTextureID7(), ofVec2f(w, h));
+				//ImGui::Text("video");
+				ImGui::ImageButton(TEX_ID7 getTextureID7(), ofVec2f(640, 480));
 
 				ofxImGui::EndWindow(mainSettings);
 			}
 		}
-		
+		/*
 		if (inputs->params.input_type == 2) {
 
 			if (ofxImGui::BeginWindow("Image", mainSettings, false)) {

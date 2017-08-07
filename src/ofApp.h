@@ -18,6 +18,8 @@
 #include "input_selector.h"
 #include "output_selector.h"
 
+#include "ofxNDI.h"
+
 #include "Spout2Sender.h"
 #include "NDIoutput.h"
 
@@ -42,7 +44,7 @@ class ofApp : public ofBaseApp {
 public:
 
 	void setup();
-
+	//void assign();
 	void update();
 	void draw();
 
@@ -70,15 +72,13 @@ public:
 	maxiMix mix;
 	maxiEnv env_red, env_green, env_blue;
 	
-
-	//ofFbo fbo;
-
+	ofFbo fbo;
 
 	ColourGradient colour;
 	Sound sound;
 	GuiColourGradient gui;
 	input_selector input;
-	output_selector output;
+	output_selector outs;
 
 	NDIoutput NDI;
 	Spout2Sender Spout2;
@@ -89,8 +89,13 @@ public:
 	ColourGradient col;
 	Spout2Reciever spout;
 
-private:
+	void OutputController();
+	void output();
 
+	bool spout2Sender, NDIsender, noSender;
+
+
+private:
 
 
 };

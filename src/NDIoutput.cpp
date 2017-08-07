@@ -2,12 +2,9 @@
 
 
 
-void NDIoutput::setup(input_selector *_input) {
-	input = _input;
+void NDIoutput::setup() {
 
-	input->setup(&vid, &img, &cam, &col, &spout1);
-
-	fbo.allocate(ofGetWidth(), ofGetHeight());
+//	fbo.allocate(1920, 1080);
 
 	//NDI
 
@@ -57,26 +54,9 @@ void NDIoutput::setup(input_selector *_input) {
 	bUsePBO = true; // Change to false to compare
 	
 }
-void NDIoutput::selection() {
-	input->selection();
-}
 
 
-void NDIoutput::update() {
-
-	fbo.begin();
-	// ============ your application draw goes here ===============
-	//input->selection();
-	selection();
-	input->draw(0, 0, 1920, 1080);
-
-	// =============================================================
-	//SPOUT
-	fbo.end();
-}
-
-
-void NDIoutput::send(){
+void NDIoutput::send(ofFbo fbo){
 	
 	ndiFbo.begin();
 	ofClear(13, 25, 76, 255); // background as required

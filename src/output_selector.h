@@ -10,6 +10,7 @@
 struct OutputParams {
 
 	int output_type;
+	bool switcher;
 
 };
 
@@ -17,19 +18,16 @@ class output_selector
 {
 public:
 	
-	void setup(NDIoutput *_NDI, Spout2Sender *_spout);
+	void setup();
 	//void update();
-	void draw();
-	void selection();
+	//void draw();
+	//void selection();
 
 	OutputParams params;
 	
 private:
-	input_selector input;
 
-	Spout2Sender *SpoutSender;
-	NDIoutput *NDIsender;
 
-	bool spout, NDI, no_output;
+
 };
 

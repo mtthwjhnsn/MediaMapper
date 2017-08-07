@@ -2,25 +2,16 @@
 
 #include "ofMain.h"
 #include "ofxNDI.h"
-#include "input_selector.h"
-
-#include "VideoLoader.h"
-#include "ImageLoader.h"
-#include "CamLoader.h"
-#include "ColourGradient.h"
-#include "Spout2Reciever.h"
 
 class NDIoutput
 {
 public:
 
-	void setup(input_selector *_input);
-	void selection();
-	void update();
-	void send();
+	void setup();
+	void send(ofFbo fbo);
 	void exit();
 
-	ofFbo fbo;
+	//ofFbo fbo;
 
 	//input_selector input;
 
@@ -28,14 +19,6 @@ public:
 
 	
 private:
-
-	input_selector *input;
-		
-	VideoLoader vid;
-	ImageLoader img;
-	CamLoader cam;
-	ColourGradient col;
-	Spout2Reciever spout1;
 
 	ofxNDIsender ndiSender;    // NDI sender object
 	char senderName[256];      // Sender name

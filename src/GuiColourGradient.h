@@ -16,14 +16,13 @@
 #include "Sound.h"
 #include "input_selector.h"
 #include "output_selector.h"
-#include "NDIoutput.h"
+//#include "NDIoutput.h"
 
 class GuiColourGradient {
 public:
-	void setup(ColourGradient *_colour, Sound *_sound, input_selector *_inputs, output_selector *_outputs, NDIoutput *_NDI);
+	void setup(ColourGradient *_colour, Sound *_sound, input_selector *_inputs, output_selector *_outputs);
 	//void update();
-	void draw();
-
+	void draw(ofFbo fboinput);
 	
 	GLuint getTextureID();
 	GLuint getTextureID1();
@@ -50,9 +49,9 @@ private:
 	Sound *sound;
 	input_selector *inputs;
 	output_selector *outputs;
-	NDIoutput *NDI;
+	//NDIoutput *NDI;
 
-	input_selector inputbutton;
+	//input_selector inputbutton;
 
 
 	ofMesh mesh;
