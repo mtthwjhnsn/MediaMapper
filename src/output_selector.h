@@ -10,7 +10,7 @@
 struct OutputParams {
 
 	int output_type;
-	bool switcher;
+	//bool switcher;
 
 };
 
@@ -20,11 +20,16 @@ public:
 	
 	void setup();
 	//void update();
-	//void draw();
-	//void selection();
+	void draw(ofFbo fbo);
+	void selection();
 
 	OutputParams params;
 	
+	NDIoutput NDI;
+	Spout2Sender Spout2;
+
+	bool spout2Sender, NDIsender, noSender;
+
 private:
 
 

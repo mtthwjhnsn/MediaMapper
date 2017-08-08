@@ -16,6 +16,8 @@ void input_selector::setup(VideoLoader *_vid, ImageLoader *_img, CamLoader *_cam
 	no_input = true;
 	Spout2 = false;
 
+	params.setup = false;
+
 	select = "input1.png";
 	splash.load(select);
 
@@ -24,12 +26,11 @@ void input_selector::setup(VideoLoader *_vid, ImageLoader *_img, CamLoader *_cam
 
 }
 
-void input_selector::draw(int x, int y, int w, int h) {
+
+void input_selector::draw(ofFbo fbo, int x, int y, int w, int h) {
 
 	if (no_input == true) {
 		splash.draw(x, y, w, h);
-		//ofSetColor(255);
-		//ofEllipse(sin(ofGetFrameNum()), 0, 600, 600);
 	}
 
 	if (video == true) {
@@ -45,7 +46,7 @@ void input_selector::draw(int x, int y, int w, int h) {
 	}
 
 	else if (colour == true) {
-		gradient->draw();
+		fbo.draw(x, y, w, h);
 	}
 
 	else if (Spout2 == true) {
@@ -73,6 +74,8 @@ void input_selector::selection() {
 
 		splash.clear();
 		splash.load(select);
+
+		params.setup = false;
 	}
 
 	if (menu_input == 1) {
@@ -90,8 +93,9 @@ void input_selector::selection() {
 		cam->close();
 		spout->exit();
 
-		//vid.close();
 		vid->setup();
+
+		params.setup = false;
 	}
 
 	else if (menu_input == 2) {
@@ -111,6 +115,8 @@ void input_selector::selection() {
 
 		img->clear();
 		img->setup();
+
+		params.setup = false;
 	}
 
 	else if (menu_input == 3) {
@@ -130,6 +136,8 @@ void input_selector::selection() {
 
 		cam->close();
 		cam->setup();
+
+		params.setup = false;
 	}
 
 	else if (menu_input == 4) {
@@ -148,7 +156,7 @@ void input_selector::selection() {
 		spout->exit();
 		cam->close();
 
-		gradient->setup(1920, 1080);
+		params.setup = true;
 	}
 
 	else if (menu_input == 5) {
@@ -168,5 +176,7 @@ void input_selector::selection() {
 
 		spout->exit();
 		spout->setup();
+
+		params.setup = false;
 	}
 }

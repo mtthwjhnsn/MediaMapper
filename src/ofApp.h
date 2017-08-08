@@ -18,10 +18,10 @@
 #include "input_selector.h"
 #include "output_selector.h"
 
-#include "ofxNDI.h"
+//#include "ofxNDI.h"
 
-#include "Spout2Sender.h"
-#include "NDIoutput.h"
+//#include "Spout2Sender.h"
+//#include "NDIoutput.h"
 
 #include "VideoLoader.h"
 #include "ImageLoader.h"
@@ -74,14 +74,19 @@ public:
 	
 	ofFbo fbo;
 
+	void coloursetup();
+	void colourfbo();
+
+	ofFbo fbo1;
+
 	ColourGradient colour;
 	Sound sound;
 	GuiColourGradient gui;
 	input_selector input;
 	output_selector outs;
 
-	NDIoutput NDI;
-	Spout2Sender Spout2;
+//	NDIoutput NDI;
+//	Spout2Sender Spout2;
 
 	VideoLoader vid;
 	ImageLoader img;
@@ -92,7 +97,7 @@ public:
 	void OutputController();
 	void output();
 
-	bool spout2Sender, NDIsender, noSender;
+	//bool spout2Sender, NDIsender, noSender;
 
 
 private:

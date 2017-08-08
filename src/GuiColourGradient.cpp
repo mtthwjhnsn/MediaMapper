@@ -52,7 +52,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 	fbo6.allocate(fboSettings);
 
 	fboSettings.width = 640;
-	fboSettings.height = 480;
+	fboSettings.height = 360;
 	fbo7.allocate(fboSettings);
 	
 	textureid = fbo.getTexture().texData.textureID;
@@ -307,7 +307,7 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 	fbo6.end();
 
 	fbo7.begin();
-	fboinput.draw(0, 0, 640, 480);
+	fboinput.draw(0, 0, 640, 360);
 	fbo7.end();
 
 }
@@ -438,58 +438,6 @@ bool GuiColourGradient::imGui()
 	
 	{
 
-		//input selector
-		
-		/*
-		if (ofxImGui::BeginWindow("Input_Selector", mainSettings, false))
-		{
-			//ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
-			
-			if (ofxImGui::BeginTree("Input_Type", mainSettings))
-			{
-				ImGui::Columns(1);
-				ImGui::Separator();
-
-				if (ImGui::Button("no_input")) {
-					inputs->params.input_type = 0;
-					inputs->selection();
-				}
-
-				if (ImGui::Button("video")) {
-					inputs->params.input_type = 1;
-					inputs->selection();
-				}
-
-				if (ImGui::Button("image")) {
-					inputs->params.input_type = 2;
-					inputs->selection();
-					ImGui::NextColumn;
-				}
-
-				if (ImGui::Button("camera")) {
-					inputs->params.input_type = 3;
-					inputs->selection();
-					ImGui::NextColumn;
-				}
-
-				if (ImGui::Button("colour")) {
-					inputs->params.input_type = 4;
-					inputs->selection();
-				}
-
-				if (ImGui::Button("Spout2")) {
-					inputs->params.input_type = 5;
-					inputs->selection();
-				}
-
-				ImGui::Separator();
-				ImGui::Columns(1);
-				ImGui::Separator();
-
-				ofxImGui::EndTree(mainSettings);
-			}
-			*/
-
 		if (ImGui::BeginMainMenuBar())
 		{
 			if (ImGui::BeginMenu("INPUT"))
@@ -589,25 +537,18 @@ bool GuiColourGradient::imGui()
 				if (ImGui::MenuItem("no_output")) {
 
 					outputs->params.output_type = 0;
-					outputs->params.switcher = true;
-
+					outputs->selection();
 				}
 				if (ImGui::MenuItem("Spout2")) {
 
 					outputs->params.output_type = 1;
-					outputs->params.switcher = true;
-
+					outputs->selection();
 				}
 
 				if (ImGui::MenuItem("NDI")) {
 
 					outputs->params.output_type = 2;
-					outputs->params.switcher = true;
-
-				}
-				if (outputs->params.switcher == true) {
-
-					outputs->params.switcher = false;
+					outputs->selection();
 				}
 
 				if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
@@ -626,55 +567,11 @@ bool GuiColourGradient::imGui()
 			if (ofxImGui::BeginWindow("Input", mainSettings, false)) {
 				
 				//ImGui::Text("video");
-				ImGui::ImageButton(TEX_ID7 getTextureID7(), ofVec2f(640, 480));
+				ImGui::ImageButton(TEX_ID7 getTextureID7(), ofVec2f(640, 360));
 
 				ofxImGui::EndWindow(mainSettings);
 			}
-		}
-		/*
-		if (inputs->params.input_type == 2) {
-
-			if (ofxImGui::BeginWindow("Image", mainSettings, false)) {
-				ImGui::Text("Image");
-				ImGui::ImageButton(TEX_ID7 getTextureID7(), ofVec2f(w, h));
-
-				ofxImGui::EndWindow(mainSettings);
-			}
-		}
-
-		if (inputs->params.input_type == 3) {
-
-			if (ofxImGui::BeginWindow("Camera", mainSettings, false)) {
-				ImGui::Text("Camera");
-				ImGui::ImageButton(TEX_ID7 getTextureID7(), ofVec2f(w, h));
-
-				ofxImGui::EndWindow(mainSettings);
-			}
-		}
-
-		if (inputs->params.input_type == 4) {
-
-			if (ofxImGui::BeginWindow("Gradient", mainSettings, false)) {
-				ImGui::Text("Gradient");
-				ImGui::ImageButton(TEX_ID7 getTextureID7(), ofVec2f(w, h));
-
-				ofxImGui::EndWindow(mainSettings);
-			}
-		}
-
-		if (inputs->params.input_type == 5) {
-
-			if (ofxImGui::BeginWindow("Spout", mainSettings, false)) {
-				ImGui::Text("Spout");
-				ImGui::ImageButton(TEX_ID7 getTextureID7(), ofVec2f(w, h));
-
-				ofxImGui::EndWindow(mainSettings);
-			}
-		}
-		*/
-		
-		
-		
+		}		
 		
 		if (inputs->params.input_type == 4)
 		

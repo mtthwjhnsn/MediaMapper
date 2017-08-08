@@ -11,6 +11,7 @@
 struct InputParams {
 
 	int input_type;
+	bool setup;
 
 };
 
@@ -20,7 +21,7 @@ public:
 
 	void setup(VideoLoader *_vid, ImageLoader *_img, CamLoader *_cam, ColourGradient *_gradient, Spout2Reciever *_spout);
 	//void update();
-	void draw(int x, int y, int w, int h);
+	void draw(ofFbo fbo, int x, int y, int w, int h);
 	void selection();
 
 

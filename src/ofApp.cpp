@@ -39,83 +39,46 @@ void ofApp::setup() {
 	ofClear(255, 255, 255, 0);
 	fbo.end();
 
-	//NDI.setup();
-	Spout2.setup();
+	fbo1.begin();
+	ofClear(255, 255, 255, 0);
+	fbo1.end();
 }
 
+void ofApp::coloursetup() {
+	if (input.params.setup == true) {
+		
+		colour.setup(1920, 1080);
+		input.params.setup = false;
+	}
+
+}
+
+
+void ofApp::colourfbo() {
+	fbo1.begin();
+	colour.draw();
+	fbo1.end();
+}
 
 void ofApp::update() {
 	ofSetWindowTitle(ofToString(ofGetFrameRate()));
 	
 	fbo.begin();
-	input.draw(0, 0, 1920, 1080);
+	coloursetup();
+	colourfbo();
+	input.draw(fbo1, 0, 0, 1920, 1080);
 	fbo.end();
 }
 
-////////////////////
-//////////////////
-//////////////
-/////////////////
-/////////////////
-//NDI ouput
-/*
+
 void ofApp::OutputController() {
-	
-	int menu_input = outs.params.output_type;
-	int switcher = outs.params.switcher;
-
-	if (menu_input == 1) {
-
-		spout2Sender = true;
-		NDIsender = false;
-		noSender = false;
-
-		NDI.exit();
-		Spout2.exit();
-		Spout2.setup();
-	}
-
-	if (menu_input == 2) {
-
-		spout2Sender = false;
-		NDIsender = true;
-		noSender = false;
-
-
-		Spout2.exit();
-		NDI.exit();
-		NDI.setup();
-	}
-
-	if (menu_input == 0) {
-
-		spout2Sender = false;
-		NDIsender = false;
-		noSender = true;
-
-		Spout2.exit();
-		NDI.exit();
-	}
-
 }
-*/
+
 void ofApp::output() {
-/*
-	if (outs.params.switcher == true) {
-		OutputController();
-	}
 
-	if (NDIsender == true) {
-		NDI.send(fbo);
-	}
+	outs.draw(fbo);
 
-	if (spout2Sender == true) {
-		Spout2.send(fbo);
-	}
-	*/
-	Spout2.send(fbo);
 	gui.draw(fbo);
-//	NDI.send(fbo);
 }
 
 ////////////////////
@@ -125,7 +88,6 @@ void ofApp::output() {
 void ofApp::draw() {
 
 	update();
-	
 	output();
 	
 	//fbo.draw(0, ofGetHeight()*.25, ofGetWidth()*.5, ofGetHeight()*.5);
