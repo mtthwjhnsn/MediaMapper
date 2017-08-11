@@ -18,4 +18,5 @@ void VideoLoader::draw(int x, int y, int w, int h) {
 
 void VideoLoader::close() {
 	video.close();
+	//video.forceExit();
 }

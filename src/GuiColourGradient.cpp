@@ -179,132 +179,136 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 
 	//float phase3 = colour->params.phase.z;
 
-	//FBO
-	fbo.begin();
+	if (inputs->params.input_type == 4)
+	{
 
-	ofSetColor(50, 50, 50, 50);
-	ofRect(0, 0, w, h);
+		//FBO
+		fbo.begin();
 
-	for (int i = 0; i < w; i++) {
+		ofSetColor(50, 50, 50, 50);
+		ofRect(0, 0, w, h);
 
-		float xval = ofMap(i, 0, w, 0.00, 1.00, true);
+		for (int i = 0; i < w; i++) {
 
-		float red_wave = (colour->ColourGradient::lfo(colour->params.palette_lfo_red, 6.28318*(freq1*(speed + xval) + phase1)));
-		float green_wave = colour->ColourGradient::lfo(colour->params.palette_lfo_green, 6.28318*(freq2*(speed + xval) + phase2));
-		float blue_wave = colour->ColourGradient::lfo(colour->params.palette_lfo_blue, 6.28318*(freq3*(speed + xval) + phase3));
+			float xval = ofMap(i, 0, w, 0.00, 1.00, true);
 
-		mesh.addVertex(ofVec2f(i, dc1 * H + H * amp1 * red_wave));
-		mesh.addColor(ofFloatColor(1.0, 0.0, 0.0));
+			float red_wave = (colour->ColourGradient::lfo(colour->params.palette_lfo_red, 6.28318*(freq1*(speed + xval) + phase1)));
+			float green_wave = colour->ColourGradient::lfo(colour->params.palette_lfo_green, 6.28318*(freq2*(speed + xval) + phase2));
+			float blue_wave = colour->ColourGradient::lfo(colour->params.palette_lfo_blue, 6.28318*(freq3*(speed + xval) + phase3));
 
-		mesh.addVertex(ofVec2f(i, dc2 * H + H * amp2 * green_wave));
-		mesh.addColor(ofFloatColor(0.0, 1.0, 0.0));
+			mesh.addVertex(ofVec2f(i, dc1 * H + H * amp1 * red_wave));
+			mesh.addColor(ofFloatColor(1.0, 0.0, 0.0));
 
-		mesh.addVertex(ofVec2f(i, dc3 * H + H * amp3 * blue_wave));
-		mesh.addColor(ofFloatColor(0.0, 0.0, 1.0));
+			mesh.addVertex(ofVec2f(i, dc2 * H + H * amp2 * green_wave));
+			mesh.addColor(ofFloatColor(0.0, 1.0, 0.0));
 
+			mesh.addVertex(ofVec2f(i, dc3 * H + H * amp3 * blue_wave));
+			mesh.addColor(ofFloatColor(0.0, 0.0, 1.0));
+
+		}
+
+		mesh.drawVertices();
+		mesh.clearVertices();
+		mesh.clearColors();
+		fbo.end();
+
+		int _w = w / 3;
+		int _h = h / 2;
+		int _H = _h * .5;
+
+		//frequency lfo
+		fbo1.begin();
+		ofSetColor(50, 50);
+		ofRect(0, 0, _w, _h);
+		for (int i = 0; i < _w; i++) {
+			float xval = ofMap(i, 0, _w, 0.00, 1.00, true);
+			float freq_wave = (colour->ColourGradient::lfo(colour->params.freq_lfo_type, 6.28318*(freq_cycle_speed * xval + 1)));
+			mesh.addVertex(ofVec2f(i, H / 2 + H * freq_lfo_amp * freq_wave));
+			mesh.addColor(ofFloatColor(1.0, 1.0, 1.0));
+		}
+		mesh.drawVertices();
+		mesh.clearVertices();
+		mesh.clearColors();
+		fbo1.end();
+
+		// amp lfo
+		fbo2.begin();
+		ofSetColor(50, 50);
+		ofRect(0, 0, _w, _h);
+		for (int i = 0; i < _w; i++) {
+			float xval = ofMap(i, 0, _w, 0.00, 1.00, true);
+			float amp_wave = (colour->ColourGradient::lfo(colour->params.amp_lfo_type, 6.28318*(amp_cycle_speed * xval + 1)));
+			mesh.addVertex(ofVec2f(i, H / 2 + H * amp_lfo_amp * amp_wave));
+			mesh.addColor(ofFloatColor(1.0, 1.0, 1.0));
+		}
+		mesh.drawVertices();
+		mesh.clearVertices();
+		mesh.clearColors();
+		fbo2.end();
+
+		// phase lfo
+		fbo3.begin();
+		ofSetColor(50, 50);
+		ofRect(0, 0, _w, _h);
+		for (int i = 0; i < _w; i++) {
+			float xval = ofMap(i, 0, _w, 0.00, 1.00, true);
+			float phase_wave = (colour->ColourGradient::lfo(colour->params.phase_lfo_type, 6.28318*(phase_cycle_speed * xval + 1)));
+			mesh.addVertex(ofVec2f(i, H / 2 + H * phase_lfo_amp * phase_wave));
+			mesh.addColor(ofFloatColor(1.0, 1.0, 1.0));
+		}
+		mesh.drawVertices();
+		mesh.clearVertices();
+		mesh.clearColors();
+		fbo3.end();
+
+		// red adsr visual
+		fbo4.begin();
+		float red_attack = ofMap(sound->s_params.red_Attack, 0, 10000.0, 0, _w);
+		float red_decay = ofMap(sound->s_params.red_Decay, 0, 10000.0, 0, _w);
+		float red_sustain = ofMap(sound->s_params.red_Sustain, 0, 10000.0, 0, _h);
+		float red_release = ofMap(sound->s_params.red_Release, 0, 10000.0, 0, _w);
+
+		ofSetColor(255, 50);
+		ofRect(0, 0, _w, _h);
+		ofSetColor(255, 0, 0);
+		ofLine(0, _h, red_attack, 0);
+		ofLine(red_attack, 0, red_attack + red_decay, _h - red_sustain);
+		ofLine(red_attack + red_decay, _h - red_sustain, _w - red_release, _h - red_sustain);
+		ofLine(_w - red_release, _h - red_sustain, _w, _h);
+		fbo4.end();
+
+		// green adsr visual
+		fbo5.begin();
+		float green_attack = ofMap(sound->s_params.green_Attack, 0, 10000.0, 0, _w);
+		float green_decay = ofMap(sound->s_params.green_Decay, 0, 10000.0, 0, _w);
+		float green_sustain = ofMap(sound->s_params.green_Sustain, 0, 10000.0, 0, _h);
+		float green_release = ofMap(sound->s_params.green_Release, 0, 10000.0, 0, _w);
+
+		ofSetColor(50, 50);
+		ofRect(0, 0, _w, _h);
+		ofSetColor(0, 255, 0);
+		ofLine(0, _h, green_attack, 0);
+		ofLine(green_attack, 0, green_attack + green_decay, _h - green_sustain);
+		ofLine(green_attack + green_decay, _h - green_sustain, _w - green_release, _h - green_sustain);
+		ofLine(_w - green_release, _h - green_sustain, _w, _h);
+		fbo5.end();
+
+		// blue adsr visual
+		fbo6.begin();
+		float blue_attack = ofMap(sound->s_params.blue_Attack, 0, 10000.0, 0, _w);
+		float blue_decay = ofMap(sound->s_params.blue_Attack, 0, 10000.0, 0, _w);
+		float blue_sustain = ofMap(sound->s_params.blue_Sustain, 0, 10000.0, 0, _h);
+		float blue_release = ofMap(sound->s_params.blue_Release, 0, 10000.0, 0, _w);
+
+		ofSetColor(255, 50);
+		ofRect(0, 0, _w, _h);
+		ofSetColor(0, 0, 255);
+		ofLine(0, _h, blue_attack, 0);
+		ofLine(blue_attack, 0, blue_attack + blue_decay, _h - blue_sustain);
+		ofLine(blue_attack + blue_decay, _h - blue_sustain, _w - blue_release, _h - blue_sustain);
+		ofLine(_w - blue_release, _h - blue_sustain, _w, _h);
+		fbo6.end();
 	}
-
-	mesh.drawVertices();
-	mesh.clearVertices();
-	mesh.clearColors();
-	fbo.end();
-
-	int _w = w / 3;
-	int _h = h / 2;
-	int _H = _h * .5;
-
-	//frequency lfo
-	fbo1.begin();
-	ofSetColor(50, 50);
-	ofRect(0, 0, _w, _h);
-	for (int i = 0; i < _w; i++) {
-		float xval = ofMap(i, 0, _w, 0.00, 1.00, true);
-		float freq_wave = (colour->ColourGradient::lfo(colour->params.freq_lfo_type, 6.28318*(freq_cycle_speed * xval + 1)));
-		mesh.addVertex(ofVec2f(i, H / 2 + H * freq_lfo_amp * freq_wave));
-		mesh.addColor(ofFloatColor(1.0, 1.0, 1.0));
-	}
-	mesh.drawVertices();
-	mesh.clearVertices();
-	mesh.clearColors();
-	fbo1.end();
-
-	// amp lfo
-	fbo2.begin();
-	ofSetColor(50, 50);
-	ofRect(0, 0, _w, _h);
-	for (int i = 0; i < _w; i++) {
-		float xval = ofMap(i, 0, _w, 0.00, 1.00, true);
-		float amp_wave = (colour->ColourGradient::lfo(colour->params.amp_lfo_type, 6.28318*(amp_cycle_speed * xval + 1)));
-		mesh.addVertex(ofVec2f(i, H / 2 + H * amp_lfo_amp * amp_wave));
-		mesh.addColor(ofFloatColor(1.0, 1.0, 1.0));
-	}
-	mesh.drawVertices();
-	mesh.clearVertices();
-	mesh.clearColors();
-	fbo2.end();
-
-	// phase lfo
-	fbo3.begin();
-	ofSetColor(50, 50);
-	ofRect(0, 0, _w, _h);
-	for (int i = 0; i < _w; i++) {
-		float xval = ofMap(i, 0, _w, 0.00, 1.00, true);
-		float phase_wave = (colour->ColourGradient::lfo(colour->params.phase_lfo_type, 6.28318*(phase_cycle_speed * xval + 1)));
-		mesh.addVertex(ofVec2f(i, H / 2 + H * phase_lfo_amp * phase_wave));
-		mesh.addColor(ofFloatColor(1.0, 1.0, 1.0));
-	}
-	mesh.drawVertices();
-	mesh.clearVertices();
-	mesh.clearColors();
-	fbo3.end();
-
-	// red adsr visual
-	fbo4.begin();
-	float red_attack = ofMap(sound->s_params.red_Attack, 0, 10000.0, 0, _w);
-	float red_decay = ofMap(sound->s_params.red_Decay, 0, 10000.0, 0, _w);
-	float red_sustain = ofMap(sound->s_params.red_Sustain, 0, 10000.0, 0, _h);
-	float red_release = ofMap(sound->s_params.red_Release, 0, 10000.0, 0, _w);
-
-	ofSetColor(255, 50);
-	ofRect(0, 0, _w, _h);
-	ofSetColor(255, 0, 0);
-	ofLine(0, _h, red_attack, 0);
-	ofLine(red_attack, 0, red_attack + red_decay, _h - red_sustain);
-	ofLine(red_attack + red_decay, _h - red_sustain, _w - red_release, _h - red_sustain);
-	ofLine(_w - red_release, _h - red_sustain, _w, _h);
-	fbo4.end();
-
-	// green adsr visual
-	fbo5.begin();
-	float green_attack = ofMap(sound->s_params.green_Attack, 0, 10000.0, 0, _w);
-	float green_decay = ofMap(sound->s_params.green_Decay, 0, 10000.0, 0, _w);
-	float green_sustain = ofMap(sound->s_params.green_Sustain, 0, 10000.0, 0, _h);
-	float green_release = ofMap(sound->s_params.green_Release, 0, 10000.0, 0, _w);
-
-	ofSetColor(50, 50);
-	ofRect(0, 0, _w, _h);
-	ofSetColor(0, 255, 0);
-	ofLine(0, _h, green_attack, 0);
-	ofLine(green_attack, 0, green_attack + green_decay, _h - green_sustain);
-	ofLine(green_attack + green_decay, _h - green_sustain, _w - green_release, _h - green_sustain);
-	ofLine(_w - green_release, _h - green_sustain, _w, _h);
-	fbo5.end();
-
-	// blue adsr visual
-	fbo6.begin();
-	float blue_attack = ofMap(sound->s_params.blue_Attack, 0, 10000.0, 0, _w);
-	float blue_decay = ofMap(sound->s_params.blue_Attack, 0, 10000.0, 0, _w);
-	float blue_sustain = ofMap(sound->s_params.blue_Sustain, 0, 10000.0, 0, _h);
-	float blue_release = ofMap(sound->s_params.blue_Release, 0, 10000.0, 0, _w);
-
-	ofSetColor(255, 50);
-	ofRect(0, 0, _w, _h);
-	ofSetColor(0, 0, 255);
-	ofLine(0, _h, blue_attack, 0);
-	ofLine(blue_attack, 0, blue_attack + blue_decay, _h - blue_sustain);
-	ofLine(blue_attack + blue_decay, _h - blue_sustain, _w - blue_release, _h - blue_sustain);
-	ofLine(_w - blue_release, _h - blue_sustain, _w, _h);
-	fbo6.end();
 
 	fbo7.begin();
 	fboinput.draw(0, 0, 640, 360);

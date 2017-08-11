@@ -5,10 +5,17 @@
 
 //========================================================================
 int main( ){
-	ofGLWindowSettings settings;
+	//ofGLWindowSettings settings;
+	ofGLFWWindowSettings settings;
 	settings.setGLVersion(3, 2);
-	settings.width = 1280;
-	settings.height = 720;
+	settings.width = 1920;
+	settings.height = 1080;
+
+
+	settings.decorated = true;
+	settings.resizable = true;
+	settings.windowMode = OF_WINDOW;
+
 	ofCreateWindow(settings);
 
 	// this kicks off the running of my app
@@ -17,3 +24,18 @@ int main( ){
 	ofRunApp(new ofApp());
 
 }
+
+/*
+int main()
+{
+	ofGLFWWindowSettings settings;
+
+	settings.width = 1024;
+	settings.height = 768;
+	settings.decorated = false;
+	settings.windowMode = OF_WINDOW;
+
+	ofCreateWindow(settings);
+	ofRunApp(new ofApp());
+}
+*/
