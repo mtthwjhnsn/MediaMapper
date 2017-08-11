@@ -22,7 +22,7 @@ void ofApp::setup() {
 	ofSoundStreamSetup(2, 0, this, sampleRate, bufferSize, 4);
 
 	sound.setup();
-	
+
 	input.setup(&vid, &img, &cam, &col, &spout);
 	gui.setup(&colour, &sound, &input, &outs);
 	outs.setup();
@@ -34,6 +34,8 @@ void ofApp::setup() {
 	fboSettings.textureTarget = GL_TEXTURE_2D;
 
 	fbo.allocate(fboSettings);
+
+	//coloursetup();
 
 	fbo.begin();
 	ofClear(255, 255, 255, 0);
@@ -89,17 +91,8 @@ void ofApp::draw() {
 
 	update();
 	output();
-	
-	//fbo.draw(0, ofGetHeight()*.25, ofGetWidth()*.5, ofGetHeight()*.5);
 
 }
-
-
-
-//--------------------------------------------------------------
-
-//--------------------------------------------------------------
-
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
@@ -128,9 +121,9 @@ void ofApp::keyPressed(int key) {
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {
 
-		env_red.trigger = 0;
-		env_green.trigger = 0;
-		env_blue.trigger = 0;
+	env_red.trigger = 0;
+	env_green.trigger = 0;
+	env_blue.trigger = 0;
 
 }
 
