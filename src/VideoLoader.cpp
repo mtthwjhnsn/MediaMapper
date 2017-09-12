@@ -5,7 +5,7 @@ void VideoLoader::setup() {
 	ofFileDialogResult result = ofSystemLoadDialog("Load file");
 	if (result.bSuccess) {
 		string path = result.getPath();
-		// load your file at `path`
+
 		video.loadMovie(path);
 		video.play();
 	}
@@ -18,5 +18,4 @@ void VideoLoader::draw(int x, int y, int w, int h) {
 
 void VideoLoader::close() {
 	video.close();
-	//video.forceExit();
 }

@@ -11,9 +11,11 @@
 
 #include "ofApp.h"
 
-
 //--------------------------------------------------------------
 void ofApp::setup() {
+
+	background.load("vhs.png");
+
 	int w = ofGetWidth();
 	int h = ofGetHeight();
 
@@ -66,7 +68,7 @@ void ofApp::update() {
 	fbo.begin();
 	coloursetup();
 	colourfbo();
-	input.draw(fbo1, 0, 0, 1920, 1080);
+	input.draw(fbo1, gui.tileXpos, gui.tileYpos, gui.tileWidth, gui.tileHeight);
 	fbo.end();
 }
 
@@ -81,24 +83,17 @@ void ofApp::output() {
 	gui.draw(fbo);
 }
 
-////////////////////
-///////////////////
-/////////////////////
 //--------------------------------------------------------------
 void ofApp::draw() {
+	background.draw(0, 0, ofGetWidth(), ofGetHeight());
+
 
 	update();
 	output();
-	
+
 	//fbo.draw(0, ofGetHeight()*.25, ofGetWidth()*.5, ofGetHeight()*.5);
 
 }
-
-
-
-//--------------------------------------------------------------
-
-//--------------------------------------------------------------
 
 
 //--------------------------------------------------------------

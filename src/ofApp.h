@@ -74,6 +74,8 @@ public:
 	
 	ofFbo fbo;
 
+	ofImage background;
+
 	void coloursetup();
 	void colourfbo();
 

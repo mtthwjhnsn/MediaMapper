@@ -21,7 +21,12 @@ int h = 180;
 //-------------------------------------------------
 void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_selector *_inputs, output_selector *_outputs) {
 
-	//gui
+	tileXpos = 0;
+	tileYpos = 0;
+	tileWidth = 640;
+	tileHeight = 480;
+	zoom = 1.00;
+
 	gui.setup();
 	guiVisible = true;
 	
@@ -29,8 +34,6 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 	sound = _sound;
 	inputs = _inputs;
 	outputs = _outputs;
-
-	//inputbutton.setup();
 
 	ofFbo::Settings fboSettings;
 	fboSettings.width = w;
@@ -51,8 +54,8 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 	fbo5.allocate(fboSettings);
 	fbo6.allocate(fboSettings);
 
-	fboSettings.width = 640;
-	fboSettings.height = 360;
+	fboSettings.width = tileWidth;
+	fboSettings.height = tileHeight;
 	fbo7.allocate(fboSettings);
 	
 	textureid = fbo.getTexture().texData.textureID;
@@ -64,7 +67,6 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 	textureid6 = fbo6.getTexture().texData.textureID;
 	textureid7 = fbo7.getTexture().texData.textureID;
 
-	//fbo.allocate(wwidth, hheight);
 	fbo.begin();
 	ofClear(255, 255, 255, 0);
 	fbo.end();
@@ -143,6 +145,7 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 
 		//IMGUI		
 		imGui();
+
 	}
 	float H = h * .5;
 
@@ -300,7 +303,7 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		float blue_sustain = ofMap(sound->s_params.blue_Sustain, 0, 10000.0, 0, _h);
 		float blue_release = ofMap(sound->s_params.blue_Release, 0, 10000.0, 0, _w);
 
-		ofSetColor(255, 50);
+		ofSetColor(50, 50);
 		ofRect(0, 0, _w, _h);
 		ofSetColor(0, 0, 255);
 		ofLine(0, _h, blue_attack, 0);
@@ -309,9 +312,17 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		ofLine(_w - blue_release, _h - blue_sustain, _w, _h);
 		fbo6.end();
 	}
+	/*ofFbo::Settings fboSettings;
+	fboSettings.internalformat = GL_RGBA;
+	fboSettings.textureTarget = GL_TEXTURE_2D;
 
+	fboSettings.width = tileWidth;
+	fboSettings.height = tileHeight;
+	fbo7.allocate(fboSettings);
+	*/
 	fbo7.begin();
-	fboinput.draw(0, 0, 640, 360);
+	ofBackground(50, 50);
+	fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 	fbo7.end();
 
 }
@@ -448,37 +459,32 @@ bool GuiColourGradient::imGui()
 			{
 				ImGui::MenuItem("(dummy menu)", NULL, false, false);
 				if (ImGui::MenuItem("No_Input")) {
-
 					inputs->params.input_type = 0;
 					inputs->selection();
 
 				}
 
 				if (ImGui::MenuItem("Video", "Ctrl+V")) {
-
 					inputs->params.input_type = 1;
 					inputs->selection();
 
 
 				}
 				if (ImGui::MenuItem("Image", "Ctrl+I")) {
-
 					inputs->params.input_type = 2;
 					inputs->selection();
 				}
 				if (ImGui::MenuItem("Camera", "Ctrl+C")) {
-
 					inputs->params.input_type = 3;
 					inputs->selection();
 
 				}
 				if (ImGui::MenuItem("Gradient", "Ctrl+G")) {
-
 					inputs->params.input_type = 4;
 					inputs->selection();
+
 				}
 				if (ImGui::MenuItem("Spout2", "Ctrl+O")) {
-
 					inputs->params.input_type = 5;
 					inputs->selection();
 				}
@@ -539,20 +545,35 @@ bool GuiColourGradient::imGui()
 			{
 
 				if (ImGui::MenuItem("no_output")) {
-
 					outputs->params.output_type = 0;
 					outputs->selection();
 				}
 				if (ImGui::MenuItem("Spout2")) {
-
 					outputs->params.output_type = 1;
 					outputs->selection();
 				}
 
 				if (ImGui::MenuItem("NDI")) {
-
 					outputs->params.output_type = 2;
 					outputs->selection();
+				}
+				if (ImGui::BeginMenu("Output Resolution"))
+				{
+					ImGui::MenuItem("fish_hat.c");
+					ImGui::MenuItem("fish_hat.inl");
+					ImGui::MenuItem("fish_hat.h");
+					if (ImGui::BeginMenu("More.."))
+					{
+						ImGui::MenuItem("Hello");
+						ImGui::MenuItem("Sailor");
+						if (ImGui::BeginMenu("Recurse.."))
+						{
+							//ShowExampleMenuFile();
+							ImGui::EndMenu();
+						}
+						ImGui::EndMenu();
+					}
+					ImGui::EndMenu();
 				}
 
 				if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
@@ -569,13 +590,44 @@ bool GuiColourGradient::imGui()
 		if (inputs->params.input_type == 0 || inputs->params.input_type == 1 || inputs->params.input_type == 2 || inputs->params.input_type == 3 || inputs->params.input_type == 4 || inputs->params.input_type == 5) {
 
 			if (ofxImGui::BeginWindow("Input", mainSettings, false)) {
-				
-				//ImGui::Text("video");
-				ImGui::ImageButton(TEX_ID7 getTextureID7(), ofVec2f(640, 360));
-
+				//zoom
+				if (ImGui::Button("-zoom")) {
+					tileWidth = tileWidth - 100;
+					tileHeight = tileHeight - 100;
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("+zoom")) {
+					tileWidth = tileWidth + 100;
+					tileHeight = tileHeight + 100;
+				}
+				//ImGui::ImageButton(TEX_ID7 getTextureID7(), ofVec2f(640, 360));
+				ImGui::Image(TEX_ID7 getTextureID7(), ofVec2f(640, 360));
+				ImGui::SameLine();
+				//ypos
+				ImGui::VSliderInt("tileYpos", ImVec2(18, 360), &tileYpos, 2160, 0);
+				//xpos
+				ImGui::Columns(2);
+				if (ImGui::Button("left")) {
+					tileXpos = tileXpos - 10;
+				}            ImGui::SameLine();
+				ImGui::SliderInt("tileXpos", &tileXpos, 0, 3840);
+				ImGui::SameLine();
+				if (ImGui::Button("right")) {
+					tileXpos = tileXpos + 10;
+				}
+				ImGui::NextColumn();
+				if (ImGui::Button("up")) {
+					tileYpos = tileYpos - 10;
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("down")) {
+					tileYpos = tileYpos + 10;
+				}
+				ImGui::SameLine();
 				ofxImGui::EndWindow(mainSettings);
+				
 			}
-		}		
+		}
 		
 		if (inputs->params.input_type == 4)
 		

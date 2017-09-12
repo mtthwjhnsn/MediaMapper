@@ -41,6 +41,9 @@ public:
 	void sound_selection(int* sound_param);
 	void oscillator(int* oscillator_param);
 
+	//tile
+	int tileXpos, tileYpos, tileWidth, tileHeight;
+	float zoom;
 	
 
 
