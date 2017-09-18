@@ -586,7 +586,7 @@ bool GuiColourGradient::imGui()
 			}
 			ImGui::EndMainMenuBar();
 		}
-
+		for (i = 0)
 		if (inputs->params.input_type == 0 || inputs->params.input_type == 1 || inputs->params.input_type == 2 || inputs->params.input_type == 3 || inputs->params.input_type == 4 || inputs->params.input_type == 5) {
 
 			if (ofxImGui::BeginWindow("Input", mainSettings, false)) {

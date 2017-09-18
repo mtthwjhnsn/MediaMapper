@@ -40,12 +40,6 @@ private:
 	ColourGradient *gradient;
 	Spout2Reciever *spout;
 
-	//GLuint getTextureID8();
-
-//private:
-	//ofFbo fbo8;
-	//GLuint textureid8;
-
 	
 	
 	
