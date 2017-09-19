@@ -31,8 +31,15 @@ public:
 	GLuint getTextureID4();
 	GLuint getTextureID5();
 	GLuint getTextureID6();
+	//GLuint getTextureID7();
+	GLuint getTextureIDVideo();
+	GLuint getTextureIDImage();
+	GLuint getTextureIDGradient();
+	GLuint getTextureIDCamera();
+	GLuint getTextureIDSpout();
+	GLuint getTextureIDNDI();
 
-	GLuint getTextureID7();
+	void Window(int selection);
 
 	void lfo_selection(int* type_param);
 	void lfo_selection_red(int* type_param_red);
@@ -52,8 +59,8 @@ private:
 	Sound *sound;
 	input_selector *inputs;
 	output_selector *outputs;
-	//NDIoutput *NDI;
 
+	//NDIoutput *NDI;
 	//input_selector inputbutton;
 
 
@@ -65,7 +72,14 @@ private:
 	ofFbo fbo4;
 	ofFbo fbo5;
 	ofFbo fbo6;
-	ofFbo fbo7;
+	//ofFbo fbo7;
+
+	ofFbo fboVideo;
+	ofFbo fboImage;
+	ofFbo fboGradient;
+	ofFbo fboCamera;
+	ofFbo fboSpout;
+	ofFbo fboNDI;
 	
 	GLuint textureid;
 	GLuint textureid1;
@@ -74,7 +88,14 @@ private:
 	GLuint textureid4;
 	GLuint textureid5;
 	GLuint textureid6;
-	GLuint textureid7;
+	//GLuint textureid7;
+
+	GLuint textureidVideo;
+	GLuint textureidImage;
+	GLuint textureidGradient;
+	GLuint textureidCamera;
+	GLuint textureidNDI;
+	GLuint textureidSpout;
 	
 	ofShader shader;
 	ofImage image;

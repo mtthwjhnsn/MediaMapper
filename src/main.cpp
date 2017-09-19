@@ -8,13 +8,8 @@ int main( ){
 	//ofGLWindowSettings settings;
 	ofGLFWWindowSettings settings;
 	settings.setGLVersion(3, 2);
-<<<<<<< HEAD
-	settings.width = 1024;
-	settings.height = 768;
-=======
-	settings.width = 1280;
-	settings.height = 720;
->>>>>>> 1686dd78f771e9303b86959f5577699a0869b82f
+	settings.width = 1920;
+	settings.height = 1080;
 
 
 	settings.decorated = false;
