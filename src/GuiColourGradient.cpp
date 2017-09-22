@@ -380,43 +380,36 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		fbo6.end();
 	}
 
-	if (inputs->params.input_type == 1) {
 		fboVideo.begin();
 		ofBackground(50, 50);
 		fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 		fboVideo.end();
-	}
-	if (inputs->params.input_type == 2) {
+
 		fboImage.begin();
 		ofBackground(50, 50);
 		fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 		fboImage.end();
-	}
-	if (inputs->params.input_type == 3) {
+
 		fboGradient.begin();
 		ofBackground(50, 50);
 		fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 		fboGradient.end();
-	}
-	if (inputs->params.input_type == 4) {
+	
 		fboCamera.begin();
 		ofBackground(50, 50);
 		fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 		fboCamera.end();
-	}
-	if (inputs->params.input_type == 5) {
+	
 		fboSpout.begin();
 		ofBackground(50, 50);
 		fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 		fboSpout.end();
-	}
-	if (inputs->params.input_type == 6) {
+	
 		fboNDI.begin();
 		ofBackground(50, 50);
 		fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 		fboNDI.end();
-	}
-
+	
 }
 
 //--------------------------------------------------------------
