@@ -23,6 +23,7 @@ void ofApp::setup() {
 	bufferSize = 512;
 	ofSoundStreamSetup(2, 0, this, sampleRate, bufferSize, 4);
 
+	colour.setup(gui.tileWidth, gui.tileHeight);
 	sound.setup();
 	
 	input.setup(&vid, &img, &cam, &col, &spout);
@@ -46,15 +47,14 @@ void ofApp::setup() {
 	fbo1.end();
 }
 
+/*
 void ofApp::coloursetup() {
 	if (input.params.setup == true) {
-		
 		colour.setup(1920, 1080);
 		input.params.setup = false;
 	}
-
 }
-
+*/
 
 void ofApp::colourfbo() {
 	fbo1.begin();
@@ -64,9 +64,8 @@ void ofApp::colourfbo() {
 
 void ofApp::update() {
 	ofSetWindowTitle(ofToString(ofGetFrameRate()));
-	
 	fbo.begin();
-	coloursetup();
+	//coloursetup();
 	colourfbo();
 	input.draw(fbo1, gui.tileXpos, gui.tileYpos, gui.tileWidth, gui.tileHeight);
 	fbo.end();
@@ -77,22 +76,16 @@ void ofApp::OutputController() {
 }
 
 void ofApp::output() {
-
 	outs.draw(fbo);
-
 	gui.draw(fbo);
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
 	background.draw(0, 0, ofGetWidth(), ofGetHeight());
-
-
 	update();
 	output();
-
 	//fbo.draw(0, ofGetHeight()*.25, ofGetWidth()*.5, ofGetHeight()*.5);
-
 }
 
 
@@ -122,11 +115,9 @@ void ofApp::keyPressed(int key) {
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {
-
 		env_red.trigger = 0;
 		env_green.trigger = 0;
 		env_blue.trigger = 0;
-
 }
 
 
@@ -266,7 +257,6 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels) {
 				currentSample = osc_blue.noise();
 			}
 		}
-
 		mix.stereo(currentSample, outputs, 0.5);
 		output[i * nChannels] = outputs[0];
 		output[i * nChannels + 1] = outputs[1];

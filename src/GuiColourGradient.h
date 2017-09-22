@@ -16,7 +16,6 @@
 #include "Sound.h"
 #include "input_selector.h"
 #include "output_selector.h"
-//#include "NDIoutput.h"
 
 class GuiColourGradient {
 public:
@@ -31,7 +30,7 @@ public:
 	GLuint getTextureID4();
 	GLuint getTextureID5();
 	GLuint getTextureID6();
-	//GLuint getTextureID7();
+	GLuint getTextureIDTest();
 	GLuint getTextureIDVideo();
 	GLuint getTextureIDImage();
 	GLuint getTextureIDGradient();
@@ -52,17 +51,12 @@ public:
 	int tileXpos, tileYpos, tileWidth, tileHeight;
 	float zoom;
 	
-
-
+	
 private:
 	ColourGradient *colour;
 	Sound *sound;
 	input_selector *inputs;
 	output_selector *outputs;
-
-	//NDIoutput *NDI;
-	//input_selector inputbutton;
-
 
 	ofMesh mesh;
 	ofFbo fbo;
@@ -72,8 +66,7 @@ private:
 	ofFbo fbo4;
 	ofFbo fbo5;
 	ofFbo fbo6;
-	//ofFbo fbo7;
-
+	ofFbo fboTest;
 	ofFbo fboVideo;
 	ofFbo fboImage;
 	ofFbo fboGradient;
@@ -88,8 +81,7 @@ private:
 	GLuint textureid4;
 	GLuint textureid5;
 	GLuint textureid6;
-	//GLuint textureid7;
-
+	GLuint textureidTest;
 	GLuint textureidVideo;
 	GLuint textureidImage;
 	GLuint textureidGradient;

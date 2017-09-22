@@ -12,9 +12,10 @@
 //---------------
 //---------------
 
+//--------------------------------------------------------------
 #include "GuiColourGradient.h"
 #define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
-
+//--------------------------------------------------------------
 #define TEX_ID (ImTextureID)(uintptr_t)
 #define TEX_ID1 (ImTextureID)(uintptr_t)
 #define TEX_ID2 (ImTextureID)(uintptr_t)
@@ -22,8 +23,7 @@
 #define TEX_ID4 (ImTextureID)(uintptr_t)
 #define TEX_ID5 (ImTextureID)(uintptr_t)
 #define TEX_ID6 (ImTextureID)(uintptr_t)
-//#define TEX_ID7 (ImTextureID)(uintptr_t)
-
+#define TEX_IDTest (ImTextureID)(uintptr_t)
 #define TEX_IDVideo (ImTextureID)(uintptr_t)
 #define TEX_IDImage (ImTextureID)(uintptr_t)
 #define TEX_IDCamera (ImTextureID)(uintptr_t)
@@ -31,6 +31,7 @@
 #define TEX_IDSpout (ImTextureID)(uintptr_t)
 #define TEX_IDNDI (ImTextureID)(uintptr_t)
 
+//--------------------------------------------------------------
 int w = 800;
 int h = 180;
 
@@ -73,9 +74,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 	fboSettings.width = tileWidth;
 	fboSettings.height = tileHeight;
 
-
-	//	fbo7.allocate(fboSettings);
-
+	fboTest.allocate(fboSettings);
 	fboVideo.allocate(fboSettings);
 	fboImage.allocate(fboSettings);
 	fboCamera.allocate(fboSettings);
@@ -91,8 +90,13 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 	textureid5 = fbo5.getTexture().texData.textureID;
 	textureid6 = fbo6.getTexture().texData.textureID;
 
-
-	//	textureid7 = fbo7.getTexture().texData.textureID;
+	textureidTest = fboTest.getTexture().texData.textureID;
+	textureidVideo = fboVideo.getTexture().texData.textureID;
+	textureidImage = fboImage.getTexture().texData.textureID;
+	textureidCamera = fboCamera.getTexture().texData.textureID;
+	textureidGradient = fboGradient.getTexture().texData.textureID;
+	textureidSpout = fboSpout.getTexture().texData.textureID;
+	textureidNDI = fboNDI.getTexture().texData.textureID;
 
 	fbo.begin();
 	ofClear(255, 255, 255, 0);
@@ -122,9 +126,9 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 	ofClear(255, 255, 255, 0);
 	fbo6.end();
 
-	//	fbo7.begin();
-	//	ofClear(255, 255, 255, 0);
-		//fbo7.end();
+	fboTest.begin();
+	ofClear(255, 255, 255, 0);
+	fboTest.end();
 
 	fboVideo.begin();
 	ofClear(255, 255, 255, 0);
@@ -180,12 +184,9 @@ GLuint GuiColourGradient::getTextureID6() {
 	return textureid6;
 }
 
-
-//GLuint GuiColourGradient::getTextureID7() {
-//	return textureid7;
-//}
-
-
+GLuint GuiColourGradient::getTextureIDTest() {
+	return textureidTest;
+}
 GLuint GuiColourGradient::getTextureIDVideo() {
 	return textureidVideo;
 }
@@ -209,7 +210,6 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 
 
 	if (guiVisible) {
-
 		//IMGUI		
 		imGui();
 
@@ -248,10 +248,8 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 	float phase_cycle_speed = colour->params.phase_cycle_speed;
 
 	//float phase3 = colour->params.phase.z;
-
 	if (inputs->params.input_type == 4)
 	{
-
 		//FBO
 		fbo.begin();
 
@@ -274,7 +272,6 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 
 			mesh.addVertex(ofVec2f(i, dc3 * H + H * amp3 * blue_wave));
 			mesh.addColor(ofFloatColor(0.0, 0.0, 1.0));
-
 		}
 
 		mesh.drawVertices();
@@ -380,36 +377,41 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		fbo6.end();
 	}
 
-		fboVideo.begin();
-		ofBackground(50, 50);
-		fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
-		fboVideo.end();
+	fboTest.begin();
+	ofBackground(50, 50);
+	fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	fboTest.end();
 
-		fboImage.begin();
-		ofBackground(50, 50);
-		fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
-		fboImage.end();
+	fboVideo.begin();
+	ofBackground(50, 50);
+	fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	fboVideo.end();
 
-		fboGradient.begin();
-		ofBackground(50, 50);
-		fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
-		fboGradient.end();
-	
-		fboCamera.begin();
-		ofBackground(50, 50);
-		fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
-		fboCamera.end();
-	
-		fboSpout.begin();
-		ofBackground(50, 50);
-		fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
-		fboSpout.end();
-	
-		fboNDI.begin();
-		ofBackground(50, 50);
-		fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
-		fboNDI.end();
-	
+	fboImage.begin();
+	ofBackground(50, 50);
+	fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	fboImage.end();
+
+	fboGradient.begin();
+	ofBackground(50, 50);
+	fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	fboGradient.end();
+
+	fboCamera.begin();
+	ofBackground(50, 50);
+	fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	fboCamera.end();
+
+	fboSpout.begin();
+	ofBackground(50, 50);
+	fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	fboSpout.end();
+
+	fboNDI.begin();
+	ofBackground(50, 50);
+	fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	fboNDI.end();
+
 }
 
 //--------------------------------------------------------------
@@ -499,9 +501,47 @@ void GuiColourGradient::oscillator(int* oscillator_param) {
 	ImGui::Separator();
 }
 
+//--------------------------------------------------------------
 void GuiColourGradient::Window(int selection) {
 
 	if (inputs->params.input_type == selection) {
+
+		const char* resolutions[] = { "custom", "1280 x 720 (720p)", "1920 x 1080 (1080p)", "2560 x 1440 (QHD)", "3840 x 2160 (4k)", "7680 x 4320 (8k)" };
+		static int resolutions2 = -1;
+
+		ImGui::Combo("output resolution", &resolutions2, resolutions, IM_ARRAYSIZE(resolutions));
+		ImGui::SameLine();
+		
+		if (resolutions[0]) {
+			static int i0 = 1920;
+			static int i1 = 1080;
+			ImGui::InputInt("output_width", &i0);
+			ImGui::SameLine();
+			ImGui::InputInt("output_height", &i1);
+			ImGui::SameLine();
+			tileWidth = i0;
+			tileHeight = i1;
+		}
+		if (resolutions[1]) {
+			tileWidth = 1280;
+			tileHeight = 720;
+		}
+		if (resolutions[2]) {
+			tileWidth = 1920;
+			tileHeight = 1080;
+		}
+		if (resolutions[3]) {
+			tileWidth = 2560;
+			tileHeight = 1440;
+		}
+		if (resolutions[4]) {
+			tileWidth = 3840;
+			tileHeight = 2160;
+		}
+		if (resolutions[5]) {
+			tileWidth = 7680;
+			tileHeight = 4320;
+		}
 
 		if (ImGui::Button("-zoom")) {
 			tileWidth = tileWidth - 100;
@@ -512,8 +552,9 @@ void GuiColourGradient::Window(int selection) {
 			tileWidth = tileWidth + 100;
 			tileHeight = tileHeight + 100;
 		}
-
-		//ImGui::Image(TEX_ID7 getTextureID7(), ofVec2f(640, 360));
+		if (selection == 0) {
+			ImGui::Image(TEX_IDTest getTextureIDTest(), ofVec2f(640, 360));
+		}
 		if (selection == 1) {
 			ImGui::Image(TEX_IDVideo getTextureIDVideo(), ofVec2f(640, 360));
 		}
@@ -532,7 +573,6 @@ void GuiColourGradient::Window(int selection) {
 		if (selection == 6) {
 			ImGui::Image(TEX_IDNDI getTextureIDNDI(), ofVec2f(640, 360));
 		}
-
 
 		ImGui::SameLine();
 		//ypos
@@ -555,15 +595,8 @@ void GuiColourGradient::Window(int selection) {
 		if (ImGui::Button("down")) {
 			tileYpos = tileYpos + 10;
 		}
-
 	}
-
-
-
 }
-
-
-
 
 //#define TEX_ID8 (ImTextureID)(uintptr_t)
 bool GuiColourGradient::imGui()
@@ -602,14 +635,10 @@ bool GuiColourGradient::imGui()
 				if (ImGui::MenuItem("No_Input")) {
 					inputs->params.input_type = 0;
 					inputs->selection();
-
 				}
-
 				if (ImGui::MenuItem("Video", "Ctrl+V")) {
 					inputs->params.input_type = 1;
 					inputs->selection();
-
-
 				}
 				if (ImGui::MenuItem("Image", "Ctrl+I")) {
 					inputs->params.input_type = 2;
@@ -618,18 +647,15 @@ bool GuiColourGradient::imGui()
 				if (ImGui::MenuItem("Camera", "Ctrl+C")) {
 					inputs->params.input_type = 3;
 					inputs->selection();
-
 				}
 				if (ImGui::MenuItem("Gradient", "Ctrl+G")) {
 					inputs->params.input_type = 4;
 					inputs->selection();
-
 				}
 				if (ImGui::MenuItem("Spout2", "Ctrl+O")) {
 					inputs->params.input_type = 5;
 					inputs->selection();
 				}
-
 				ImGui::EndMenu();
 			}
 
@@ -645,7 +671,6 @@ bool GuiColourGradient::imGui()
 					outputs->params.output_type = 1;
 					outputs->selection();
 				}
-
 				if (ImGui::MenuItem("NDI")) {
 					outputs->params.output_type = 2;
 					outputs->selection();
@@ -661,64 +686,19 @@ bool GuiColourGradient::imGui()
 			ImGui::EndMainMenuBar();
 		}
 
+		//WINDOWS---------------------------------------------------------------
+		//WINDOWS---------------------------------------------------------------
+		//WINDOWS---------------------------------------------------------------
+
+
+		vector<string> window_names = {"No Input","Video","Image", "Camera", "Spout", "NDI"};
 
 
 
-
-
-		//WINDOWS
-		if (inputs->params.input_type == 0) {
-
-			if (ofxImGui::BeginWindow("NO_INPUT", mainSettings, false)) {
+		for (int i = 0; i < window_names.size(); i++) {
+						if (ofxImGui::BeginWindow(window_names[i], mainSettings, false)) {
 				ImGui::Separator();
-				ofxImGui::EndWindow(mainSettings);
-			}
-		}
-
-		if (inputs->params.input_type == 1) {
-
-			if (ofxImGui::BeginWindow("VideoInput", mainSettings, false)) {
-				ImGui::Separator();
-				Window(1);
-				ofxImGui::EndWindow(mainSettings);
-			}
-		}
-
-		if (inputs->params.input_type == 2) {
-
-			if (ofxImGui::BeginWindow("ImageInput", mainSettings, false)) {
-				ImGui::Separator();
-				Window(2);
-				ofxImGui::EndWindow(mainSettings);
-			}
-		}
-
-		if (inputs->params.input_type == 3) {
-			if (ofxImGui::BeginWindow("CameraInput", mainSettings, false)) {
-				ImGui::Separator();
-				Window(3);
-				ofxImGui::EndWindow(mainSettings);
-			}
-		}
-
-		if (inputs->params.input_type == 4) {
-			if (ofxImGui::BeginWindow("GradientInput", mainSettings, false)) {
-				ImGui::Separator();
-				Window(4);
-				ofxImGui::EndWindow(mainSettings);
-			}
-		}
-		if (inputs->params.input_type == 5) {
-			if (ofxImGui::BeginWindow("SpoutINput", mainSettings, false)) {
-				ImGui::Separator();
-				Window(5);
-				ofxImGui::EndWindow(mainSettings);
-			}
-		}
-		if (inputs->params.input_type == 6) {
-			if (ofxImGui::BeginWindow("NDIInput", mainSettings, false)) {
-				ImGui::Separator();
-				Window(6);
+				Window(i);
 				ofxImGui::EndWindow(mainSettings);
 			}
 		}
@@ -726,9 +706,6 @@ bool GuiColourGradient::imGui()
 		if (inputs->params.input_type == 4)
 
 		{
-
-
-
 			mainSettings.windowPos = pos4;
 
 			//BANDS AND SPEED------------------------------------------------------
@@ -1080,7 +1057,3 @@ bool GuiColourGradient::imGui()
 	}
 
 }
-
-
-
-
