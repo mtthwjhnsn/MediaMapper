@@ -55,7 +55,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 	inputs = _inputs;
 	outputs = _outputs;
 
-	
+
 	fboSettings.width = w;
 	fboSettings.height = h;
 	fboSettings.internalformat = GL_RGBA;
@@ -559,7 +559,6 @@ void GuiColourGradient::Navigate() {
 	tileWidth = tileWidth * tileZoom;
 	tileHeight = tileHeight * tileZoom;
 
-
 	ImGui::SameLine();
 	ImGui::SliderInt("tileXpos", &tileXpos, 0, 3840);
 	ImGui::SameLine();
@@ -583,42 +582,96 @@ void GuiColourGradient::Navigate() {
 //--------------------------------------------------------------
 void GuiColourGradient::Window(int selection) {
 	if (inputs->params.input_type == selection) {
+		static bool spout, spout1, spout2, spout3, spout4, spout5, spout6 = false;
+		static bool NDI, NDI1, NDI2, NDI3, NDI4, NDI5, NDI6 = false;
+		static char buf[64], buf1[64], buf2[64], buf3[64], buf4[64], buf5[64], buf6[64] = "";
 
 		if (ImGui::CollapsingHeader("Test", false)) {
 			Resolutions();
 			ImGui::Image(TEX_IDTest getTextureIDTest(), ofVec2f(640, 360));
 			Navigate();
+			ImGui::InputText("Send_ID", buf, 64, ImGuiInputTextFlags_CharsNoBlank);
+			ImGui::SameLine();
+			ImGui::Checkbox("Send Spout", &spout);
+			ImGui::SameLine();
+			ImGui::Checkbox("Send NDI", &NDI);
 		}
 		if (ImGui::CollapsingHeader("Video", true)) {
 			Resolutions();
 			ImGui::Image(TEX_IDVideo getTextureIDVideo(), ofVec2f(640, 360));
 			Navigate();
+			ImGui::InputText("Send_ID1", buf1, 64, ImGuiInputTextFlags_CharsNoBlank);
+			ImGui::SameLine();
+			ImGui::Checkbox("Send Spout1", &spout1);
+			ImGui::SameLine();
+			ImGui::Checkbox("Send NDI1", &NDI1);
 		}
 		if (ImGui::CollapsingHeader("Image", true)) {
 			Resolutions();
 			ImGui::Image(TEX_IDImage getTextureIDImage(), ofVec2f(640, 360));
 			Navigate();
+			ImGui::InputText("Send_ID2", buf2, 64, ImGuiInputTextFlags_CharsNoBlank);
+			ImGui::SameLine();
+			ImGui::Checkbox("Send Spout2", &spout2);
+			ImGui::SameLine();
+			ImGui::Checkbox("Send NDI2", &NDI2);
 		}
 		if (ImGui::CollapsingHeader("Camera", true)) {
 			Resolutions();
 			ImGui::Image(TEX_IDCamera getTextureIDCamera(), ofVec2f(640, 360));
 			Navigate();
+			ImGui::InputText("Send_ID3", buf3, 64, ImGuiInputTextFlags_CharsNoBlank);
+			ImGui::SameLine();
+			ImGui::Checkbox("Send Spout3", &spout3);
+			ImGui::SameLine();
+			ImGui::Checkbox("Send NDI3", &NDI3);
 		}
 		if (ImGui::CollapsingHeader("Textures", true)) {
 			ImGui::Image(TEX_IDGradient getTextureIDGradient(), ofVec2f(640, 360));
 			Navigate();
+			ImGui::InputText("Send_ID4", buf4, 64, ImGuiInputTextFlags_CharsNoBlank);
+			ImGui::SameLine();
+			ImGui::Checkbox("Send Spout4", &spout4);
+			ImGui::SameLine();
+			ImGui::Checkbox("Send NDI4", &NDI4);
 		}
 		if (ImGui::CollapsingHeader("Spout", true)) {
 			Resolutions();
 			ImGui::Image(TEX_IDSpout getTextureIDSpout(), ofVec2f(640, 360));
 			Navigate();
+			ImGui::InputText("Send_ID5", buf5, 64, ImGuiInputTextFlags_CharsNoBlank);
+			ImGui::SameLine();
+			ImGui::Checkbox("Send Spout5", &spout5);
+			ImGui::SameLine();
+			ImGui::Checkbox("Send NDI5", &NDI5);
 		}
 		if (ImGui::CollapsingHeader("NDI", true)) {
 			Resolutions();
 			ImGui::Image(TEX_IDNDI getTextureIDNDI(), ofVec2f(640, 360));
 			Navigate();
+			ImGui::InputText("Send_ID6", buf6, 64, ImGuiInputTextFlags_CharsNoBlank);
+			ImGui::SameLine();
+			ImGui::Checkbox("Send Spout6", &spout6);
+			ImGui::SameLine();
+			ImGui::Checkbox("Send NDI6", &NDI6);
 		}
+
+		if (spout == true) spoutSender.sendTexture(fboTest.getTexture(), buf);
+		else spoutSender.exit();
+		if (spout1 == true) spoutSender1.sendTexture(fboVideo.getTexture(), buf1);
+		else spoutSender1.exit();
+		if (spout2 == true) spoutSender2.sendTexture(fboImage.getTexture(), buf2);
+		else spoutSender2.exit();
+		if (spout3 == true)	spoutSender3.sendTexture(fboCamera.getTexture(), buf3);
+		else spoutSender3.exit();
+		if (spout4 == true)	spoutSender4.sendTexture(fboGradient.getTexture(), buf4);
+		else spoutSender4.exit();
+		if (spout5 == true) spoutSender5.sendTexture(fboSpout.getTexture(), buf5);
+		else spoutSender5.exit();
+		if (spout6 == true) spoutSender6.sendTexture(fboNDI.getTexture(), buf6);
+		else spoutSender6.exit();
 	}
+
 }
 
 //#define TEX_ID8 (ImTextureID)(uintptr_t)
@@ -712,12 +765,10 @@ bool GuiColourGradient::imGui()
 		//WINDOWS---------------------------------------------------------------
 		//WINDOWS---------------------------------------------------------------
 		//WINDOWS---------------------------------------------------------------
-	
-		
-		
-		vector<string> window_names = {"No Input","Video","Image", "Camera", "Spout", "NDI"};
-				for (int i = 0; i < window_names.size(); i++) {
-						if (ofxImGui::BeginWindow("inputs"/*window_names[i]*/, mainSettings, false)) {
+
+		vector<string> window_names = { "No Input","Video","Image", "Camera", "Spout", "NDI" };
+		for (int i = 0; i < window_names.size(); i++) {
+			if (ofxImGui::BeginWindow("inputs"/*window_names[i]*/, mainSettings, false)) {
 				ImGui::Separator();
 				Window(i);
 				ofxImGui::EndWindow(mainSettings);
@@ -732,7 +783,6 @@ bool GuiColourGradient::imGui()
 			//BANDS AND SPEED------------------------------------------------------
 			//BANDS AND SPEED------------------------------------------------------
 			//BANDS AND SPEED------------------------------------------------------
-
 
 			if (ofxImGui::BeginWindow("Gradient Generator", mainSettings, true))
 			{
@@ -750,7 +800,6 @@ bool GuiColourGradient::imGui()
 				}
 				ofxImGui::EndWindow(mainSettings);
 			}
-
 
 			//COLOUR GRADIENT------------------------------------------------------
 			//COLOUR GRADIENT------------------------------------------------------

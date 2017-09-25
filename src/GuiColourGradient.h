@@ -17,6 +17,8 @@
 #include "input_selector.h"
 #include "output_selector.h"
 
+#include "ofxSpout2Sender.h"
+
 class GuiColourGradient {
 public:
 	void setup(ColourGradient *_colour, Sound *_sound, input_selector *_inputs, output_selector *_outputs);
@@ -62,6 +64,8 @@ private:
 	Sound *sound;
 	input_selector *inputs;
 	output_selector *outputs;
+	
+	ofxSpout2::Sender spoutSender, spoutSender1, spoutSender2, spoutSender3, spoutSender4, spoutSender5, spoutSender6;
 
 	ofMesh mesh;
 	ofFbo fbo;
