@@ -39,6 +39,8 @@ public:
 	GLuint getTextureIDNDI();
 
 	void Window(int selection);
+	void Resolutions();
+	void Navigate();
 
 	void lfo_selection(int* type_param);
 	void lfo_selection_red(int* type_param_red);

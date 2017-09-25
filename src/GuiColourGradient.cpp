@@ -380,16 +380,15 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		fbo6.end();
 	}
 
-
 	fboTest.begin();
 	ofBackground(50, 50);
-	//inputs->splash_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	inputs->splash_draw(tileXpos, tileYpos, tileWidth, tileHeight);
 	ofDrawBitmapString(tileWidth, 10, 10);
 	fboTest.end();
 
 	fboVideo.begin();
 	ofBackground(50, 50);
-	//inputs->video_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	inputs->video_draw(tileXpos, tileYpos, tileWidth, tileHeight);
 	//fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 	fboVideo.end();
 
@@ -406,7 +405,7 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 
 	fboCamera.begin();
 	ofBackground(50, 50);
-	//inputs->camera_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	inputs->camera_draw(tileXpos, tileYpos, tileWidth, tileHeight);
 	//fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 	fboCamera.end();
 
@@ -509,97 +508,115 @@ void GuiColourGradient::oscillator(int* oscillator_param) {
 	ImGui::Columns(1);
 	ImGui::Separator();
 }
+//--------------------------------------------------------------
+void GuiColourGradient::Resolutions() {
+	const char* resolutions[] = { "custom", "1280 x 720 (720p)", "1920 x 1080 (1080p)", "2560 x 1440 (QHD)", "3840 x 2160 (4k)", "7680 x 4320 (8k)" };
+	static int resolutions2 = -1;
+
+	ImGui::Combo("output resolution", &resolutions2, resolutions, IM_ARRAYSIZE(resolutions));
+
+	if (resolutions2 == 0) {
+		static int i0 = 1920;
+		static int i1 = 1080;
+		ImGui::InputInt("output_width", &i0);
+		ImGui::InputInt("output_height", &i1);
+		tileWidth = i0;
+		tileHeight = i1;
+	}
+	if (resolutions2 == 1) {
+		tileWidth = 1280;
+		tileHeight = 720;
+	}
+	if (resolutions2 == 2) {
+		tileWidth = 1920;
+		tileHeight = 1080;
+	}
+	if (resolutions2 == 3) {
+		tileWidth = 2560;
+		tileHeight = 1440;
+	}
+	if (resolutions2 == 4) {
+		tileWidth = 3840;
+		tileHeight = 2160;
+	}
+	if (resolutions2 == 5) {
+		tileWidth = 7680;
+		tileHeight = 4320;
+	}
+
+}
+
+//------------------------------------------------
+void GuiColourGradient::Navigate() {
+
+	ImGui::SameLine();
+	//ypos
+	ImGui::VSliderInt("tileYpos", ImVec2(18, 360), &tileYpos, 2160, 0);
+	//xpos
+	static int i2 = 100;
+	ImGui::InputInt("Zoom %", &i2);
+	tileZoom = i2 * .01;
+	tileWidth = tileWidth * tileZoom;
+	tileHeight = tileHeight * tileZoom;
+
+
+	ImGui::SameLine();
+	ImGui::SliderInt("tileXpos", &tileXpos, 0, 3840);
+	ImGui::SameLine();
+	if (ImGui::Button("left")) {
+		tileXpos = tileXpos - 10;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("right")) {
+		tileXpos = tileXpos + 10;
+	}
+	ImGui::NextColumn();
+	if (ImGui::Button("up")) {
+		tileYpos = tileYpos - 10;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("down")) {
+		tileYpos = tileYpos + 10;
+	}
+}
 
 //--------------------------------------------------------------
 void GuiColourGradient::Window(int selection) {
-
 	if (inputs->params.input_type == selection) {
 
-		const char* resolutions[] = { "custom", "1280 x 720 (720p)", "1920 x 1080 (1080p)", "2560 x 1440 (QHD)", "3840 x 2160 (4k)", "7680 x 4320 (8k)" };
-		static int resolutions2 = -1;
-
-		ImGui::Combo("output resolution", &resolutions2, resolutions, IM_ARRAYSIZE(resolutions));
-				
-		if (resolutions2 == 0) {
-			static int i0 = 1920;
-			static int i1 = 1080;
-			ImGui::InputInt("output_width", &i0);
-			ImGui::InputInt("output_height", &i1);
-			tileWidth = i0;
-			tileHeight = i1;
-		}
-		if (resolutions2 == 1) {
-			tileWidth = 1280;
-			tileHeight = 720;
-		}
-		if (resolutions2 == 2) {
-			tileWidth = 1920;
-			tileHeight = 1080;
-		}
-		if (resolutions2 == 3) {
-			tileWidth = 2560;
-			tileHeight = 1440;
-		}
-		if (resolutions2 == 4) {
-			tileWidth = 3840;
-			tileHeight = 2160;
-		}
-		if (resolutions2 == 5) {
-			tileWidth = 7680;
-			tileHeight = 4320;
-		}
-
-		if (selection == 0) {
+		if (ImGui::CollapsingHeader("Test", false)) {
+			Resolutions();
 			ImGui::Image(TEX_IDTest getTextureIDTest(), ofVec2f(640, 360));
+			Navigate();
 		}
-		if (selection == 1) {
+		if (ImGui::CollapsingHeader("Video", true)) {
+			Resolutions();
 			ImGui::Image(TEX_IDVideo getTextureIDVideo(), ofVec2f(640, 360));
+			Navigate();
 		}
-		if (selection == 2) {
+		if (ImGui::CollapsingHeader("Image", true)) {
+			Resolutions();
 			ImGui::Image(TEX_IDImage getTextureIDImage(), ofVec2f(640, 360));
+			Navigate();
 		}
-		if (selection == 3) {
+		if (ImGui::CollapsingHeader("Camera", true)) {
+			Resolutions();
 			ImGui::Image(TEX_IDCamera getTextureIDCamera(), ofVec2f(640, 360));
+			Navigate();
 		}
-		if (selection == 4) {
+		if (ImGui::CollapsingHeader("Textures", true)) {
 			ImGui::Image(TEX_IDGradient getTextureIDGradient(), ofVec2f(640, 360));
+			Navigate();
 		}
-		if (selection == 5) {
+		if (ImGui::CollapsingHeader("Spout", true)) {
+			Resolutions();
 			ImGui::Image(TEX_IDSpout getTextureIDSpout(), ofVec2f(640, 360));
+			Navigate();
 		}
-		if (selection == 6) {
+		if (ImGui::CollapsingHeader("NDI", true)) {
+			Resolutions();
 			ImGui::Image(TEX_IDNDI getTextureIDNDI(), ofVec2f(640, 360));
-		}
-
-		ImGui::SameLine();
-		//ypos
-		ImGui::VSliderInt("tileYpos", ImVec2(18, 360), &tileYpos, 2160, 0);
-		//xpos
-		static int i2 = 100;
-		ImGui::InputInt("Zoom", &i2);
-		tileZoom = i2 * .01;
-		tileXpos = tileXpos * tileZoom;
-		tileYpos = tileYpos * tileZoom;
-		tileWidth = tileWidth * tileZoom;
-		tileHeight = tileHeight * tileZoom;
-
-		ImGui::SameLine();
-		if (ImGui::Button("left")) {
-			tileXpos = tileXpos - 10;
-		}
-		ImGui::SameLine();
-		ImGui::SliderInt("tileXpos", &tileXpos, 0, 3840);
-		ImGui::SameLine();
-		if (ImGui::Button("right")) {
-			tileXpos = tileXpos + 10;
-		}
-		ImGui::NextColumn();
-		if (ImGui::Button("up")) {
-			tileYpos = tileYpos - 10;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("down")) {
-			tileYpos = tileYpos + 10;
+			Navigate();
 		}
 	}
 }
@@ -695,14 +712,12 @@ bool GuiColourGradient::imGui()
 		//WINDOWS---------------------------------------------------------------
 		//WINDOWS---------------------------------------------------------------
 		//WINDOWS---------------------------------------------------------------
-
-
+	
+		
+		
 		vector<string> window_names = {"No Input","Video","Image", "Camera", "Spout", "NDI"};
-
-
-
-		for (int i = 0; i < window_names.size(); i++) {
-						if (ofxImGui::BeginWindow(window_names[i], mainSettings, false)) {
+				for (int i = 0; i < window_names.size(); i++) {
+						if (ofxImGui::BeginWindow("inputs"/*window_names[i]*/, mainSettings, false)) {
 				ImGui::Separator();
 				Window(i);
 				ofxImGui::EndWindow(mainSettings);
@@ -719,7 +734,7 @@ bool GuiColourGradient::imGui()
 			//BANDS AND SPEED------------------------------------------------------
 
 
-			if (ofxImGui::BeginWindow("Gradient Generator", mainSettings, false))
+			if (ofxImGui::BeginWindow("Gradient Generator", mainSettings, true))
 			{
 				//ofDrawBitmapString(ImGui::GetWindowPos(), 10, 10);
 
@@ -745,7 +760,7 @@ bool GuiColourGradient::imGui()
 
 			mainSettings.windowPos = pos1;
 
-			if (ofxImGui::BeginWindow("Colours", mainSettings, false))
+			if (ofxImGui::BeginWindow("Colours", mainSettings, true))
 			{
 				//ofDrawBitmapString(ImGui::GetWindowPos(), 10, 20);
 
@@ -918,7 +933,7 @@ bool GuiColourGradient::imGui()
 
 
 			mainSettings.windowPos = pos2;
-			if (ofxImGui::BeginWindow("LFOS", mainSettings, false))
+			if (ofxImGui::BeginWindow("LFOS", mainSettings, true))
 			{
 				//ofDrawBitmapString(ImGui::GetWindowPos(), 10, 30);
 
@@ -970,7 +985,7 @@ bool GuiColourGradient::imGui()
 			//SYNTHS------------------------------------------------------
 
 			mainSettings.windowPos = pos3;
-			if (ofxImGui::BeginWindow("sound", mainSettings, false))
+			if (ofxImGui::BeginWindow("sound", mainSettings, true))
 			{
 
 				//ofDrawBitmapString(ImGui::GetWindowPos(), 10, 40);

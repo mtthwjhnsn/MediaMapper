@@ -83,10 +83,10 @@ void input_selector::selection() {
 		no_input = true;
 		Spout2 = false;
 
-		img->clear();
-		cam->close();
-		vid->close();
-		spout->exit();
+		//img->clear();
+		//cam->close();
+		//vid->close();
+		//spout->exit();
 
 		splash.clear();
 		splash.load(select);
@@ -103,11 +103,11 @@ void input_selector::selection() {
 		no_input = false;
 		Spout2 = false;
 
-		splash.clear();
+		//splash.clear();
 
-		img->clear();
-		cam->close();
-		spout->exit();
+		//img->clear();
+		//cam->close();
+		//spout->exit();
 
 		vid->setup();
 
@@ -123,13 +123,13 @@ void input_selector::selection() {
 		no_input = false;
 		Spout2 = false;
 
-		splash.clear();
+		//splash.clear();
 
-		vid->close();
-		cam->close();
-		spout->exit();
+		//vid->close();
+		//cam->close();
+		//spout->exit();
 
-		img->clear();
+		//img->clear();
 		img->setup();
 
 		params.setup = false;
@@ -146,9 +146,9 @@ void input_selector::selection() {
 
 		splash.clear();
 
-		img->clear();
-		vid->close();
-		spout->exit();
+		//img->clear();
+		//vid->close();
+		//spout->exit();
 
 		cam->close();
 		cam->setup();
@@ -165,12 +165,12 @@ void input_selector::selection() {
 		no_input = false;
 		Spout2 = false;
 
-		splash.clear();
+		//splash.clear();
 
-		img->clear();
-		vid->close();
-		spout->exit();
-		cam->close();
+		//img->clear();
+		//vid->close();
+		//spout->exit();
+		//cam->close();
 
 		params.setup = true;
 	}
@@ -184,11 +184,11 @@ void input_selector::selection() {
 		no_input = false;
 		Spout2 = true;
 
-		splash.clear();
+		//splash.clear();
 
-		img->clear();
-		vid->close();
-		cam->close();
+		//img->clear();
+		//vid->close();
+		//cam->close();
 
 		spout->exit();
 		spout->setup();

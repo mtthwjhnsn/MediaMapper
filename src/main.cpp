@@ -12,7 +12,7 @@ int main( ){
 	settings.height = 1080;
 
 
-	settings.decorated = true;
+	settings.decorated = false;
 	settings.resizable = true;
 	settings.windowMode = OF_WINDOW;
 
