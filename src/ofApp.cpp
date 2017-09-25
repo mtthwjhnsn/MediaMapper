@@ -26,7 +26,7 @@ void ofApp::setup() {
 	colour.setup(gui.tileWidth, gui.tileHeight);
 	sound.setup();
 	
-	input.setup(&vid, &img, &cam, &col, &spout);
+	//input.setup(&vid, &img, &cam, &col, &spout);
 	gui.setup(&colour, &sound, &input, &outs);
 	outs.setup();
 	
@@ -46,6 +46,7 @@ void ofApp::setup() {
 	ofClear(255, 255, 255, 0);
 	fbo1.end();
 }
+
 
 /*
 void ofApp::coloursetup() {
@@ -67,7 +68,8 @@ void ofApp::update() {
 	fbo.begin();
 	//coloursetup();
 	colourfbo();
-	input.draw(fbo1, gui.tileXpos, gui.tileYpos, gui.tileWidth, gui.tileHeight);
+	//input.draw(fbo1, gui.tileXpos, gui.tileYpos, gui.tileWidth, gui.tileHeight);
+
 	fbo.end();
 }
 

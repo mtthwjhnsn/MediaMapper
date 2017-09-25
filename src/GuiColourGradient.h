@@ -49,10 +49,13 @@ public:
 
 	//tile
 	int tileXpos, tileYpos, tileWidth, tileHeight;
-	float zoom;
+	float tileZoom;
 	
 	
 private:
+
+	ofFbo::Settings fboSettings;
+
 	ColourGradient *colour;
 	Sound *sound;
 	input_selector *inputs;

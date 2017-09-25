@@ -40,9 +40,12 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 
 	tileXpos = 0;
 	tileYpos = 0;
-	tileWidth = 640;
-	tileHeight = 480;
-	zoom = 1.00;
+	tileWidth = 1920;
+	tileHeight = 1080;
+
+	tileZoom = 0.25;
+
+	//zoom = 1.00;
 
 	gui.setup();
 	guiVisible = true;
@@ -52,7 +55,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 	inputs = _inputs;
 	outputs = _outputs;
 
-	ofFbo::Settings fboSettings;
+	
 	fboSettings.width = w;
 	fboSettings.height = h;
 	fboSettings.internalformat = GL_RGBA;
@@ -377,39 +380,45 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		fbo6.end();
 	}
 
+
 	fboTest.begin();
 	ofBackground(50, 50);
-	fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	//inputs->splash_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	ofDrawBitmapString(tileWidth, 10, 10);
 	fboTest.end();
 
 	fboVideo.begin();
 	ofBackground(50, 50);
-	fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	//inputs->video_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	//fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 	fboVideo.end();
 
 	fboImage.begin();
 	ofBackground(50, 50);
-	fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	inputs->image_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	//fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 	fboImage.end();
 
 	fboGradient.begin();
 	ofBackground(50, 50);
-	fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	//fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 	fboGradient.end();
 
 	fboCamera.begin();
 	ofBackground(50, 50);
-	fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	//inputs->camera_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	//fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 	fboCamera.end();
 
 	fboSpout.begin();
 	ofBackground(50, 50);
-	fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	//inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	//fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 	fboSpout.end();
 
 	fboNDI.begin();
 	ofBackground(50, 50);
-	fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+	//fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 	fboNDI.end();
 
 }
@@ -510,48 +519,36 @@ void GuiColourGradient::Window(int selection) {
 		static int resolutions2 = -1;
 
 		ImGui::Combo("output resolution", &resolutions2, resolutions, IM_ARRAYSIZE(resolutions));
-		ImGui::SameLine();
-		
-		if (resolutions[0]) {
+				
+		if (resolutions2 == 0) {
 			static int i0 = 1920;
 			static int i1 = 1080;
 			ImGui::InputInt("output_width", &i0);
-			ImGui::SameLine();
 			ImGui::InputInt("output_height", &i1);
-			ImGui::SameLine();
 			tileWidth = i0;
 			tileHeight = i1;
 		}
-		if (resolutions[1]) {
+		if (resolutions2 == 1) {
 			tileWidth = 1280;
 			tileHeight = 720;
 		}
-		if (resolutions[2]) {
+		if (resolutions2 == 2) {
 			tileWidth = 1920;
 			tileHeight = 1080;
 		}
-		if (resolutions[3]) {
+		if (resolutions2 == 3) {
 			tileWidth = 2560;
 			tileHeight = 1440;
 		}
-		if (resolutions[4]) {
+		if (resolutions2 == 4) {
 			tileWidth = 3840;
 			tileHeight = 2160;
 		}
-		if (resolutions[5]) {
+		if (resolutions2 == 5) {
 			tileWidth = 7680;
 			tileHeight = 4320;
 		}
 
-		if (ImGui::Button("-zoom")) {
-			tileWidth = tileWidth - 100;
-			tileHeight = tileHeight - 100;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("+zoom")) {
-			tileWidth = tileWidth + 100;
-			tileHeight = tileHeight + 100;
-		}
 		if (selection == 0) {
 			ImGui::Image(TEX_IDTest getTextureIDTest(), ofVec2f(640, 360));
 		}
@@ -578,10 +575,19 @@ void GuiColourGradient::Window(int selection) {
 		//ypos
 		ImGui::VSliderInt("tileYpos", ImVec2(18, 360), &tileYpos, 2160, 0);
 		//xpos
-		ImGui::Columns(2);
+		static int i2 = 100;
+		ImGui::InputInt("Zoom", &i2);
+		tileZoom = i2 * .01;
+		tileXpos = tileXpos * tileZoom;
+		tileYpos = tileYpos * tileZoom;
+		tileWidth = tileWidth * tileZoom;
+		tileHeight = tileHeight * tileZoom;
+
+		ImGui::SameLine();
 		if (ImGui::Button("left")) {
 			tileXpos = tileXpos - 10;
-		}            ImGui::SameLine();
+		}
+		ImGui::SameLine();
 		ImGui::SliderInt("tileXpos", &tileXpos, 0, 3840);
 		ImGui::SameLine();
 		if (ImGui::Button("right")) {

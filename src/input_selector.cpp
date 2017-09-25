@@ -20,14 +20,30 @@ void input_selector::setup(VideoLoader *_vid, ImageLoader *_img, CamLoader *_cam
 
 	select = "input1.png";
 	splash.load(select);
-
-
-
-
 }
 
+void input_selector::splash_draw(int x, int y, int w, int h) {
+	splash.draw(x, y, w, h);
+}
 
-void input_selector::draw(ofFbo fbo, int x, int y, int w, int h) {
+void input_selector::video_draw(int x, int y, int w, int h) {
+	vid->draw(x, y, w, h);
+}
+
+void input_selector::image_draw(int x, int y, int w, int h) {
+	img->draw(x, y, w, h);
+}
+
+void input_selector::camera_draw(int x, int y, int w, int h) {
+	cam->draw(x, y, w, h);
+}
+
+void input_selector::spout_draw(int x, int y, int w, int h) {
+	spout->draw(x, y, w, h);
+}
+
+/*
+void input_selector::draw(ofFbo fbo, int x, int y, int w, int h, ofFbo splash, ofFbo video, ) {
 
 	if (no_input == true) {
 		splash.draw(x, y, w, h);
@@ -53,7 +69,7 @@ void input_selector::draw(ofFbo fbo, int x, int y, int w, int h) {
 		spout->draw(x, y, w, h);
 	}
 
-}
+}*/
 
 void input_selector::selection() {
 	int menu_input = params.input_type;

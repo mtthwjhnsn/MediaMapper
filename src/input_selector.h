@@ -21,6 +21,15 @@ public:
 
 	void setup(VideoLoader *_vid, ImageLoader *_img, CamLoader *_cam, ColourGradient *_gradient, Spout2Reciever *_spout);
 	//void update();
+
+	void splash_draw(int x, int y, int w, int h);
+	void video_draw(int x, int y, int w, int h);
+	void image_draw(int x, int y, int w, int h);
+	void camera_draw(int x, int y, int w, int h);
+	void gradient_draw(int x, int y, int w, int h);
+	void spout_draw(int x, int y, int w, int h);
+	void NDI_draw(int x, int y, int w, int h);
+
 	void draw(ofFbo fbo, int x, int y, int w, int h);
 	void selection();
 
