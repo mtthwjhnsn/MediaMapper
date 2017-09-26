@@ -44,6 +44,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 	tileHeight = 1080;
 
 	tileZoom = 0.25;
+	//namesbuf = {GradientMapper, GradientMapper1, GradientMapper2, GradientMapper3, GradientMapper4, GradientMapper5, GradientMapper6};
 
 	//zoom = 1.00;
 
@@ -389,30 +390,25 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 	fboVideo.begin();
 	ofBackground(50, 50);
 	inputs->video_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-	//fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 	fboVideo.end();
 
 	fboImage.begin();
 	ofBackground(50, 50);
 	inputs->image_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-	//fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 	fboImage.end();
 
 	fboGradient.begin();
 	ofBackground(50, 50);
-	//fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 	fboGradient.end();
 
 	fboCamera.begin();
 	ofBackground(50, 50);
 	inputs->camera_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-	//fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 	fboCamera.end();
 
 	fboSpout.begin();
 	ofBackground(50, 50);
 	//inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-	//fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 	fboSpout.end();
 
 	fboNDI.begin();
@@ -582,10 +578,11 @@ void GuiColourGradient::Navigate() {
 //--------------------------------------------------------------
 void GuiColourGradient::Window(int selection) {
 	if (inputs->params.input_type == selection) {
-		static bool spout, spout1, spout2, spout3, spout4, spout5, spout6 = false;
-		static bool NDI, NDI1, NDI2, NDI3, NDI4, NDI5, NDI6 = false;
-		static char buf[64], buf1[64], buf2[64], buf3[64], buf4[64], buf5[64], buf6[64] = "";
 
+		spout, spout1, spout2, spout3, spout4, spout5, spout6 = false;
+		NDI, NDI1, NDI2, NDI3, NDI4, NDI5, NDI6 = false;
+		static char buf[64], buf1[64], buf2[64], buf3[64], buf4[64], buf5[64], buf6[64] = "";
+		
 		if (ImGui::CollapsingHeader("Test", false)) {
 			Resolutions();
 			ImGui::Image(TEX_IDTest getTextureIDTest(), ofVec2f(640, 360));
@@ -655,26 +652,42 @@ void GuiColourGradient::Window(int selection) {
 			ImGui::SameLine();
 			ImGui::Checkbox("Send NDI6", &NDI6);
 		}
-
-		if (spout == true) spoutSender.sendTexture(fboTest.getTexture(), buf);
-		else spoutSender.exit();
-		if (spout1 == true) spoutSender1.sendTexture(fboVideo.getTexture(), buf1);
-		else spoutSender1.exit();
-		if (spout2 == true) spoutSender2.sendTexture(fboImage.getTexture(), buf2);
-		else spoutSender2.exit();
-		if (spout3 == true)	spoutSender3.sendTexture(fboCamera.getTexture(), buf3);
-		else spoutSender3.exit();
-		if (spout4 == true)	spoutSender4.sendTexture(fboGradient.getTexture(), buf4);
-		else spoutSender4.exit();
-		if (spout5 == true) spoutSender5.sendTexture(fboSpout.getTexture(), buf5);
-		else spoutSender5.exit();
-		if (spout6 == true) spoutSender6.sendTexture(fboNDI.getTexture(), buf6);
-		else spoutSender6.exit();
+		namesbuf = {buf, buf1, buf2, buf3, buf4, buf5, buf6};
 	}
 
 }
 
-//#define TEX_ID8 (ImTextureID)(uintptr_t)
+void GuiColourGradient::spoutToggles() {
+
+
+	if (spout == true) spoutSender.sendTexture(fboTest.getTexture(), namesbuf[1]);
+	else spoutSender.exit();
+	if (spout1 == true) spoutSender1.sendTexture(fboVideo.getTexture(), namesbuf[2]);
+	else spoutSender1.exit();
+	if (spout2 == true) spoutSender2.sendTexture(fboImage.getTexture(), namesbuf[3]);
+	else spoutSender2.exit();
+	if (spout3 == true)	spoutSender3.sendTexture(fboCamera.getTexture(), namesbuf[4]);
+	else spoutSender3.exit();
+	if (spout4 == true)	spoutSender4.sendTexture(fboGradient.getTexture(), namesbuf[5]);
+	else spoutSender4.exit();
+	if (spout5 == true) spoutSender5.sendTexture(fboSpout.getTexture(), namesbuf[6]);
+	else spoutSender5.exit();
+	if (spout6 == true) spoutSender6.sendTexture(fboNDI.getTexture(), namesbuf[7]);
+	else spoutSender6.exit();
+}
+
+/*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+										GUI
+______________________________________________________________________________________
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
+
 bool GuiColourGradient::imGui()
 {
 	int gui_width = 700;
@@ -766,17 +779,37 @@ bool GuiColourGradient::imGui()
 		//WINDOWS---------------------------------------------------------------
 		//WINDOWS---------------------------------------------------------------
 
+		
+		
+		
 		vector<string> window_names = { "No Input","Video","Image", "Camera", "Spout", "NDI" };
 		for (int i = 0; i < window_names.size(); i++) {
 			if (ofxImGui::BeginWindow("inputs"/*window_names[i]*/, mainSettings, false)) {
 				ImGui::Separator();
 				Window(i);
+				spoutToggles();
 				ofxImGui::EndWindow(mainSettings);
 			}
 		}
 
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		if (inputs->params.input_type == 4)
 
+		
+		
+		
+		
 		{
 			mainSettings.windowPos = pos4;
 

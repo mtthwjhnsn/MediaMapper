@@ -43,6 +43,7 @@ public:
 	void Window(int selection);
 	void Resolutions();
 	void Navigate();
+	void spoutToggles();
 
 	void lfo_selection(int* type_param);
 	void lfo_selection_red(int* type_param_red);
@@ -54,7 +55,10 @@ public:
 	//tile
 	int tileXpos, tileYpos, tileWidth, tileHeight;
 	float tileZoom;
-	
+	static bool spout, spout1, spout2, spout3, spout4, spout5, spout6;
+	static bool NDI, NDI1, NDI2, NDI3, NDI4, NDI5, NDI6;
+	string GradientMapper, GradientMapper1, GradientMapper2, GradientMapper3, GradientMapper4, GradientMapper5, GradientMapper6;
+	vector<string> namesbuf;
 	
 private:
 
