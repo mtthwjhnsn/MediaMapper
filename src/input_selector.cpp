@@ -3,11 +3,11 @@
 //-----------------------------
 void input_selector::setup(VideoLoader *_vid, ImageLoader *_img, CamLoader *_cam, ColourGradient *_gradient, Spout2Reciever *_spout) {
 
-	vid = _vid;
-	img = _img;
-	cam = _cam;
-	gradient = _gradient;
-	spout = _spout;
+	//vid = _vid;
+	//img = _img;
+	//cam = _cam;
+	//gradient = _gradient;
+	//spout = _spout;
 
 	video = false;
 	image = false;
@@ -18,14 +18,20 @@ void input_selector::setup(VideoLoader *_vid, ImageLoader *_img, CamLoader *_cam
 
 	params.setup = false;
 
-	select = "input1.png";
-	splash.load(select);
+	select = { "input0.png", "input1.png", "input2.png", "input3.png", "input4.png", "input5.png", "input6.png", "input7.png", "input8.png", "input9.png" };
+	
+	for (int i = 0; i <= 9; i++) {
+		splash.load(select[i]);
+		splashes.push_back(splash);
+	}
 }
 
-void input_selector::splash_draw(int x, int y, int w, int h) {
-	splash.draw(x, y, w, h);
-}
+void input_selector::splash_draw(int test_pattern, int x, int y, int w, int h) {
+	
+	splashes[test_pattern].draw(x, y, w, h);
 
+}
+/*
 void input_selector::video_draw(int x, int y, int w, int h) {
 	vid->draw(x, y, w, h);
 }
@@ -41,36 +47,7 @@ void input_selector::camera_draw(int x, int y, int w, int h) {
 void input_selector::spout_draw(int x, int y, int w, int h) {
 	spout->draw(x, y, w, h);
 }
-
-/*
-void input_selector::draw(ofFbo fbo, int x, int y, int w, int h, ofFbo splash, ofFbo video, ) {
-
-	if (no_input == true) {
-		splash.draw(x, y, w, h);
-	}
-
-	if (video == true) {
-		vid->draw(x, y, w, h);
-	}
-
-	else if (image == true) {
-		img->draw(x, y, w, h);
-	}
-
-	else if (camera == true) {
-		cam->draw(x, y, w, h);
-	}
-
-	else if (colour == true) {
-		fbo.draw(x, y, w, h);
-	}
-
-	else if (Spout2 == true) {
-		spout->draw(x, y, w, h);
-	}
-
-}*/
-
+*/
 void input_selector::selection() {
 	int menu_input = params.input_type;
 
@@ -89,7 +66,11 @@ void input_selector::selection() {
 		//spout->exit();
 
 		splash.clear();
-		splash.load(select);
+		
+		/*
+		for (int i = 0; i <= splash.size(); i++) {
+			splashes[i].load(select[i]);
+		}*/
 
 		params.setup = false;
 	}

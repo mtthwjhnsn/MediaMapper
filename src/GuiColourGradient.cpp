@@ -69,6 +69,19 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 
 	for (int i = 0; i <= 9; i++) {
 
+		GuiFbo.allocate(fboSettings);
+		GuiFbo.begin();
+		ofClear(255, 255, 255, 0);
+		GuiFbo.end();
+		GuiFbos.push_back(GuiFbo);
+
+		GuiID = (ImTextureID)GuiFbos[i].getTexture().texData.textureID;
+		gui_tex_ids.push_back(GuiID);
+
+	}
+
+	for (int i = 0; i <= 9; i++) {
+
 		TestFbo.allocate(fboSettings);
 		TestFbo.begin();
 		ofClear(255, 255, 255, 0);
@@ -143,6 +156,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 		SpoutID = (ImTextureID)SpoutFbos[i].getTexture().texData.textureID;
 		spout_tex_ids.push_back(SpoutID);
 
+
 	}
 
 	for (int i = 0; i <= 9; i++) {
@@ -157,64 +171,6 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 		ndi_tex_ids.push_back(NDIID);
 
 	}
-	/*
-	//textureidTest = fboTest.getTexture().texData.textureID;
-
-	textureidVideo = fboVideo.getTexture().texData.textureID;
-	textureidImage = fboImage.getTexture().texData.textureID;
-	textureidCamera = fboCamera.getTexture().texData.textureID;
-	textureidGradient = fboGradient.getTexture().texData.textureID;
-	textureidSpout = fboSpout.getTexture().texData.textureID;
-	textureidNDI = fboNDI.getTexture().texData.textureID;
-
-	fbo.begin();
-	ofClear(255, 255, 255, 0);
-	fbo.end();
-
-	fbo1.begin();
-	ofClear(255, 255, 255, 0);
-	fbo1.end();
-
-	fbo2.begin();
-	ofClear(255, 255, 255, 0);
-	fbo2.end();
-
-	fbo3.begin();
-	ofClear(255, 255, 255, 0);
-	fbo3.end();
-
-	fbo4.begin();
-	ofClear(255, 255, 255, 0);
-	fbo4.end();
-
-	fbo5.begin();
-	ofClear(255, 255, 255, 0);
-	fbo5.end();
-
-	fbo6.begin();
-	ofClear(255, 255, 255, 0);
-	fbo6.end();
-
-	fboVideo.begin();
-	ofClear(255, 255, 255, 0);
-	fboVideo.end();
-
-	fboImage.begin();
-	ofClear(255, 255, 255, 0);
-	fboImage.end();
-
-	fboCamera.begin();
-	ofClear(255, 255, 255, 0);
-	fboCamera.end();
-
-	fboSpout.begin();
-	ofClear(255, 255, 255, 0);
-	fboSpout.end();
-
-	fboNDI.begin();
-	ofClear(255, 255, 255, 0);
-	fboNDI.end();
-	*/
 	//mesh
 	mesh.setMode(OF_PRIMITIVE_POINTS);
 	glEnable(GL_POINT_SMOOTH);
@@ -222,36 +178,8 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 
 }
 
-/*
-GLuint GuiColourGradient::getTextureID() {
-	return textureid;
-}
-
-GLuint GuiColourGradient::getTextureID1() {
-	return textureid1;
-}
-
-GLuint GuiColourGradient::getTextureID2() {
-	return textureid2;
-}
-
-GLuint GuiColourGradient::getTextureID3() {
-	return textureid3;
-}
-GLuint GuiColourGradient::getTextureID4() {
-	return textureid4;
-}
-
-GLuint GuiColourGradient::getTextureID5() {
-	return textureid5;
-}
-GLuint GuiColourGradient::getTextureID6() {
-	return textureid6;
-}
-*/
-
 ImTextureID GuiColourGradient::getTextureIDGui() {
-	return GUIID;
+	return GuiID;
 }
 ImTextureID GuiColourGradient::getTextureIDTest() {
 	return TestID;
@@ -274,26 +202,6 @@ ImTextureID GuiColourGradient::getTextureIDSpout() {
 ImTextureID GuiColourGradient::getTextureIDNDI() {
 	return NDIID;
 }
-/*
-
-GLuint GuiColourGradient::getTextureIDVideo() {
-	return textureidVideo;
-}
-GLuint GuiColourGradient::getTextureIDImage() {
-	return textureidImage;
-}
-GLuint GuiColourGradient::getTextureIDGradient() {
-	return textureidGradient;
-}
-GLuint GuiColourGradient::getTextureIDCamera() {
-	return textureidCamera;
-}
-GLuint GuiColourGradient::getTextureIDSpout() {
-	return textureidSpout;
-}
-GLuint GuiColourGradient::getTextureIDNDI() {
-	return textureidNDI;
-}*/
 
 //-------------------------------------------------
 void GuiColourGradient::draw(ofFbo fboinput) {
@@ -471,28 +379,28 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 	for (int i = 0; i < TestFbos.size(); i++) {
 		TestFbos[i].begin();
 		ofBackground(50, 50);
-		inputs->splash_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-		ofDrawBitmapString("test " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 10, 10);
+		inputs->splash_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
+		//ofDrawBitmapString("test " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 10, 10);
 		TestFbos[i].end();
 	}
 	for (int i = 0; i < VideoFbos.size(); i++) {
 		VideoFbos[i].begin();
 		ofBackground(50, 50);
-		inputs->video_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+		//inputs->video_draw(tileXpos, tileYpos, tileWidth, tileHeight);
 		ofDrawBitmapString("video " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 10, 10);
 		VideoFbos[i].end();
 	}
 	for (int i = 0; i < ImageFbos.size(); i++) {
 		ImageFbos[i].begin();
 		ofBackground(50, 50);
-		inputs->image_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+		//inputs->image_draw(tileXpos, tileYpos, tileWidth, tileHeight);
 		ofDrawBitmapString("image " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 10, 10);
 		ImageFbos[i].end();
 	}
 	for (int i = 0; i < CameraFbos.size(); i++) {
 		CameraFbos[i].begin();
 		ofBackground(50, 50);
-		inputs->camera_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+		//inputs->camera_draw(tileXpos, tileYpos, tileWidth, tileHeight);
 		ofDrawBitmapString("camera " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 10, 10);
 		CameraFbos[i].end();
 	}
@@ -517,42 +425,20 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		ofDrawBitmapString("ndi " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 10, 10);
 		NDIFbos[i].end();
 	}
+	/*
 	for (int i = 0; i < GuiFbos.size(); i++) {
 		GuiFbos[i].begin();
 		ofBackground(50, 50);
 		ofDrawBitmapString("GUI elements " + ofToString(i), 10, 10);
 		GuiFbos[i].end();
-	}
+	}*/
+	
 	/*
-	fboVideo.begin();
-	ofBackground(255);
-	inputs->video_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-	fboVideo.end();
+	for (int i = 0; i <= 9; i++) {
+		TestFbos[i].draw(i + (100* i), i + (100 * i), 1920, 1080);
+		ofDrawBitmapString(ofToString(TestFbos[i].getId()), i + (100 * i), i + (100 * i));
+	}*/
 
-	fboImage.begin();
-	ofBackground(50, 50);
-	inputs->image_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-	fboImage.end();
-
-	fboGradient.begin();
-	ofBackground(50, 50);
-	fboGradient.end();
-
-	fboCamera.begin();
-	ofBackground(50, 50);
-	inputs->camera_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-	fboCamera.end();
-
-	fboSpout.begin();
-	ofBackground(50, 50);
-	//inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-	fboSpout.end();
-
-	fboNDI.begin();
-	ofBackground(50, 50);
-	//fboinput.draw(tileXpos, tileYpos, tileWidth, tileHeight);
-	fboNDI.end();
-	*/
 }
 
 //--------------------------------------------------------------
@@ -724,7 +610,7 @@ void GuiColourGradient::Window(int selection) {
 		if (ImGui::CollapsingHeader("test", false)) {
 			for (int i = 0; i <= 9; i++) {
 				Resolutions();
-				ImGui::Image(TestID, ofVec2f(640, 360));
+				ImGui::Image(test_tex_ids[i], ofVec2f(640, 360));
 				Navigate();
 				ImGui::InputText("Send_ID" + i, buf, 64, ImGuiInputTextFlags_CharsNoBlank);
 				ImGui::SameLine();

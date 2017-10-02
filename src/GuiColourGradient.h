@@ -24,7 +24,7 @@ public:
 	//void update();
 	void draw(ofFbo fboinput);
 
-	ImTextureID GUIID, TestID, VideoID, ImageID, CameraID, ShaderID, SpoutID, NDIID;
+	ImTextureID GuiID, TestID, VideoID, ImageID, CameraID, ShaderID, SpoutID, NDIID;
 	vector<ImTextureID> gui_tex_ids, test_tex_ids, video_tex_ids, image_tex_ids, camera_tex_ids, shader_tex_ids, spout_tex_ids, ndi_tex_ids;
 
 	ImTextureID getTextureIDGui(), getTextureIDTest(), getTextureIDVideo(), getTextureIDImage(), getTextureIDShader(), getTextureIDCamera(), getTextureIDSpout(), getTextureIDNDI();
@@ -59,39 +59,6 @@ private:
 	ofxSpout2::Sender spoutSender, spoutSender1, spoutSender2, spoutSender3, spoutSender4, spoutSender5, spoutSender6;
 
 	ofMesh mesh;
-	/*ofFbo fbo;
-	ofFbo fbo1;
-	ofFbo fbo2;
-	ofFbo fbo3;
-	ofFbo fbo4;
-	ofFbo fbo5;
-	ofFbo fbo6;
-
-	//ofFbo fboTest;
-	ofFbo fboVideo;
-	ofFbo fboImage;
-	ofFbo fboGradient;
-	ofFbo fboCamera;
-	ofFbo fboSpout;
-	ofFbo fboNDI;
-
-	GLuint textureid;
-	GLuint textureid1;
-	GLuint textureid2;
-	GLuint textureid3;
-	GLuint textureid4;
-	GLuint textureid5;
-	GLuint textureid6;
-
-	//vector<GLuint> TestTextureIDs;
-	//GLuint textureidTest;
-	GLuint textureidVideo;
-	GLuint textureidImage;
-	GLuint textureidGradient;
-	GLuint textureidCamera;
-	GLuint textureidNDI;
-	GLuint textureidSpout;
-	*/
 
 	ofShader shader;
 	ofImage image;
