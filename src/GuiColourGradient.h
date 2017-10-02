@@ -16,7 +16,6 @@
 #include "Sound.h"
 #include "input_selector.h"
 #include "output_selector.h"
-
 #include "ofxSpout2Sender.h"
 
 class GuiColourGradient {
@@ -24,26 +23,18 @@ public:
 	void setup(ColourGradient *_colour, Sound *_sound, input_selector *_inputs, output_selector *_outputs);
 	//void update();
 	void draw(ofFbo fboinput);
-	
-	GLuint getTextureID();
-	GLuint getTextureID1();
-	GLuint getTextureID2();
-	GLuint getTextureID3();
-	GLuint getTextureID4();
-	GLuint getTextureID5();
-	GLuint getTextureID6();
-	GLuint getTextureIDTest();
-	GLuint getTextureIDVideo();
-	GLuint getTextureIDImage();
-	GLuint getTextureIDGradient();
-	GLuint getTextureIDCamera();
-	GLuint getTextureIDSpout();
-	GLuint getTextureIDNDI();
+
+	ImTextureID GUIID, TestID, VideoID, ImageID, CameraID, ShaderID, SpoutID, NDIID;
+	vector<ImTextureID> gui_tex_ids, test_tex_ids, video_tex_ids, image_tex_ids, camera_tex_ids, shader_tex_ids, spout_tex_ids, ndi_tex_ids;
+
+	ImTextureID getTextureIDGui(), getTextureIDTest(), getTextureIDVideo(), getTextureIDImage(), getTextureIDShader(), getTextureIDCamera(), getTextureIDSpout(), getTextureIDNDI();
+
+	ofFbo GuiFbo, TestFbo, VideoFbo, ImageFbo, CameraFbo, ShaderFbo, SpoutFbo, NDIFbo;
+	vector<ofFbo> GuiFbos, TestFbos, VideoFbos, ImageFbos, CameraFbos, ShaderFbos, SpoutFbos, NDIFbos;
 
 	void Window(int selection);
 	void Resolutions();
 	void Navigate();
-	void spoutToggles();
 
 	void lfo_selection(int* type_param);
 	void lfo_selection_red(int* type_param_red);
@@ -55,11 +46,7 @@ public:
 	//tile
 	int tileXpos, tileYpos, tileWidth, tileHeight;
 	float tileZoom;
-	static bool spout, spout1, spout2, spout3, spout4, spout5, spout6;
-	static bool NDI, NDI1, NDI2, NDI3, NDI4, NDI5, NDI6;
-	string GradientMapper, GradientMapper1, GradientMapper2, GradientMapper3, GradientMapper4, GradientMapper5, GradientMapper6;
-	vector<string> namesbuf;
-	
+
 private:
 
 	ofFbo::Settings fboSettings;
@@ -68,25 +55,26 @@ private:
 	Sound *sound;
 	input_selector *inputs;
 	output_selector *outputs;
-	
+
 	ofxSpout2::Sender spoutSender, spoutSender1, spoutSender2, spoutSender3, spoutSender4, spoutSender5, spoutSender6;
 
 	ofMesh mesh;
-	ofFbo fbo;
+	/*ofFbo fbo;
 	ofFbo fbo1;
 	ofFbo fbo2;
 	ofFbo fbo3;
 	ofFbo fbo4;
 	ofFbo fbo5;
 	ofFbo fbo6;
-	ofFbo fboTest;
+
+	//ofFbo fboTest;
 	ofFbo fboVideo;
 	ofFbo fboImage;
 	ofFbo fboGradient;
 	ofFbo fboCamera;
 	ofFbo fboSpout;
 	ofFbo fboNDI;
-	
+
 	GLuint textureid;
 	GLuint textureid1;
 	GLuint textureid2;
@@ -94,17 +82,19 @@ private:
 	GLuint textureid4;
 	GLuint textureid5;
 	GLuint textureid6;
-	GLuint textureidTest;
+
+	//vector<GLuint> TestTextureIDs;
+	//GLuint textureidTest;
 	GLuint textureidVideo;
 	GLuint textureidImage;
 	GLuint textureidGradient;
 	GLuint textureidCamera;
 	GLuint textureidNDI;
 	GLuint textureidSpout;
-	
+	*/
+
 	ofShader shader;
 	ofImage image;
-	
 
 	// Gui
 	bool imGui();
