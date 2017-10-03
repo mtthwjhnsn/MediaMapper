@@ -5,17 +5,16 @@
 class ImageLoader
 {
 
-
-
-
-
 public:
 
 	void setup();
-	void draw(int x, int y, int w, int h);
+	void draw(int selection, int x, int y, int w, int h);
 	void clear();
 
 	ofxThreadedImageLoader threadedImage;
+	vector<ofxThreadedImageLoader> threadedImages;
+
 	ofImage image;
+	vector<ofImage> images;
 };
 

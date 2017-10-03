@@ -54,8 +54,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 	sound = _sound;
 	inputs = _inputs;
 	outputs = _outputs;
-
-
+	
 	fboSettings.width = w;
 	fboSettings.height = h;
 	fboSettings.internalformat = GL_RGBA;
@@ -380,7 +379,7 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		TestFbos[i].begin();
 		ofBackground(50, 50);
 		inputs->splash_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
-		//ofDrawBitmapString("test " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 10, 10);
+		ofDrawBitmapString("test " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 10, 10);
 		TestFbos[i].end();
 	}
 	for (int i = 0; i < VideoFbos.size(); i++) {
@@ -390,10 +389,10 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		ofDrawBitmapString("video " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 10, 10);
 		VideoFbos[i].end();
 	}
-	for (int i = 0; i < ImageFbos.size(); i++) {
+	for (int i = 0; i < inputs->img->images.size(); i++) {
 		ImageFbos[i].begin();
 		ofBackground(50, 50);
-		//inputs->image_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+		inputs->image_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
 		ofDrawBitmapString("image " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 10, 10);
 		ImageFbos[i].end();
 	}
@@ -606,9 +605,15 @@ void GuiColourGradient::Window(int selection) {
 		static bool NDI, NDI1, NDI2, NDI3, NDI4, NDI5, NDI6 = false;
 		static char buf[64], buf1[64], buf2[64], buf3[64], buf4[64], buf5[64], buf6[64] = "";
 		vector<string> titles = { "test0", "test1", "test2", "test3", "test4", "test5", "test6", "test7", "test8", "test9" };
-
+		static int add_test = 0;
+		
 		if (ImGui::CollapsingHeader("test", false)) {
-			for (int i = 0; i <= 9; i++) {
+			ImGui::InputInt("textures", &add_test);
+			ImGui::Spacing();
+			
+			for (int i = 0; i <= add_test; i++) {
+				ImGui::CollapsingHeader(ofxImGui::GetUniqueName(titles[i]));
+				ImGui::Text(ofxImGui::GetUniqueName(titles[i]));
 				Resolutions();
 				ImGui::Image(test_tex_ids[i], ofVec2f(640, 360));
 				Navigate();
@@ -617,6 +622,12 @@ void GuiColourGradient::Window(int selection) {
 				ImGui::Checkbox("Send Spout" + i, &spout);
 				ImGui::SameLine();
 				ImGui::Checkbox("Send NDI" + i, &NDI);
+				ImGui::Columns(3);
+				for (int j = 1; j <= 9; j++) {
+					ImGui::ImageButton(test_tex_ids[j], ofVec2f(320, 180));
+					ImGui::NextColumn();
+				}
+				ImGui::Columns(1);
 			}
 		}
 
@@ -624,7 +635,7 @@ void GuiColourGradient::Window(int selection) {
 		if (ImGui::CollapsingHeader("Video", true)) {
 			for (int i = 0; i <= 9; i++) {
 				Resolutions();
-				ImGui::Image(VideoID, ofVec2f(640, 360));
+				ImGui::ImageButton(video_tex_ids[i], ofVec2f(640, 360));
 				Navigate();
 				ImGui::InputText("Send_ID1", buf1, 64, ImGuiInputTextFlags_CharsNoBlank);
 				ImGui::SameLine();
@@ -637,7 +648,7 @@ void GuiColourGradient::Window(int selection) {
 			for (int i = 0; i <= 9; i++) {
 
 				Resolutions();
-				ImGui::Image(ImageID, ofVec2f(640, 360));
+				ImGui::Image(image_tex_ids[i], ofVec2f(640, 360));
 				Navigate();
 				ImGui::InputText("Send_ID2", buf2, 64, ImGuiInputTextFlags_CharsNoBlank);
 				ImGui::SameLine();
@@ -650,7 +661,7 @@ void GuiColourGradient::Window(int selection) {
 			for (int i = 0; i <= 9; i++) {
 
 				Resolutions();
-				ImGui::Image(CameraID, ofVec2f(640, 360));
+				ImGui::Image(camera_tex_ids[i], ofVec2f(640, 360));
 				Navigate();
 				ImGui::InputText("Send_ID3", buf3, 64, ImGuiInputTextFlags_CharsNoBlank);
 				ImGui::SameLine();
@@ -662,7 +673,7 @@ void GuiColourGradient::Window(int selection) {
 
 		if (ImGui::CollapsingHeader("Textures", true)) {
 			for (int i = 0; i <= 9; i++) {
-				ImGui::Image(ShaderID, ofVec2f(640, 360));
+				ImGui::Image(shader_tex_ids[i], ofVec2f(640, 360));
 				Navigate();
 				ImGui::InputText("Send_ID4", buf4, 64, ImGuiInputTextFlags_CharsNoBlank);
 				ImGui::SameLine();
@@ -688,7 +699,7 @@ void GuiColourGradient::Window(int selection) {
 		if (ImGui::CollapsingHeader("NDI", true)) {
 			for (int i = 0; i <= 9; i++) {
 				Resolutions();
-				ImGui::Image(NDIID, ofVec2f(640, 360));
+				ImGui::Image(ndi_tex_ids[i], ofVec2f(640, 360));
 				Navigate();
 				ImGui::InputText("Send_ID6", buf6, 64, ImGuiInputTextFlags_CharsNoBlank);
 				ImGui::SameLine();

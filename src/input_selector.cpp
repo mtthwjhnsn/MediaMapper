@@ -1,10 +1,10 @@
 #include "input_selector.h"
 
 //-----------------------------
-void input_selector::setup(VideoLoader *_vid, ImageLoader *_img, CamLoader *_cam, ColourGradient *_gradient, Spout2Reciever *_spout) {
+void input_selector::setup(ImageLoader *_img) {
 
 	//vid = _vid;
-	//img = _img;
+	img = _img;
 	//cam = _cam;
 	//gradient = _gradient;
 	//spout = _spout;
@@ -18,12 +18,14 @@ void input_selector::setup(VideoLoader *_vid, ImageLoader *_img, CamLoader *_cam
 
 	params.setup = false;
 
-	select = { "input0.png", "input1.png", "input2.png", "input3.png", "input4.png", "input5.png", "input6.png", "input7.png", "input8.png", "input9.png" };
+	vector<string> select = { "input0.png", "input1.png", "input2.png", "input3.png", "input4.png", "input5.png", "input6.png", "input7.png", "input8.png", "input9.png" };
 	
 	for (int i = 0; i <= 9; i++) {
 		splash.load(select[i]);
 		splashes.push_back(splash);
 	}
+
+
 }
 
 void input_selector::splash_draw(int test_pattern, int x, int y, int w, int h) {
@@ -33,21 +35,22 @@ void input_selector::splash_draw(int test_pattern, int x, int y, int w, int h) {
 }
 /*
 void input_selector::video_draw(int x, int y, int w, int h) {
-	vid->draw(x, y, w, h);
+	//vid.draw(x, y, w, h);
+}*/
+
+void input_selector::image_draw(int selection, int x, int y, int w, int h) {
+	img->draw(selection, x, y, w, h);
 }
 
-void input_selector::image_draw(int x, int y, int w, int h) {
-	img->draw(x, y, w, h);
-}
-
+/*
 void input_selector::camera_draw(int x, int y, int w, int h) {
-	cam->draw(x, y, w, h);
+//	cam.draw(x, y, w, h);
 }
 
 void input_selector::spout_draw(int x, int y, int w, int h) {
-	spout->draw(x, y, w, h);
-}
-*/
+	//spout.draw(x, y, w, h);
+}*/
+
 void input_selector::selection() {
 	int menu_input = params.input_type;
 
@@ -66,11 +69,6 @@ void input_selector::selection() {
 		//spout->exit();
 
 		splash.clear();
-		
-		/*
-		for (int i = 0; i <= splash.size(); i++) {
-			splashes[i].load(select[i]);
-		}*/
 
 		params.setup = false;
 	}
@@ -90,7 +88,7 @@ void input_selector::selection() {
 		//cam->close();
 		//spout->exit();
 
-		vid->setup();
+		//vid.setup();
 
 		params.setup = false;
 	}
@@ -111,7 +109,10 @@ void input_selector::selection() {
 		//spout->exit();
 
 		//img->clear();
+
+
 		img->setup();
+		
 
 		params.setup = false;
 	}
@@ -131,8 +132,8 @@ void input_selector::selection() {
 		//vid->close();
 		//spout->exit();
 
-		cam->close();
-		cam->setup();
+		//cam.close();
+		//cam.setup();
 
 		params.setup = false;
 	}
@@ -171,8 +172,8 @@ void input_selector::selection() {
 		//vid->close();
 		//cam->close();
 
-		spout->exit();
-		spout->setup();
+		//spout.exit();
+		//spout.setup();
 
 		params.setup = false;
 	}
