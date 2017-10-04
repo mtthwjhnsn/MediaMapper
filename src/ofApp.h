@@ -87,6 +87,8 @@ public:
 	input_selector input;
 	output_selector outs;
 	ImageLoader image;
+	CamLoader camera;
+	VideoLoader video;
 
 //	NDIoutput NDI;
 //	Spout2Sender Spout2;

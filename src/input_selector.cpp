@@ -1,11 +1,11 @@
 #include "input_selector.h"
 
 //-----------------------------
-void input_selector::setup(ImageLoader *_img) {
+void input_selector::setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid) {
 
-	//vid = _vid;
+	vid = _vid;
 	img = _img;
-	//cam = _cam;
+	cam = _cam;
 	//gradient = _gradient;
 	//spout = _spout;
 
@@ -18,7 +18,9 @@ void input_selector::setup(ImageLoader *_img) {
 
 	params.setup = false;
 
-	vector<string> select = { "input0.png", "input1.png", "input2.png", "input3.png", "input4.png", "input5.png", "input6.png", "input7.png", "input8.png", "input9.png" };
+	
+
+	vector<string> select = {"input0.png", "input1.png", "input2.png", "input3.png", "input4.png", "input5.png", "input6.png", "input7.png", "input8.png", "input9.png" };
 	
 	for (int i = 0; i <= 9; i++) {
 		splash.load(select[i]);
@@ -29,24 +31,23 @@ void input_selector::setup(ImageLoader *_img) {
 }
 
 void input_selector::splash_draw(int test_pattern, int x, int y, int w, int h) {
-	
 	splashes[test_pattern].draw(x, y, w, h);
 
 }
-/*
-void input_selector::video_draw(int x, int y, int w, int h) {
-	//vid.draw(x, y, w, h);
-}*/
+
+void input_selector::video_draw(int selection, int x, int y, int w, int h) {
+	vid->draw(selection, x, y, w, h);
+}
 
 void input_selector::image_draw(int selection, int x, int y, int w, int h) {
 	img->draw(selection, x, y, w, h);
 }
 
-/*
-void input_selector::camera_draw(int x, int y, int w, int h) {
-//	cam.draw(x, y, w, h);
-}
 
+void input_selector::camera_draw(int selection, int x, int y, int w, int h) {
+	cam->draw(selection, x, y, w, h);
+}
+/*
 void input_selector::spout_draw(int x, int y, int w, int h) {
 	//spout.draw(x, y, w, h);
 }*/
@@ -88,7 +89,7 @@ void input_selector::selection() {
 		//cam->close();
 		//spout->exit();
 
-		//vid.setup();
+		vid->setup();
 
 		params.setup = false;
 	}
@@ -126,14 +127,14 @@ void input_selector::selection() {
 		no_input = false;
 		Spout2 = false;
 
-		splash.clear();
+		//splash.clear();
 
 		//img->clear();
 		//vid->close();
 		//spout->exit();
 
 		//cam.close();
-		//cam.setup();
+		cam->setup();
 
 		params.setup = false;
 	}
