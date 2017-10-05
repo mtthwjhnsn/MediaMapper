@@ -23,11 +23,13 @@ public:
 	~GuiColourGradient() {};
 	GuiColourGradient();
 
+	ofTrueTypeFont Overpass;
+
 	void setup(ColourGradient *_colour, Sound *_sound, input_selector *_inputs, output_selector *_outputs);
 	//void update();
 	void draw(ofFbo fboinput);
 
-	int selector_test;
+	int selector_test, selector_video, selector_image;
 
 	ImTextureID GuiID, TestID, VideoID, ImageID, CameraID, ShaderID, SpoutID, NDIID;
 	vector<ImTextureID> gui_tex_ids, test_tex_ids, video_tex_ids, image_tex_ids, camera_tex_ids, shader_tex_ids, spout_tex_ids, ndi_tex_ids;

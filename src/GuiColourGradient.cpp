@@ -52,7 +52,11 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 	fboSettings.width = tileWidth;
 	fboSettings.height = tileHeight;
 
+	Overpass.load("/Overpass/Overpass-Regular.ttf", 100);
+
 	selector_test = 0;
+	selector_video = 0;
+	selector_image = 0;
 
 	for (int i = 0; i <= 9; i++) {
 
@@ -89,7 +93,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 		VideoFbos.push_back(VideoFbo);
 
 		VideoID = (ImTextureID)VideoFbos[i].getTexture().texData.textureID;
-		test_tex_ids.push_back(VideoID);
+		video_tex_ids.push_back(VideoID);
 
 	}
 
@@ -367,63 +371,63 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		TestFbos[i].begin();
 		ofBackground(50, 50);
 		inputs->splash_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
-		ofDrawBitmapString("test " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 10, 10);
+		Overpass.drawString("test " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 		TestFbos[i].end();
 	}
 	for (int i = 0; i < inputs->vid->videos.size(); i++) {
 		VideoFbos[i].begin();
 		ofBackground(50, 50);
-		//inputs->video_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
-		ofDrawBitmapString("video " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 10, 10);
+		inputs->video_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
+		Overpass.drawString("video " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 		VideoFbos[i].end();
 	}
 	for (int i = 0; i < inputs->img->images.size(); i++) {
 		ImageFbos[i].begin();
 		ofBackground(50, 50);
 		inputs->image_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
-		ofDrawBitmapString("image " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 10, 10);
+		Overpass.drawString("image " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 		ImageFbos[i].end();
 	}
 	for (int i = 0; i < inputs->cam->cams.size(); i++) {
 		CameraFbos[i].begin();
 		ofBackground(50, 50);
 		inputs->camera_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
-		ofDrawBitmapString("camera " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 10, 10);
+		Overpass.drawString("shader " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 		CameraFbos[i].end();
 	}
 	for (int i = 0; i < ShaderFbos.size(); i++) {
 		ShaderFbos[i].begin();
 		ofBackground(50, 50);
 		//inputs->gradient_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-		ofDrawBitmapString("shader " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 10, 10);
+		Overpass.drawString("spout " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 		ShaderFbos[i].end();
 	}
 	for (int i = 0; i < SpoutFbos.size(); i++) {
 		SpoutFbos[i].begin();
 		ofBackground(50, 50);
 		//inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-		ofDrawBitmapString("spout " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 10, 10);
+		Overpass.drawString("ndi " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 		SpoutFbos[i].end();
 	}
 	for (int i = 0; i < NDIFbos.size(); i++) {
 		NDIFbos[i].begin();
 		ofBackground(50, 50);
 		//inputs->NDI_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-		ofDrawBitmapString("ndi " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 10, 10);
+		Overpass.drawString("test " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 		NDIFbos[i].end();
 	}
 	/*
 	for (int i = 0; i < GuiFbos.size(); i++) {
 		GuiFbos[i].begin();
 		ofBackground(50, 50);
-		ofDrawBitmapString("GUI elements " + ofToString(i), 10, 10);
+		Overpass.drawString("GUI elements " + ofToString(i), 50, 50);
 		GuiFbos[i].end();
 	}*/
 	
 	/*
 	for (int i = 0; i <= 9; i++) {
 		TestFbos[i].draw(i + (100* i), i + (100 * i), 1920, 1080);
-		ofDrawBitmapString(ofToString(TestFbos[i].getId()), i + (100 * i), i + (100 * i));
+		Overpass.drawString(ofToString(TestFbos[i].getId()), i + (100 * i), i + (100 * i));
 	}*/
 }
 
@@ -593,9 +597,10 @@ void GuiColourGradient::Window(int selection) {
 		static char buf[64], buf1[64], buf2[64], buf3[64], buf4[64], buf5[64], buf6[64] = "";
 		
 		vector<string> titles = { "test0", "test1", "test2", "test3", "test4", "test5", "test6", "test7", "test8", "test9" };
+		static int add_video = 0;
+
 		static int add_test = 0;
 		int columns = 3;
-		//int rows = 3;
 		int mini_width = 320;
 		int mini_height = 180;
 
@@ -612,8 +617,6 @@ void GuiColourGradient::Window(int selection) {
 		if (ImGui::CollapsingHeader("test", false)) {
 			ImGui::InputInt("test_textures", &add_test);
 			ImGui::Spacing();
-
-			
 			for (int i = 0; i <= add_test; i++) {
 				ImGui::Text(ofxImGui::GetUniqueName(titles[i]));
 				Resolutions();
@@ -624,62 +627,75 @@ void GuiColourGradient::Window(int selection) {
 				ImGui::Checkbox("Send Spout" + i, &spout);
 				ImGui::SameLine();
 				ImGui::Checkbox("Send NDI" + i, &NDI);
-				ImGui::Columns(columns);
-				ImGui::SetColumnOffset(0, 0);
-				ImGui::SetColumnOffset(1, 320);
-				ImGui::SetColumnOffset(2, 640);
-				//ofLog()
-				for (int j = 0; j <= 9; j++) {
-					if (ImGui::ImageButton(test_tex_ids[j], ofVec2f(320, 180))) {
-						selector_test = j;
-						}
-					ImGui::NextColumn();
+			}
+			ImGui::Columns(columns);
+			ImGui::SetColumnOffset(0, 0);
+			ImGui::SetColumnOffset(1, 320);
+			ImGui::SetColumnOffset(2, 640);
+			for (int j = 0; j <= 9; j++) {
+				if (ImGui::ImageButton(test_tex_ids[j], ofVec2f(320, 180))) {
+					selector_test = j;
 				}
-				ImGui::Columns(1);
+				ImGui::NextColumn();
 			}
+			ImGui::Columns(1);
 		}
 
-
-
-
-
-		if (ImGui::CollapsingHeader("Video", true)) {
-			for (int i = 0; i <= 2; i++) {
-				Resolutions();
-				ImGui::ImageButton(video_tex_ids[i], ofVec2f(640, 360));
-				Navigate();
-				ImGui::InputText("Send_ID1", buf1, 64, ImGuiInputTextFlags_CharsNoBlank);
-				ImGui::SameLine();
-				ImGui::Checkbox("Send Spout1", &spout1);
-				ImGui::SameLine();
-				ImGui::Checkbox("Send NDI1", &NDI1);
-			}
-		}
-		
-		vector<string> image_titles = { "image0", "image1", "image2", "image3", "image4", "image5", "image6", "image7", "image8", "image9" };
-		static int add_image = 0;
-
-		if (ImGui::CollapsingHeader("Image", false)) {
-			ImGui::InputInt("image_textures", &add_image);
+		if (ImGui::CollapsingHeader("video", false)) {
+			ImGui::InputInt("video_textures", &add_video);
 			ImGui::Spacing();
-
-			for (int i = 0; i <= add_image; i++) {
+			for (int i = 0; i <= add_video; i++) {
 				ImGui::Text(ofxImGui::GetUniqueName(titles[i]));
 				Resolutions();
-				ImGui::Image(image_tex_ids[i], ofVec2f(640, 360));
+				ImGui::Image(video_tex_ids[selector_video], ofVec2f(640, 360));
 				Navigate();
 				ImGui::InputText("Send_ID" + i, buf, 64, ImGuiInputTextFlags_CharsNoBlank);
 				ImGui::SameLine();
 				ImGui::Checkbox("Send Spout" + i, &spout);
 				ImGui::SameLine();
 				ImGui::Checkbox("Send NDI" + i, &NDI);
-				ImGui::Columns(3);
-				for (int j = 1; j <= 9; j++) {
-					ImGui::ImageButton(image_tex_ids[j], ofVec2f(320, 180));
-					ImGui::NextColumn();
-				}
-				ImGui::Columns(1);
 			}
+			ImGui::Columns(columns);
+			ImGui::SetColumnOffset(0, 0);
+			ImGui::SetColumnOffset(1, 320);
+			ImGui::SetColumnOffset(2, 640);
+			for (int j = 0; j <= 9; j++) {
+				if (ImGui::ImageButton(video_tex_ids[j], ofVec2f(320, 180))) {
+					selector_video = j;
+				}
+				ImGui::NextColumn();
+			}
+			ImGui::Columns(1);
+		}
+		
+		vector<string> image_titles = { "image0", "image1", "image2", "image3", "image4", "image5", "image6", "image7", "image8", "image9" };
+		static int add_image = 0;
+
+		if (ImGui::CollapsingHeader("image", false)) {
+			ImGui::InputInt("image_textures", &add_image);
+			ImGui::Spacing();
+			for (int i = 0; i <= add_image; i++) {
+				ImGui::Text(ofxImGui::GetUniqueName(titles[i]));
+				Resolutions();
+				ImGui::Image(image_tex_ids[selector_image], ofVec2f(640, 360));
+				Navigate();
+				ImGui::InputText("Send_ID" + i, buf, 64, ImGuiInputTextFlags_CharsNoBlank);
+				ImGui::SameLine();
+				ImGui::Checkbox("Send Spout" + i, &spout);
+				ImGui::SameLine();
+				ImGui::Checkbox("Send NDI" + i, &NDI);
+			}
+			ImGui::Columns(columns);
+			ImGui::SetColumnOffset(0, 0);
+			ImGui::SetColumnOffset(1, 320);
+			ImGui::SetColumnOffset(2, 640);
+			for (int j = 0; j <= 9; j++) {
+				if (ImGui::ImageButton(image_tex_ids[j], ofVec2f(320, 180))) {
+					selector_image = j;
+				}
+				ImGui::NextColumn();
+			}
+			ImGui::Columns(1);
 		}
 
 		vector<string> camera_titles = { "camera0", "camera1", "camera2", "camera3", "camera4", "camera5", "camera6", "camera7", "camera8", "camera9" };
@@ -893,7 +909,7 @@ bool GuiColourGradient::imGui()
 
 			if (ofxImGui::BeginWindow("Gradient Generator", mainSettings, true))
 			{
-				//ofDrawBitmapString(ImGui::GetWindowPos(), 10, 10);
+				//Overpass.drawString(ImGui::GetWindowPos(), 10, 10);
 
 				ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
 
@@ -918,7 +934,7 @@ bool GuiColourGradient::imGui()
 
 			if (ofxImGui::BeginWindow("Colours", mainSettings, true))
 			{
-				//ofDrawBitmapString(ImGui::GetWindowPos(), 10, 20);
+				//Overpass.drawString(ImGui::GetWindowPos(), 10, 20);
 
 				//----COLOURS
 				if (ofxImGui::BeginTree("COLOURS", mainSettings))
@@ -1091,7 +1107,7 @@ bool GuiColourGradient::imGui()
 			mainSettings.windowPos = pos2;
 			if (ofxImGui::BeginWindow("LFOS", mainSettings, true))
 			{
-				//ofDrawBitmapString(ImGui::GetWindowPos(), 10, 30);
+				//Overpass.drawString(ImGui::GetWindowPos(), 10, 30);
 
 				//----ALL
 				if (ofxImGui::BeginTree("LFOs", mainSettings)) {
@@ -1144,7 +1160,7 @@ bool GuiColourGradient::imGui()
 			if (ofxImGui::BeginWindow("sound", mainSettings, true))
 			{
 
-				//ofDrawBitmapString(ImGui::GetWindowPos(), 10, 40);
+				//Overpass.drawString(ImGui::GetWindowPos(), 10, 40);
 
 				ImGui::TextWrapped("PICK YOUR OSCILLATOR... HIT ANY KEY FOR TONE... USE COLOUR CONTROLS AND LFOS FOR FURTHER MODULATION... ENJOY");
 				sound_selection(&sound->s_params.sound_colour);
