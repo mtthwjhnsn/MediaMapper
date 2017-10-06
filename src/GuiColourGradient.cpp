@@ -58,6 +58,8 @@ void GuiColourGradient::setup(ColourGradient *_colour, Sound *_sound, input_sele
 	selector_video = 0;
 	selector_image = 0;
 
+	//selector = 0;
+
 	for (int i = 0; i <= 9; i++) {
 
 		GuiFbo.allocate(fboSettings);
@@ -609,8 +611,14 @@ void GuiColourGradient::Window(int selection) {
 
 		int columnnumber = 0;
 
+		static int selector = 0;
 		ofVec2f guiposition = ofVec2f(columnnumber * mini_width, ytranslation);
 		ofVec2f windowposition;
+
+		for (int i = 0; i <= add_test; i++) {
+			layer = ofToString(add_test);
+			layer_select.push_back(layer);
+		}
 		//ofVec2f buttonsize;
 
 
@@ -618,9 +626,23 @@ void GuiColourGradient::Window(int selection) {
 			ImGui::InputInt("test_textures", &add_test);
 			ImGui::Spacing();
 			for (int i = 0; i <= add_test; i++) {
+				ImGui::RadioButton(ofxImGui::GetUniqueName(layer_select[i]), &selector, i);
+				ImGui::SameLine();
+			}
+			ImGui::Spacing();
+			for (int i = 0; i <= add_test; i++) {
 				ImGui::Text(ofxImGui::GetUniqueName(titles[i]));
 				Resolutions();
-				ImGui::Image(test_tex_ids[selector_test], ofVec2f(640, 360));
+					
+				if (i == selector) {
+					
+					static vector<bool> changeable;
+					
+					for (i == 0; i)
+					static int selector_test1 = selector_test;
+					ImGui::Image(test_tex_ids[selector_test1], ofVec2f(640, 360));
+				}
+				else { ImGui::Image(test_tex_ids[selector_test], ofVec2f(640, 360));
 				Navigate();
 				ImGui::InputText("Send_ID" + i, buf, 64, ImGuiInputTextFlags_CharsNoBlank);
 				ImGui::SameLine();
@@ -633,8 +655,10 @@ void GuiColourGradient::Window(int selection) {
 			ImGui::SetColumnOffset(1, 320);
 			ImGui::SetColumnOffset(2, 640);
 			for (int j = 0; j <= 9; j++) {
+				//if (j == selector) {
 				if (ImGui::ImageButton(test_tex_ids[j], ofVec2f(320, 180))) {
 					selector_test = j;
+					//}
 				}
 				ImGui::NextColumn();
 			}
