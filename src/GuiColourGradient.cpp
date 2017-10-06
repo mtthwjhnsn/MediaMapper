@@ -562,17 +562,12 @@ void GuiColourGradient::Navigate() {
 
 	ImGui::SameLine();
 	//ypos
-	ImGui::VSliderInt("tileYpos", ImVec2(18, 360), &tileYpos, 2160, 0);
+//	ImGui::VSliderInt("tileYpos", ImVec2(18, 180), &tileYpos, 2160, -2160);
 	//xpos
 	static int i2 = 100;
-	ImGui::InputInt("Zoom %", &i2);
-	tileZoom = i2 * .01;
-	tileWidth = tileWidth * tileZoom;
-	tileHeight = tileHeight * tileZoom;
 
-	ImGui::SameLine();
-	ImGui::SliderInt("tileXpos", &tileXpos, 0, 3840);
-	ImGui::SameLine();
+//	ImGui::SliderInt("tileXpos", &tileXpos, -3840, 3840);
+//	ImGui::SameLine();
 	if (ImGui::Button("left")) {
 		tileXpos = tileXpos - 10;
 	}
@@ -588,6 +583,11 @@ void GuiColourGradient::Navigate() {
 	if (ImGui::Button("down")) {
 		tileYpos = tileYpos + 10;
 	}
+
+	ImGui::InputInt("Zoom %", &i2);
+	tileZoom = i2 * .01;
+	tileWidth = tileWidth * tileZoom;
+	tileHeight = tileHeight * tileZoom;
 }
 
 //--------------------------------------------------------------
@@ -635,14 +635,10 @@ void GuiColourGradient::Window(int selection) {
 				Resolutions();
 					
 				if (i == selector) {
-					
-					static vector<bool> changeable;
-					
-					for (i == 0; i)
 					static int selector_test1 = selector_test;
-					ImGui::Image(test_tex_ids[selector_test1], ofVec2f(640, 360));
+					ImGui::Image(test_tex_ids[selector_test1], ofVec2f(320, 180));
 				}
-				else { ImGui::Image(test_tex_ids[selector_test], ofVec2f(640, 360));
+				else { ImGui::Image(test_tex_ids[selector_test], ofVec2f(320, 180)); }
 				Navigate();
 				ImGui::InputText("Send_ID" + i, buf, 64, ImGuiInputTextFlags_CharsNoBlank);
 				ImGui::SameLine();
@@ -652,11 +648,11 @@ void GuiColourGradient::Window(int selection) {
 			}
 			ImGui::Columns(columns);
 			ImGui::SetColumnOffset(0, 0);
-			ImGui::SetColumnOffset(1, 320);
-			ImGui::SetColumnOffset(2, 640);
+			ImGui::SetColumnOffset(1, 160);
+			ImGui::SetColumnOffset(2, 320);
 			for (int j = 0; j <= 9; j++) {
 				//if (j == selector) {
-				if (ImGui::ImageButton(test_tex_ids[j], ofVec2f(320, 180))) {
+				if (ImGui::ImageButton(test_tex_ids[j], ofVec2f(160, 90))) {
 					selector_test = j;
 					//}
 				}
