@@ -609,36 +609,27 @@ void GuiColourGradient::Window(int selection) {
 		int xtranslation = 0;
 		int ytranslation = 0;
 
-		int columnnumber = 0;
+		static int toggle = 0;
 
-		static int selector = 0;
-		ofVec2f guiposition = ofVec2f(columnnumber * mini_width, ytranslation);
-		ofVec2f windowposition;
-
-		for (int i = 0; i <= add_test; i++) {
-			layer = ofToString(add_test);
-			layer_select.push_back(layer);
-		}
 		//ofVec2f buttonsize;
 
 
 		if (ImGui::CollapsingHeader("test", false)) {
 			ImGui::InputInt("test_textures", &add_test);
 			ImGui::Spacing();
+
 			for (int i = 0; i <= add_test; i++) {
-				ImGui::RadioButton(ofxImGui::GetUniqueName(layer_select[i]), &selector, i);
+				// -------------Toggles
 				ImGui::SameLine();
-			}
-			ImGui::Spacing();
+				ImGui::RadioButton(ofxImGui::GetUniqueName(ofToString(i)), &toggle, i);
+				selectors.push_back(i);
+				}
 			for (int i = 0; i <= add_test; i++) {
 				ImGui::Text(ofxImGui::GetUniqueName(titles[i]));
 				Resolutions();
-					
-				if (i == selector) {
-					static int selector_test1 = selector_test;
-					ImGui::Image(test_tex_ids[selector_test1], ofVec2f(320, 180));
-				}
-				else { ImGui::Image(test_tex_ids[selector_test], ofVec2f(320, 180)); }
+				ImGui::SameLine();
+				ImGui::RadioButton(ofxImGui::GetUniqueName(ofToString(i)), &toggle, i);
+				ImGui::Image(test_tex_ids[selectors[i]], ofVec2f(320, 180));
 				Navigate();
 				ImGui::InputText("Send_ID" + i, buf, 64, ImGuiInputTextFlags_CharsNoBlank);
 				ImGui::SameLine();
@@ -650,14 +641,13 @@ void GuiColourGradient::Window(int selection) {
 			ImGui::SetColumnOffset(0, 0);
 			ImGui::SetColumnOffset(1, 160);
 			ImGui::SetColumnOffset(2, 320);
+			//display image buttons and switch the active output
 			for (int j = 0; j <= 9; j++) {
-				//if (j == selector) {
 				if (ImGui::ImageButton(test_tex_ids[j], ofVec2f(160, 90))) {
-					selector_test = j;
-					//}
+					selectors[toggle] = j;
 				}
-				ImGui::NextColumn();
-			}
+			ImGui::NextColumn();
+		}
 			ImGui::Columns(1);
 		}
 

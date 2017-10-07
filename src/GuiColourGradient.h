@@ -25,13 +25,12 @@ public:
 
 	ofTrueTypeFont Overpass;
 
-	vector<string> layer_select;
-	string layer;
-
-//	int selector;
+	vector<int> selectors;
 
 	void setup(ColourGradient *_colour, Sound *_sound, input_selector *_inputs, output_selector *_outputs);
+	
 	//void update();
+	
 	void draw(ofFbo fboinput);
 
 	int selector_test, selector_video, selector_image;
