@@ -25,34 +25,39 @@ public:
 
 	ofTrueTypeFont Overpass;
 
-	vector<int> selectors;
+	vector<int> selectors, test_selectors, image_selectors, video_selectors, camera_selectors, shader_selectors, spout_selectors, NDI_selectors;
 
-	void setup(ColourGradient *_colour, Sound *_sound, input_selector *_inputs, output_selector *_outputs);
+	string ID, title;
+	vector<string> titles;
+
+	int size, add_test, add_video, add_image, add_camera, add_shader, add_spout, add_NDI;
+	int toggle, test_toggle, video_toggle, image_toggle, camera_toggle, shader_toggle, spout_toggle, NDI_toggle;
+
+	void setup(ColourGradient *_colour, input_selector *_inputs, output_selector *_outputs);
 	
 	//void update();
 	
 	void draw(ofFbo fboinput);
 
-	int selector_test, selector_video, selector_image;
-
 	ImTextureID GuiID, TestID, VideoID, ImageID, CameraID, ShaderID, SpoutID, NDIID;
-	vector<ImTextureID> gui_tex_ids, test_tex_ids, video_tex_ids, image_tex_ids, camera_tex_ids, shader_tex_ids, spout_tex_ids, ndi_tex_ids;
+	vector<ImTextureID> tex_ids, gui_tex_ids, test_tex_ids, video_tex_ids, image_tex_ids, camera_tex_ids, shader_tex_ids, spout_tex_ids, ndi_tex_ids;
 
 	ImTextureID getTextureIDGui(), getTextureIDTest(), getTextureIDVideo(), getTextureIDImage(), getTextureIDShader(), getTextureIDCamera(), getTextureIDSpout(), getTextureIDNDI();
 
 	ofFbo GuiFbo, TestFbo, VideoFbo, ImageFbo, CameraFbo, ShaderFbo, SpoutFbo, NDIFbo;
 	vector<ofFbo> GuiFbos, TestFbos, VideoFbos, ImageFbos, CameraFbos, ShaderFbos, SpoutFbos, NDIFbos;
 
-	void Window(int selection);
+	
 	void Resolutions();
 	void Navigate();
-
+	void InputWindow(int selection);
+	void OutputWindow(int selection);
 	void lfo_selection(int* type_param);
-	void lfo_selection_red(int* type_param_red);
-	void lfo_selection_green(int* type_param_green);
-	void lfo_selection_blue(int* type_param_blue);
-	void sound_selection(int* sound_param);
-	void oscillator(int* oscillator_param);
+	//void lfo_selection_red(int* type_param_red);
+	//void lfo_selection_green(int* type_param_green);
+	//void lfo_selection_blue(int* type_param_blue);
+	//void sound_selection(int* sound_param);
+	//void oscillator(int* oscillator_param);
 
 	//tile
 	int tileXpos, tileYpos, tileWidth, tileHeight;
@@ -63,7 +68,7 @@ private:
 	ofFbo::Settings fboSettings;
 
 	ColourGradient *colour;
-	Sound *sound;
+	//Sound *sound;
 	input_selector *inputs;
 	output_selector *outputs;
 

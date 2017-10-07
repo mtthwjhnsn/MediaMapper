@@ -13,7 +13,7 @@
 #include "ofMain.h"
 #include "GuiColourGradient.h"
 #include "ColourGradient.h"
-#include "Sound.h"
+//#include "Sound.h"
 #include "ofxMaxim.h"
 #include "input_selector.h"
 #include "output_selector.h"
@@ -61,28 +61,28 @@ public:
 	void gotMessage(ofMessage msg);
 
 	//sound 
-	void audioOut(float * output, int bufferSize, int nChannels);
+//	void audioOut(float * output, int bufferSize, int nChannels);
 
-	unsigned bufferSize, sampleRate;
-	double currentSample;
-	float frequency_red, modulationIndex_red, modulationFrequency_red,   frequency_green, modulationIndex_green, modulationFrequency_green, frequency_blue, modulationIndex_blue, modulationFrequency_blue;
-	double outputs[2];
+//	unsigned bufferSize, sampleRate;
+//	double currentSample;
+//	float frequency_red, modulationIndex_red, modulationFrequency_red,   frequency_green, modulationIndex_green, modulationFrequency_green, frequency_blue, modulationIndex_blue, modulationFrequency_blue;
+	//double outputs[2];
 
-	maxiOsc osc_red, mod_red, osc_green, mod_green, osc_blue, mod_blue, phaser;
-	maxiMix mix;
-	maxiEnv env_red, env_green, env_blue;
+//	maxiOsc osc_red, mod_red, osc_green, mod_green, osc_blue, mod_blue, phaser;
+//	maxiMix mix;
+//	maxiEnv env_red, env_green, env_blue;
 	
 	ofFbo fbo;
 
 	ofImage background;
 
-	void coloursetup();
+//	void coloursetup();
 	void colourfbo();
 
 	ofFbo fbo1;
 
 	ColourGradient colour;
-	Sound sound;
+//	Sound sound;
 	GuiColourGradient gui;
 	input_selector input;
 	output_selector outs;

@@ -19,15 +19,15 @@ void ofApp::setup() {
 	int w = ofGetWidth();
 	int h = ofGetHeight();
 
-	sampleRate = 44100;
-	bufferSize = 512;
-	ofSoundStreamSetup(2, 0, this, sampleRate, bufferSize, 4);
+//	sampleRate = 44100;
+//	bufferSize = 512;
+//	ofSoundStreamSetup(2, 0, this, sampleRate, bufferSize, 4);
 
 	colour.setup(gui.tileWidth, gui.tileHeight);
-	sound.setup();
+	//sound.setup();
 	
 	input.setup(&image, &camera, &video);
-	gui.setup(&colour, &sound, &input, &outs);
+	gui.setup(&colour, &input, &outs);
 	outs.setup();
 	
 	ofFbo::Settings fboSettings;
@@ -92,7 +92,7 @@ void ofApp::draw() {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
-	if (sound.s_params.sound_colour == 0) {
+	/*if (sound.s_params.sound_colour == 0) {
 		env_red.trigger = 0;
 		env_green.trigger = 0;
 		env_blue.trigger = 0;
@@ -111,14 +111,15 @@ void ofApp::keyPressed(int key) {
 		env_blue.trigger = 1;
 		env_red.trigger = 0;
 		env_green.trigger = 0;
-	}
+	}*/
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {
-		env_red.trigger = 0;
+	/*	env_red.trigger = 0;
 		env_green.trigger = 0;
 		env_blue.trigger = 0;
+		*/
 }
 
 
@@ -166,7 +167,7 @@ void ofApp::gotMessage(ofMessage msg) {
 void ofApp::dragEvent(ofDragInfo dragInfo) {
 
 }
-
+/*
 void ofApp::audioOut(float * output, int bufferSize, int nChannels) {
 	
 	env_red.setAttack(sound.s_params.red_Attack);
@@ -264,3 +265,4 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels) {
 
 	}
 }
+*/
