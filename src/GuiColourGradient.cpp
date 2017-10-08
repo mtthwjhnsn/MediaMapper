@@ -54,9 +54,12 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 
 	Overpass.load("/Overpass/Overpass-Regular.ttf", 100);
 
-	test_toggle = 0;
+	toggle = 0;
 	
-	add_test = 0;
+	add_test, add_video, add_image, add_camera, add_shader, add_spout, add_NDI = 0;
+	//size = 0;
+	ID = "test";
+	title = "test0";
 
 	//selector = 0;
 
@@ -665,11 +668,12 @@ void GuiColourGradient::OutputWindow(int selection) {
 		static bool spout, spout1, spout2, spout3, spout4, spout5, spout6 = false;
 		static bool NDI, NDI1, NDI2, NDI3, NDI4, NDI5, NDI6 = false;
 		static char buf[64], buf1[64], buf2[64], buf3[64], buf4[64], buf5[64], buf6[64] = "";
+		static int size = 0;
 
 		if (selection == 0) {
 			ID = "test";
 			toggle = test_toggle;
-			size = add_test;
+	//		static int size = add_test;
 			selectors = test_selectors;
 			tex_ids = test_tex_ids;
 			for (int j = 0; j <= size; j++) {
@@ -681,7 +685,7 @@ void GuiColourGradient::OutputWindow(int selection) {
 		if (selection == 1) {
 			ID = "video";
 			toggle = video_toggle;
-			size = add_video;
+	//		static int size = add_test;
 			selectors = video_selectors;
 			tex_ids = video_tex_ids;
 			for (int j = 0; j <= size; j++) {
@@ -693,7 +697,7 @@ void GuiColourGradient::OutputWindow(int selection) {
 		if (selection == 2) {
 			ID = "image";
 			toggle = image_toggle;
-			size = add_image;
+	//		static int size = add_test;
 			selectors = image_selectors;
 			tex_ids = image_tex_ids;
 			for (int j = 0; j <= size; j++) {
@@ -705,7 +709,7 @@ void GuiColourGradient::OutputWindow(int selection) {
 		if (selection == 3) {
 			ID = "camera";
 			toggle = camera_toggle;
-			size = add_camera;
+	//		static int size = add_test; 
 			selectors = camera_selectors;
 			tex_ids = camera_tex_ids;
 			for (int j = 0; j <= size; j++) {
@@ -717,7 +721,7 @@ void GuiColourGradient::OutputWindow(int selection) {
 		if (selection == 4) {
 			ID = "shader";
 			toggle = shader_toggle;
-			size = add_shader;
+	//		static int size = add_test; 
 			selectors = shader_selectors;
 			tex_ids = shader_tex_ids;
 			for (int j = 0; j <= size; j++) {
@@ -729,7 +733,7 @@ void GuiColourGradient::OutputWindow(int selection) {
 		if (selection == 5) {
 			ID = "spout";
 			toggle = spout_toggle;
-			size = add_spout;
+	//		static int size = add_test; 
 			selectors = spout_selectors;
 			tex_ids = spout_tex_ids;
 			for (int j = 0; j <= size; j++) {
@@ -741,7 +745,7 @@ void GuiColourGradient::OutputWindow(int selection) {
 		if (selection == 6) {
 			ID = "NDI";
 			toggle = NDI_toggle;
-			size = add_NDI;
+	//		static int size = add_test; 
 			selectors = NDI_selectors;
 			tex_ids = ndi_tex_ids;
 			for (int j = 0; j <= size; j++) {

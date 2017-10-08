@@ -30,7 +30,7 @@ public:
 	string ID, title;
 	vector<string> titles;
 
-	int size, add_test, add_video, add_image, add_camera, add_shader, add_spout, add_NDI;
+	int add_test, add_video, add_image, add_camera, add_shader, add_spout, add_NDI;
 	int toggle, test_toggle, video_toggle, image_toggle, camera_toggle, shader_toggle, spout_toggle, NDI_toggle;
 
 	void setup(ColourGradient *_colour, input_selector *_inputs, output_selector *_outputs);
