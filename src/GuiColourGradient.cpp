@@ -54,14 +54,22 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 
 	Overpass.load("/Overpass/Overpass-Regular.ttf", 100);
 
-	toggle = 0;
-	
-	add_test, add_video, add_image, add_camera, add_shader, add_spout, add_NDI = 0;
-	//size = 0;
-	ID = "test";
-	title = "test0";
+	input_num = 7;
 
-	//selector = 0;
+	IDs = { "test", "video", "image", "camera", "shader", "spout", "ndi" };
+
+
+	for (int i = 0; i <= input_num; i++) {
+		
+		add_instances.push_back(0);
+		toggles.push_back(0);
+		selectors.push_back(0);
+	}
+
+	for (int i = 0; i <= input_num; i++) {
+		select_vect.push_back(selectors);
+	}
+
 
 	for (int i = 0; i <= 9; i++) {
 
@@ -167,6 +175,9 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 		ndi_tex_ids.push_back(NDIID);
 
 	}
+
+	tex_vect = { test_tex_ids, video_tex_ids, image_tex_ids, camera_tex_ids, shader_tex_ids, spout_tex_ids, ndi_tex_ids };
+
 	//mesh
 	mesh.setMode(OF_PRIMITIVE_POINTS);
 	glEnable(GL_POINT_SMOOTH);
@@ -600,67 +611,24 @@ void GuiColourGradient::Navigate() {
 
 void GuiColourGradient::InputWindow(int selection) {
 
-	if (inputs->params.input_type == selection) {
-		int columns = 3;
-		ImGui::Columns(columns);
-		ImGui::SetColumnOffset(0, 0);
-		ImGui::SetColumnOffset(1, 160);
-		ImGui::SetColumnOffset(2, 320);
+	int columns = 3;
+	ImGui::Columns(columns);
+	ImGui::SetColumnOffset(0, 0);
+	ImGui::SetColumnOffset(1, 160);
+	ImGui::SetColumnOffset(2, 320);
 
-		if (ImGui::CollapsingHeader("test", true)) {
 
-			for (int j = 0; j <= 9; j++) {
-				if (ImGui::ImageButton(test_tex_ids[j], ofVec2f(160, 90))) {
-					test_selectors[test_toggle] = j;
-				}
-				ImGui::NextColumn();
+	if (ImGui::CollapsingHeader(ofxImGui::GetUniqueName(IDs[selection]), true)) {
+		for (int j = 0; j <= 9; j++) {
+			if (ImGui::ImageButton(tex_vect[selection][j], ofVec2f(160, 90))) {
+				select_vect[selection][toggles[selection]] = j;
 			}
+			ImGui::NextColumn();
 		}
-
-		if (ImGui::CollapsingHeader("video", true)) {
-
-			for (int j = 0; j <= 9; j++) {
-				if (ImGui::ImageButton(video_tex_ids[j], ofVec2f(160, 90))) {
-					video_selectors[video_toggle] = j;
-				}
-				ImGui::NextColumn();
-			}
-		}
-
-		if (ImGui::CollapsingHeader("image", true)) {
-
-			for (int j = 0; j <= 9; j++) {
-				if (ImGui::ImageButton(image_tex_ids[j], ofVec2f(160, 90))) {
-					image_selectors[image_toggle] = j;
-				}
-				ImGui::NextColumn();
-			}
-		}
-
-		if (ImGui::CollapsingHeader("camera", true)) {
-
-			for (int j = 0; j <= 9; j++) {
-				if (ImGui::ImageButton(camera_tex_ids[j], ofVec2f(160, 90))) {
-					camera_selectors[camera_toggle] = j;
-				}
-				ImGui::NextColumn();
-			}
-		}
-
-		if (ImGui::CollapsingHeader("shader", true)) {
-
-			for (int j = 0; j <= 9; j++) {
-				if (ImGui::ImageButton(shader_tex_ids[j], ofVec2f(160, 90))) {
-					shader_selectors[shader_toggle] = j;
-				}
-				ImGui::NextColumn();
-			}
-		}
-
-		ImGui::Columns(1);
-
 	}
+	ImGui::Columns(1);
 }
+
 
 //--------------------------------------------------------------
 void GuiColourGradient::OutputWindow(int selection) {
@@ -668,113 +636,29 @@ void GuiColourGradient::OutputWindow(int selection) {
 		static bool spout, spout1, spout2, spout3, spout4, spout5, spout6 = false;
 		static bool NDI, NDI1, NDI2, NDI3, NDI4, NDI5, NDI6 = false;
 		static char buf[64], buf1[64], buf2[64], buf3[64], buf4[64], buf5[64], buf6[64] = "";
-		static int size = 0;
-
-		if (selection == 0) {
-			ID = "test";
-			toggle = test_toggle;
-	//		static int size = add_test;
-			selectors = test_selectors;
-			tex_ids = test_tex_ids;
-			for (int j = 0; j <= size; j++) {
-				title = "test" + ofToString(j);
-				titles.push_back(title);
-			}
-		}
-
-		if (selection == 1) {
-			ID = "video";
-			toggle = video_toggle;
-	//		static int size = add_test;
-			selectors = video_selectors;
-			tex_ids = video_tex_ids;
-			for (int j = 0; j <= size; j++) {
-				title = "video" + ofToString(j);
-				titles.push_back(title);
-			}
-		}
-
-		if (selection == 2) {
-			ID = "image";
-			toggle = image_toggle;
-	//		static int size = add_test;
-			selectors = image_selectors;
-			tex_ids = image_tex_ids;
-			for (int j = 0; j <= size; j++) {
-				title = "image" + ofToString(j);
-				titles.push_back(title);
-			}
-		}
-
-		if (selection == 3) {
-			ID = "camera";
-			toggle = camera_toggle;
-	//		static int size = add_test; 
-			selectors = camera_selectors;
-			tex_ids = camera_tex_ids;
-			for (int j = 0; j <= size; j++) {
-				title = "camera" + ofToString(j);
-				titles.push_back(title);
-			}
-		}
-
-		if (selection == 4) {
-			ID = "shader";
-			toggle = shader_toggle;
-	//		static int size = add_test; 
-			selectors = shader_selectors;
-			tex_ids = shader_tex_ids;
-			for (int j = 0; j <= size; j++) {
-				title = "shader" + ofToString(j);
-				titles.push_back(title);
-			}
-		}
-
-		if (selection == 5) {
-			ID = "spout";
-			toggle = spout_toggle;
-	//		static int size = add_test; 
-			selectors = spout_selectors;
-			tex_ids = spout_tex_ids;
-			for (int j = 0; j <= size; j++) {
-				title = "spout" + ofToString(j);
-				titles.push_back(title);
-			}
-		}
-
-		if (selection == 6) {
-			ID = "NDI";
-			toggle = NDI_toggle;
-	//		static int size = add_test; 
-			selectors = NDI_selectors;
-			tex_ids = ndi_tex_ids;
-			for (int j = 0; j <= size; j++) {
-				title = "NDI" + ofToString(j);
-				titles.push_back(title);
-			}
-		}
-
-		//int columns = 3;
+		
+		
 		int mini_width = 320;
 		int mini_height = 180;
 
-
-		if (ImGui::CollapsingHeader(ofxImGui::GetUniqueName(ID), false)) {
-			ImGui::InputInt(ofxImGui::GetUniqueName(ID), &size);
+		if (ImGui::CollapsingHeader(ofxImGui::GetUniqueName(IDs[selection]), false)) {
+			ImGui::InputInt(ofxImGui::GetUniqueName("textures"), &add_instances[selection]);
 			ImGui::Spacing();
 
-			for (int i = 0; i <= size; i++) {
+
+			for (int i = 0; i <= add_instances[selection]; i++) {
 				// -------------Toggles
 				ImGui::SameLine();
-				ImGui::RadioButton(ofxImGui::GetUniqueName(ofToString(i)), &toggle, i);
-				selectors.push_back(i);
+				ImGui::RadioButton(ofxImGui::GetUniqueName(ofToString(i)), &toggles[selection], i);
 			}
-			for (int i = 0; i <= size; i++) {
-				ImGui::Text(ofxImGui::GetUniqueName(titles[i]));
+
+			for (int i = 0; i <= add_instances[selection]; i++) {
+				// -------------Toggles
+				ImGui::Text(ofxImGui::GetUniqueName(IDs[selection] + ofToString(i)));
 				ImGui::SameLine();
-				ImGui::RadioButton(ofxImGui::GetUniqueName(ofToString(i)), &toggle, i);
+				ImGui::RadioButton(ofxImGui::GetUniqueName(ofToString(i)), &toggles[selection], i);
 				Resolutions();
-				ImGui::Image(tex_ids[selectors[i]], ofVec2f(mini_width, mini_height));
+				ImGui::Image(tex_vect[selection][select_vect[selection][i]], ofVec2f(mini_width, mini_height));
 				Navigate();
 				ImGui::InputText("Send_ID" + i, buf, 64, ImGuiInputTextFlags_CharsNoBlank);
 				ImGui::SameLine();
@@ -912,11 +796,9 @@ bool GuiColourGradient::imGui()
 		//WINDOWS---------------------------------------------------------------
 
 
-		vector<string> window_names = { "No Input","Video","Image","Shader", "Camera", "Spout", "NDI" };
-
 		if (ofxImGui::BeginWindow("OUTPUT_TEXTURES", mainSettings, false)) {
 			ImGui::Separator();
-			for (int i = 0; i < window_names.size(); i++) {
+			for (int i = 0; i < input_num; i++) {
 
 				OutputWindow(i);
 				//spoutToggles();
@@ -927,7 +809,7 @@ bool GuiColourGradient::imGui()
 
 		if (ofxImGui::BeginWindow("INPUT_TEXTURES", mainSettings, false)) {
 			ImGui::Separator();
-			for (int i = 0; i < window_names.size(); i++) {
+			for (int i = 0; i < input_num; i++) {
 				InputWindow(i);
 			}
 			ofxImGui::EndWindow(mainSettings);

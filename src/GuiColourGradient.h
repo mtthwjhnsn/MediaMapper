@@ -25,13 +25,18 @@ public:
 
 	ofTrueTypeFont Overpass;
 
-	vector<int> selectors, test_selectors, image_selectors, video_selectors, camera_selectors, shader_selectors, spout_selectors, NDI_selectors;
+	vector<int> selectors;
+	vector<int> add_instances;
+	vector<int> toggles;
+	vector<string> IDs;
+	vector<vector<ImTextureID>> tex_vect;
+	vector<vector<int>> select_vect;
+	
+	int input_num; //number of input types //test, video, image, camera, shader, spout, ndi
 
-	string ID, title;
-	vector<string> titles;
-
-	int add_test, add_video, add_image, add_camera, add_shader, add_spout, add_NDI;
-	int toggle, test_toggle, video_toggle, image_toggle, camera_toggle, shader_toggle, spout_toggle, NDI_toggle;
+	int _toggle;
+	//int _add_test, add_video, add_image, add_camera, add_shader, add_spout, add_NDI;
+	//int toggle, test_toggle, video_toggle, image_toggle, camera_toggle, shader_toggle, spout_toggle, NDI_toggle;
 
 	void setup(ColourGradient *_colour, input_selector *_inputs, output_selector *_outputs);
 	
@@ -40,7 +45,7 @@ public:
 	void draw(ofFbo fboinput);
 
 	ImTextureID GuiID, TestID, VideoID, ImageID, CameraID, ShaderID, SpoutID, NDIID;
-	vector<ImTextureID> tex_ids, gui_tex_ids, test_tex_ids, video_tex_ids, image_tex_ids, camera_tex_ids, shader_tex_ids, spout_tex_ids, ndi_tex_ids;
+	vector<ImTextureID> gui_tex_ids, test_tex_ids, video_tex_ids, image_tex_ids, camera_tex_ids, shader_tex_ids, spout_tex_ids, ndi_tex_ids;
 
 	ImTextureID getTextureIDGui(), getTextureIDTest(), getTextureIDVideo(), getTextureIDImage(), getTextureIDShader(), getTextureIDCamera(), getTextureIDSpout(), getTextureIDNDI();
 
