@@ -7,6 +7,10 @@ class NDIoutput
 {
 public:
 
+	~NDIoutput() {};
+	NDIoutput() {};
+
+
 	void setup();
 	void send(ofFbo fbo);
 	void exit();

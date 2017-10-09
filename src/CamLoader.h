@@ -4,11 +4,10 @@
 class CamLoader
 {
 
-
-
-
-
 public:
+
+	~CamLoader() {};
+	CamLoader() {};
 
 	void setup();
 	void draw(int selection, int x, int y, int w, int h);

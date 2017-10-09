@@ -31,8 +31,8 @@ void ofApp::setup() {
 	outs.setup();
 	
 	ofFbo::Settings fboSettings;
-	fboSettings.width = 2560; //2560
-	fboSettings.height = 1440; //1440
+	fboSettings.width = 1920; //2560
+	fboSettings.height = 1080; //1440
 	fboSettings.internalformat = GL_RGBA;
 	fboSettings.textureTarget = GL_TEXTURE_2D;
 

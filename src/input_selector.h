@@ -27,6 +27,8 @@ enum ImageTypes {
 class input_selector
 {
 public:
+	~input_selector() {};
+	input_selector() {};
 
 	void setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid);
 	//void update();

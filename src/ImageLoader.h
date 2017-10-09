@@ -4,8 +4,10 @@
 
 class ImageLoader
 {
-
 public:
+
+	~ImageLoader() {};
+	ImageLoader() {};
 
 	void setup();
 	void draw(int selection, int x, int y, int w, int h);

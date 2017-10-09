@@ -23,6 +23,10 @@ public:
 	~GuiColourGradient() {};
 	GuiColourGradient();
 
+
+	int active;
+	int active1;
+
 	ofTrueTypeFont Overpass;
 
 	vector<int> selectors;
@@ -34,13 +38,7 @@ public:
 	
 	int input_num; //number of input types //test, video, image, camera, shader, spout, ndi
 
-	int _toggle;
-	//int _add_test, add_video, add_image, add_camera, add_shader, add_spout, add_NDI;
-	//int toggle, test_toggle, video_toggle, image_toggle, camera_toggle, shader_toggle, spout_toggle, NDI_toggle;
-
 	void setup(ColourGradient *_colour, input_selector *_inputs, output_selector *_outputs);
-	
-	//void update();
 	
 	void draw(ofFbo fboinput);
 
@@ -52,7 +50,8 @@ public:
 	ofFbo GuiFbo, TestFbo, VideoFbo, ImageFbo, CameraFbo, ShaderFbo, SpoutFbo, NDIFbo;
 	vector<ofFbo> GuiFbos, TestFbos, VideoFbos, ImageFbos, CameraFbos, ShaderFbos, SpoutFbos, NDIFbos;
 
-	
+	vector<bool> colours;
+
 	void Resolutions();
 	void Navigate();
 	void InputWindow(int selection);

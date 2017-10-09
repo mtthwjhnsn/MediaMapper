@@ -18,6 +18,10 @@ class output_selector
 {
 public:
 	
+	~output_selector() {};
+	output_selector() {};
+
+
 	void setup();
 	//void update();
 	void draw(ofFbo fbo);

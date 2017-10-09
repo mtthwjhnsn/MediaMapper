@@ -58,6 +58,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 
 	IDs = { "test", "video", "image", "camera", "shader", "spout", "ndi" };
 
+	active = 0;
 
 	for (int i = 0; i <= input_num; i++) {
 		
@@ -408,28 +409,28 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 			CameraFbos[i].begin();
 			ofBackground(50, 50);
 			inputs->camera_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
-			Overpass.drawString("shader " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
+			Overpass.drawString("camera " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 			CameraFbos[i].end();
 		}
 		for (int i = 0; i < ShaderFbos.size(); i++) {
 			ShaderFbos[i].begin();
 			ofBackground(50, 50);
 			//inputs->gradient_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-			Overpass.drawString("spout " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
+			Overpass.drawString("shader " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 			ShaderFbos[i].end();
 		}
 		for (int i = 0; i < SpoutFbos.size(); i++) {
 			SpoutFbos[i].begin();
 			ofBackground(50, 50);
 			//inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-			Overpass.drawString("ndi " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
+			Overpass.drawString("spout " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 			SpoutFbos[i].end();
 		}
 		for (int i = 0; i < NDIFbos.size(); i++) {
 			NDIFbos[i].begin();
 			ofBackground(50, 50);
 			//inputs->NDI_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-			Overpass.drawString("test " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
+			Overpass.drawString("ndi " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 			NDIFbos[i].end();
 		}
 	}
@@ -616,13 +617,30 @@ void GuiColourGradient::InputWindow(int selection) {
 	ImGui::SetColumnOffset(0, 0);
 	ImGui::SetColumnOffset(1, 160);
 	ImGui::SetColumnOffset(2, 320);
-
+	
+	ImVec4 c2 = ImColor::HSV(1.00f, 0.80f, 0.80f);
+	ImVec4 c1 = ImColor::HSV(0.14f, 0.24f, 0.30f);
 
 	if (ImGui::CollapsingHeader(ofxImGui::GetUniqueName(IDs[selection]), true)) {
 		for (int j = 0; j <= 9; j++) {
+			
+			if (select_vect[selection][toggles[selection]] == j) {
+				
+				ImGui::PushStyleColor(ImGuiCol_Button, c2);
+			
+
+			}
+			else { ImGui::PushStyleColor(ImGuiCol_Button, c1); }
+
 			if (ImGui::ImageButton(tex_vect[selection][j], ofVec2f(160, 90))) {
 				select_vect[selection][toggles[selection]] = j;
+				active = j;
 			}
+			
+			if (select_vect[selection][toggles[selection]] == j) {
+				ImGui::PopStyleColor();
+			}
+			else { ImGui::PopStyleColor(); }
 			ImGui::NextColumn();
 		}
 	}
@@ -640,7 +658,7 @@ void GuiColourGradient::OutputWindow(int selection) {
 		
 		int mini_width = 320;
 		int mini_height = 180;
-
+		
 		if (ImGui::CollapsingHeader(ofxImGui::GetUniqueName(IDs[selection]), false)) {
 			ImGui::InputInt(ofxImGui::GetUniqueName("textures"), &add_instances[selection]);
 			ImGui::Spacing();

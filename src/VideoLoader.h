@@ -14,11 +14,10 @@ https://github.com/jackosx/ofxWMFVideoPlayer
 class VideoLoader
 {
 
-
-
-
-
 public:
+
+	~VideoLoader() {};
+	VideoLoader() {};
 
 	void setup();
 	void draw(int selection, int x, int y, int w, int h);

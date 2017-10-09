@@ -7,6 +7,10 @@ class Spout2Sender
 {
 public:
 
+	~Spout2Sender() {};
+	Spout2Sender() {};
+
+
 	void setup();
 	void send(ofFbo fbo);
 	void exit();
