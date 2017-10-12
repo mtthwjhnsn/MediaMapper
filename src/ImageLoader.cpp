@@ -6,33 +6,56 @@ void ImageLoader::setup() {
 	ofSetLogLevel(OF_LOG_VERBOSE);
 	ofSetVerticalSync(true);
 
-
-	/*
+		/*
 		ofFileDialogResult result = ofSystemLoadDialog("Load file");
 		if (result.bSuccess) {
 			string path = result.getPath();
 
 			threadedImage.loadFromDisk(image, path);
-		}
-
-
-		/*ofFileDialogResult result = ofSystemLoadDialog("Load file");
+		}*/
+		
+		ofFileDialogResult result = ofSystemLoadDialog("Load file");
 			if (result.bSuccess) {
+			
 				string path = result.getPath();
-				image.load(path);
-			}*/
-		
-	vector<string> select = { "input0.png", "input1.png", "input2.png", "input3.png", "input4.png", "input5.png", "input6.png", "input7.png", "input8.png", "input9.png" };
+				//threadedImage.loadFromDisk(image, path);
+				//image.load(path);
+		}
+		//threadedImage.
 
 
-	for (int i = 0; i <= 9; i++) {
-		
-		//threadedImage.loadFromDisk(image, select[i]);
-		image.load(select[i]);
-		images.push_back(image);
-	}
+	images.push_back(image);
+
+	//kick off thread
+	startThread();
 
 }
+
+void ImageLoader::threadedFunction() {
+
+	while (isThreadRunning()) {
+		
+		// Attempt to lock the mutex. If blocking is turned on
+		if (lock())
+		{
+
+			//____>> function here
+
+			//unlock the mutex
+			unlock();
+
+		}
+		else
+		{
+
+			ofLogWarning("threadedFunction()") << "unable to lock mutex.";
+
+		}
+		//'framerate' of thread (ms)
+		sleep(16);
+	}
+}
+
 
 void ImageLoader::draw(int selection, int x, int y, int w, int h) {
 	ofSetColor(255);

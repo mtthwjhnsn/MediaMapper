@@ -45,6 +45,10 @@ void ofApp::setup() {
 	fbo1.begin();
 	ofClear(255, 255, 255, 0);
 	fbo1.end();
+
+	backgrounddraw();
+
+	
 }
 
 /*
@@ -55,6 +59,10 @@ void ofApp::coloursetup() {
 	}
 }
 */
+void ofApp::backgrounddraw() {
+	background.draw(0, 0, ofGetWidth(), ofGetHeight());
+}
+
 
 void ofApp::colourfbo() {
 	fbo1.begin();
@@ -83,7 +91,7 @@ void ofApp::output() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-	background.draw(0, 0, ofGetWidth(), ofGetHeight());
+	//background.draw(0, 0, ofGetWidth(), ofGetHeight());
 	update();
 	output();
 	//fbo.draw(0, ofGetHeight()*.25, ofGetWidth()*.5, ofGetHeight()*.5);

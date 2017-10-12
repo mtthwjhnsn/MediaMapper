@@ -23,10 +23,6 @@ public:
 	~GuiColourGradient() {};
 	GuiColourGradient();
 
-
-	int active;
-	int active1;
-
 	ofTrueTypeFont Overpass;
 
 	vector<int> selectors;
@@ -35,7 +31,9 @@ public:
 	vector<string> IDs;
 	vector<vector<ImTextureID>> tex_vect;
 	vector<vector<int>> select_vect;
-	
+	vector<bool> spouts;
+	//bool spout;
+
 	int input_num; //number of input types //test, video, image, camera, shader, spout, ndi
 
 	void setup(ColourGradient *_colour, input_selector *_inputs, output_selector *_outputs);
@@ -49,7 +47,7 @@ public:
 
 	ofFbo GuiFbo, TestFbo, VideoFbo, ImageFbo, CameraFbo, ShaderFbo, SpoutFbo, NDIFbo;
 	vector<ofFbo> GuiFbos, TestFbos, VideoFbos, ImageFbos, CameraFbos, ShaderFbos, SpoutFbos, NDIFbos;
-
+	vector<vector<ofFbo>> Fbos;
 	vector<bool> colours;
 
 	void Resolutions();
@@ -76,7 +74,8 @@ private:
 	input_selector *inputs;
 	output_selector *outputs;
 
-	ofxSpout2::Sender spoutSender, spoutSender1, spoutSender2, spoutSender3, spoutSender4, spoutSender5, spoutSender6;
+	ofxSpout2::Sender SpoutSender;
+	vector<ofxSpout2::Sender> SpoutSenders;
 
 	ofMesh mesh;
 

@@ -22,7 +22,8 @@ public:
 	void setup();
 	void draw(int selection, int x, int y, int w, int h);
 	void close(int selection);
-
+	string path;
+	vector<string> paths;
 	//ofVideoPlayer video;
 	ofxWMFVideoPlayer video;
 	vector<ofxWMFVideoPlayer> videos;

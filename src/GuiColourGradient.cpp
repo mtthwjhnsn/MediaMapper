@@ -18,10 +18,11 @@
 
 //--------------------------------------------------------------
 GuiColourGradient::GuiColourGradient() {
+	
 	tileXpos = 0;
 	tileYpos = 0;
-	tileWidth = 1920;
-	tileHeight = 1080;
+	tileWidth = 256;
+	tileHeight = 144;
 
 	tileZoom = 0.25;
 }
@@ -41,13 +42,13 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 	inputs = _inputs;
 	outputs = _outputs;
 
-	fboSettings.width = w;
-	fboSettings.height = h;
+	//fboSettings.width = w;
+	//fboSettings.height = h;
 	fboSettings.internalformat = GL_RGBA;
 	fboSettings.textureTarget = GL_TEXTURE_2D;
 
-	fboSettings.width = w / 3;
-	fboSettings.height = h / 2;
+	//fboSettings.width = w / 3;
+	//fboSettings.height = h / 2;
 
 	fboSettings.width = tileWidth;
 	fboSettings.height = tileHeight;
@@ -57,21 +58,23 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 	input_num = 7;
 
 	IDs = { "test", "video", "image", "camera", "shader", "spout", "ndi" };
-
-	active = 0;
-
+	//spout = false;
+	
+	// populate vectors
 	for (int i = 0; i <= input_num; i++) {
 		
 		add_instances.push_back(0);
 		toggles.push_back(0);
 		selectors.push_back(0);
+		SpoutSenders.push_back(SpoutSender);
+		spouts.push_back(false);
 	}
 
 	for (int i = 0; i <= input_num; i++) {
 		select_vect.push_back(selectors);
 	}
 
-
+	//allocate and clear fbos
 	for (int i = 0; i <= 9; i++) {
 
 		GuiFbo.allocate(fboSettings);
@@ -79,7 +82,6 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 		ofClear(255, 255, 255, 0);
 		GuiFbo.end();
 		GuiFbos.push_back(GuiFbo);
-
 		GuiID = (ImTextureID)GuiFbos[i].getTexture().texData.textureID;
 		gui_tex_ids.push_back(GuiID);
 
@@ -178,7 +180,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 	}
 
 	tex_vect = { test_tex_ids, video_tex_ids, image_tex_ids, camera_tex_ids, shader_tex_ids, spout_tex_ids, ndi_tex_ids };
-
+	Fbos = { GuiFbos, TestFbos, VideoFbos, ImageFbos, CameraFbos, ShaderFbos, SpoutFbos, NDIFbos };
 	//mesh
 	mesh.setMode(OF_PRIMITIVE_POINTS);
 	glEnable(GL_POINT_SMOOTH);
@@ -388,49 +390,49 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 			TestFbos[i].begin();
 			ofBackground(50, 50);
 			inputs->splash_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
-			Overpass.drawString("test " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
+			//Overpass.drawString("test " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 			TestFbos[i].end();
 		}
 		for (int i = 0; i < inputs->vid->videos.size(); i++) {
 			VideoFbos[i].begin();
 			ofBackground(50, 50);
 			inputs->video_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
-			Overpass.drawString("video " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
+			//Overpass.drawString("video " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 			VideoFbos[i].end();
 		}
 		for (int i = 0; i < inputs->img->images.size(); i++) {
 			ImageFbos[i].begin();
 			ofBackground(50, 50);
 			inputs->image_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
-			Overpass.drawString("image " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
+			//Overpass.drawString("image " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 			ImageFbos[i].end();
 		}
 		for (int i = 0; i < inputs->cam->cams.size(); i++) {
 			CameraFbos[i].begin();
 			ofBackground(50, 50);
 			inputs->camera_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
-			Overpass.drawString("camera " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
+			//Overpass.drawString("camera " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 			CameraFbos[i].end();
 		}
 		for (int i = 0; i < ShaderFbos.size(); i++) {
 			ShaderFbos[i].begin();
 			ofBackground(50, 50);
 			//inputs->gradient_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-			Overpass.drawString("shader " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
+			//Overpass.drawString("shader " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 			ShaderFbos[i].end();
 		}
 		for (int i = 0; i < SpoutFbos.size(); i++) {
 			SpoutFbos[i].begin();
 			ofBackground(50, 50);
 			//inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-			Overpass.drawString("spout " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
+			//Overpass.drawString("spout " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 			SpoutFbos[i].end();
 		}
 		for (int i = 0; i < NDIFbos.size(); i++) {
 			NDIFbos[i].begin();
 			ofBackground(50, 50);
 			//inputs->NDI_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-			Overpass.drawString("ndi " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
+			//Overpass.drawString("ndi " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 			NDIFbos[i].end();
 		}
 	}
@@ -634,7 +636,6 @@ void GuiColourGradient::InputWindow(int selection) {
 
 			if (ImGui::ImageButton(tex_vect[selection][j], ofVec2f(160, 90))) {
 				select_vect[selection][toggles[selection]] = j;
-				active = j;
 			}
 			
 			if (select_vect[selection][toggles[selection]] == j) {
@@ -651,60 +652,75 @@ void GuiColourGradient::InputWindow(int selection) {
 //--------------------------------------------------------------
 void GuiColourGradient::OutputWindow(int selection) {
 
-		static bool spout, spout1, spout2, spout3, spout4, spout5, spout6 = false;
-		static bool NDI, NDI1, NDI2, NDI3, NDI4, NDI5, NDI6 = false;
-		static char buf[64], buf1[64], buf2[64], buf3[64], buf4[64], buf5[64], buf6[64] = "";
-		
-		
-		int mini_width = 320;
-		int mini_height = 180;
-		
-		if (ImGui::CollapsingHeader(ofxImGui::GetUniqueName(IDs[selection]), false)) {
-			ImGui::InputInt(ofxImGui::GetUniqueName("textures"), &add_instances[selection]);
-			ImGui::Spacing();
+	
+	static bool NDI, NDI1, NDI2, NDI3, NDI4, NDI5, NDI6 = false;
+	static char buf[64], buf1[64], buf2[64], buf3[64], buf4[64], buf5[64], buf6[64] = "";
+
+	/*
+	static char buf[64] = "";
+	vector<char> bufs[64];
+
+	bufs[64].push_back(buf[64]);
+	*/
 
 
-			for (int i = 0; i <= add_instances[selection]; i++) {
-				// -------------Toggles
-				ImGui::SameLine();
-				ImGui::RadioButton(ofxImGui::GetUniqueName(ofToString(i)), &toggles[selection], i);
-			}
+	int mini_width = 320;
+	int mini_height = 180;
 
-			for (int i = 0; i <= add_instances[selection]; i++) {
-				// -------------Toggles
-				ImGui::Text(ofxImGui::GetUniqueName(IDs[selection] + ofToString(i)));
-				ImGui::SameLine();
-				ImGui::RadioButton(ofxImGui::GetUniqueName(ofToString(i)), &toggles[selection], i);
-				Resolutions();
-				ImGui::Image(tex_vect[selection][select_vect[selection][i]], ofVec2f(mini_width, mini_height));
-				Navigate();
-				ImGui::InputText("Send_ID" + i, buf, 64, ImGuiInputTextFlags_CharsNoBlank);
-				ImGui::SameLine();
-				ImGui::Checkbox("Send Spout" + i, &spout);
-				ImGui::SameLine();
-				ImGui::Checkbox("Send NDI" + i, &NDI);
-			}
+	if (ImGui::CollapsingHeader(ofxImGui::GetUniqueName(IDs[selection]), false)) {
+		ImGui::InputInt(ofxImGui::GetUniqueName("textures"), &add_instances[selection]);
+		ImGui::Spacing();
+
+
+		for (int i = 0; i <= add_instances[selection]; i++) {
+			// -------------Toggles
+			ImGui::SameLine();
+			ImGui::RadioButton(ofxImGui::GetUniqueName(ofToString(i)), &toggles[selection], i);
 		}
 
+		for (int i = 0; i <= add_instances[selection]; i++) {
+			// -------------Toggles
+			ImGui::Text(ofxImGui::GetUniqueName(IDs[selection] + ofToString(i)));
+			ImGui::SameLine();
+			ImGui::RadioButton(ofxImGui::GetUniqueName(ofToString(i)), &toggles[selection], i);
+			Resolutions();
+			ImGui::Image(tex_vect[selection][select_vect[selection][i]], ofVec2f(mini_width, mini_height));
+			Navigate();
+			ImGui::InputText("Send_ID" + i, buf, 64, ImGuiInputTextFlags_CharsNoBlank);
+			ImGui::SameLine();
 
-		/*
-		if (spout == true) spoutSender.sendTexture(TestFbos.getTexture(), buf);
-		//else spoutSender.exit();
-		if (spout1 == true) spoutSender1.sendTexture(fboVideo.getTexture(), buf1);
-		//else spoutSender1.exit();
-		if (spout2 == true) spoutSender2.sendTexture(fboImage.getTexture(), buf2);
-		//else spoutSender2.exit();
-		if (spout3 == true)	spoutSender3.sendTexture(fboCamera.getTexture(), buf3);
-		//else spoutSender3.exit();
-		if (spout4 == true)	spoutSender4.sendTexture(fboGradient.getTexture(), buf4);
-		//else spoutSender4.exit();
-		if (spout5 == true) spoutSender5.sendTexture(fboSpout.getTexture(), buf5);
-		//else spoutSender5.exit();
-		if (spout6 == true) spoutSender6.sendTexture(fboNDI.getTexture(), buf6);
-		//else spoutSender6.exit();
-		*/
+			static bool test_spouts;
+			ImGui::Checkbox("Send Spout" + i, &test_spouts);
 
-	
+			//ImGui::Checkbox("Send Spout" + i, &spouts[selection]);
+			
+			ImGui::SameLine();
+			ImGui::Checkbox("Send NDI" + i, &NDI);
+
+			/*if (spouts[selection] == true)
+			{
+				SpoutSenders[selection].sendTexture(Fbos[selection][select_vect[selection][i]].getTexture(), buf);
+				ofRect(0, 0, 100, 100);
+			}*/
+		}
+	}
+
+
+	//else spoutSender.exit();
+	/*if (spout1 == true) spoutSender1.sendTexture(VideoFbos[selection].getTexture(), buf1);
+	//else spoutSender1.exit();
+	if (spout2 == true) spoutSender2.sendTexture(Imafe[selection].getTexture(), buf2);
+	//else spoutSender2.exit();
+	if (spout3 == true)	spoutSender3.sendTexture(fboCameras[selection].getTexture(), buf3);
+	//else spoutSender3.exit();
+	if (spout4 == true)	spoutSender4.sendTexture(fboGradients.getTexture(), buf4);
+	//else spoutSender4.exit();
+	if (spout5 == true) spoutSender5.sendTexture(fboSpouts.getTexture(), buf5);
+	//else spoutSender5.exit();
+	if (spout6 == true) spoutSender6.sendTexture(fboNDIs.getTexture(), buf6);
+	//else spoutSender6.exit();
+	*/
+
 }
 
 /*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

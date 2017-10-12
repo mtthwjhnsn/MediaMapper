@@ -113,7 +113,6 @@ void input_selector::selection() {
 
 
 		img->setup();
-		
 
 		params.setup = false;
 	}

@@ -1,22 +1,30 @@
 #pragma once
 #include "ofMain.h"
-#include "ofxThreadedImageLoader.h"
+//#include "ofxThreadedImageLoader.h"
+#include "ofThread.h"
 
 class ImageLoader
 {
-public:
+public: ofThread {
 
-	~ImageLoader() {};
-	ImageLoader() {};
+//	~ImageLoader() {};
+//	ImageLoader() {};
+
+//vector<ofImage> select;
+
+	void threadedFunction();
 
 	void setup();
 	void draw(int selection, int x, int y, int w, int h);
 	void clear();
 
-	ofxThreadedImageLoader threadedImage;
-	vector<ofxThreadedImageLoader> threadedImages;
+//ofxThreadedImageLoader threadedImage;
+//vector<ofxThreadedImageLoader> threadedImages;
 
 	ofImage image;
 	vector<ofImage> images;
-};
 
+
+private:
+
+};
