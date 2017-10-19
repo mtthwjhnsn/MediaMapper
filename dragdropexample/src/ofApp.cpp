@@ -13,8 +13,14 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-
-	ofSetColor(255);
+	if (videoThumbs.size() > 0) {
+		for (int i = 0; i < videoThumbs.size(); i++) {
+			videoThumbs[i].draw(i * 200, 0, 200, 200);
+		}
+	}
+	//ofdraw
+	
+	//ofSetColor(255);
 	
 	/*
 	float dx = dragPt.x;
@@ -32,11 +38,15 @@ void ofApp::draw() {
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
 	
-	for (int i = 0; i <= fileName.size(); i++) {
+	//for (int i = 0; i <= fileName.size(); i++) {
 
-		imgs.push_back(img.load(fileName[i]));
-		imgs[i].load();
-	}
+	//	imgs.push_back(img.load(fileName[i]));
+	//	imgs[i].load();
+	//}
+	//for (int i = 0; i <= videoThumbs.size(); i++) {
+		
+	//}
+
 }
 
 //--------------------------------------------------------------
