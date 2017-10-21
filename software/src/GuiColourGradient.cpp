@@ -213,6 +213,9 @@ ImTextureID GuiColourGradient::getTextureIDNDI() {
 	return NDIID;
 }
 
+void GuiColourGradient::update() {
+}
+
 //-------------------------------------------------
 void GuiColourGradient::draw(ofFbo fboinput) {
 
@@ -393,7 +396,7 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 			//Overpass.drawString("test " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 			TestFbos[i].end();
 		}
-		for (int i = 0; i < inputs->vid->videos.size(); i++) {
+		for (int i = 0; i < inputs->vid->videoThumbs.size(); i++) {
 			VideoFbos[i].begin();
 			ofBackground(50, 50);
 			inputs->video_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);

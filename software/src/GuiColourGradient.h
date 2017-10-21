@@ -37,7 +37,7 @@ public:
 	int input_num; //number of input types //test, video, image, camera, shader, spout, ndi
 
 	void setup(ColourGradient *_colour, input_selector *_inputs, output_selector *_outputs);
-	
+	void update();
 	void draw(ofFbo fboinput);
 
 	ImTextureID GuiID, TestID, VideoID, ImageID, CameraID, ShaderID, SpoutID, NDIID;

@@ -72,6 +72,9 @@ void ofApp::colourfbo() {
 
 void ofApp::update() {
 	ofSetWindowTitle(ofToString(ofGetFrameRate()));
+	
+	//gui.draw->inputs
+
 	fbo.begin();
 	//coloursetup();
 	colourfbo();
@@ -173,6 +176,8 @@ void ofApp::gotMessage(ofMessage msg) {
 
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo) {
+
+	video.dragEvent(dragInfo);
 
 }
 /*
