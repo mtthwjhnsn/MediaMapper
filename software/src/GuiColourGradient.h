@@ -25,6 +25,10 @@ public:
 
 	ofTrueTypeFont Overpass;
 
+	int activeVid;
+	int activeImg;
+
+	int vidArraySize; 
 	vector<int> selectors;
 	vector<int> add_instances;
 	vector<int> toggles;
@@ -62,7 +66,7 @@ public:
 	//void oscillator(int* oscillator_param);
 
 	//tile
-	int tileXpos, tileYpos, tileWidth, tileHeight;
+	int tileXpos, tileYpos, tileWidth, tileHeight, canvasWidth, canvasHeight;
 	float tileZoom;
 
 private:

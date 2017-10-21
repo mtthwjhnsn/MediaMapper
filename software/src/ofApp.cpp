@@ -178,6 +178,7 @@ void ofApp::gotMessage(ofMessage msg) {
 void ofApp::dragEvent(ofDragInfo dragInfo) {
 
 	video.dragEvent(dragInfo);
+	image.dragEvent(dragInfo);
 
 }
 /*

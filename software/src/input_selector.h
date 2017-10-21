@@ -36,10 +36,13 @@ public:
 	void selection();
 
 	void splash_draw(int test_pattern, int x, int y, int w, int h);
-	void video_draw(int selection, int x, int y, int w, int h);
-	void image_draw(int selection, int x, int y, int w, int h);
-	
-	
+	void video_draw(int x, int y, int w, int h);
+	void video_drawThumbs(int selection, int x, int y, int w, int h);
+	void video_swap(int selection);
+	void image_drawThumbs(int selection, int x, int y, int w, int h);
+	void image_draw(int x, int y, int w, int h);
+	void image_swap(int selection);
+
 	void camera_draw(int selection, int x, int y, int w, int h);
 	//void gradient_draw(int x, int y, int w, int h);
 	//void spout_draw(int x, int y, int w, int h);

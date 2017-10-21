@@ -3,24 +3,34 @@
 #include "ofMain.h"
 #include "ofThread.h"
 
-class ImageLoader : public ofThread {
+class ImageLoader{
 
 public:
 	ImageLoader();
 	~ImageLoader();
 
-	void threadedFunction();
-
 	void setup();
-	void draw(int selection, int x, int y, int w, int h);
+	void draw(int x, int y, int w, int h);
+	void drawThumbs(int selection, int x, int y, int w, int h);
+	void swap(int selection);
+	void active(int selection);
 	//void clear();
-	void keyPressed(int key);
 
+	void dragEvent(ofDragInfo info);
+
+	ofImage img;
 	ofImage image;
 	vector<ofImage> images;
 
+	vector<string> imagePaths;
+	//vector<string> audioPaths;
+	vector<ofImage> imageThumbs;
+
+	vector<string> fileName;
+	int filesSize;
+
+
 private:
-	int _x, _y, _w, _h, _selection;
-	int load;
+
 
 };

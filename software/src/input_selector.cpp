@@ -18,8 +18,6 @@ void input_selector::setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid
 
 	params.setup = false;
 
-	
-
 	vector<string> select = {"input0.png", "input1.png", "input2.png", "input3.png", "input4.png", "input5.png", "input6.png", "input7.png", "input8.png", "input9.png" };
 	
 	for (int i = 0; i <= 9; i++) {
@@ -35,14 +33,29 @@ void input_selector::splash_draw(int test_pattern, int x, int y, int w, int h) {
 
 }
 
-void input_selector::video_draw(int selection, int x, int y, int w, int h) {
-	vid->draw(selection, x, y, w, h);
+void input_selector::video_draw(int x, int y, int w, int h) {
+	vid->draw(x, y, w, h);
 }
 
-void input_selector::image_draw(int selection, int x, int y, int w, int h) {
-//	img->draw(selection, x, y, w, h);
+void input_selector::video_drawThumbs(int selection, int x, int y, int w, int h) {
+	vid->drawThumbs(selection, x, y, w, h);
 }
 
+void input_selector::video_swap(int selection) {
+	vid->swap(selection);
+}
+
+void input_selector::image_drawThumbs(int selection, int x, int y, int w, int h) {
+	img->drawThumbs(selection, x, y, w, h);
+}
+
+void input_selector::image_draw(int x, int y, int w, int h) {
+	img->draw(x, y, w, h);
+}
+
+void input_selector::image_swap(int selection) {
+	img->swap(selection);
+}
 
 void input_selector::camera_draw(int selection, int x, int y, int w, int h) {
 	cam->draw(selection, x, y, w, h);

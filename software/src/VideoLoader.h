@@ -18,13 +18,18 @@ public:
 
 	~VideoLoader() {};
 	VideoLoader() {};
-
+	
 	void setup();
-	void update();
-	void draw(int selection, int x, int y, int w, int h);
+	void update(int selection);
+	void draw(int x, int y, int w, int h);
+	void drawThumbs(int selection, int x, int y, int w, int h);
+	void swap(int selection);
 
 	void dragEvent(ofDragInfo info);
-
+	ofVideoPlayer vid;
+	ofxWMFVideoPlayer video;
+	//vector<ofVideoPlayer> videos;
+	
 	vector<ofImage> draggedImages;
 	ofPoint dragPt;
 

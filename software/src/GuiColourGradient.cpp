@@ -24,14 +24,17 @@ GuiColourGradient::GuiColourGradient() {
 	tileWidth = 256;
 	tileHeight = 144;
 
+	canvasWidth = 1280;
+	canvasHeight = 720;
+
 	tileZoom = 0.25;
 }
 
-int w = 800;
-int h = 180;
 
 //-------------------------------------------------
 void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, output_selector *_outputs) {
+
+
 
 	//---------------
 	gui.setup();
@@ -41,6 +44,9 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 	//sound = _sound;
 	inputs = _inputs;
 	outputs = _outputs;
+
+	activeVid = 0;
+	activeImg = 0;
 
 	//fboSettings.width = w;
 	//fboSettings.height = h;
@@ -219,7 +225,8 @@ void GuiColourGradient::update() {
 //-------------------------------------------------
 void GuiColourGradient::draw(ofFbo fboinput) {
 
-
+	int w = 800;
+	int h = 180;
 
 	if (guiVisible) {
 		//IMGUI		
@@ -399,14 +406,25 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		for (int i = 0; i < inputs->vid->videoThumbs.size(); i++) {
 			VideoFbos[i].begin();
 			ofBackground(50, 50);
-			inputs->video_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
+			if (i == activeVid) {
+				inputs->video_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+			}
+			else {
+				inputs->video_drawThumbs(i, tileXpos, tileYpos, tileWidth, tileHeight);
+			}
+			
 			//Overpass.drawString("video " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 			VideoFbos[i].end();
 		}
-		for (int i = 0; i < inputs->img->images.size(); i++) {
+		for (int i = 0; i < inputs->img->imageThumbs.size(); i++) {
 			ImageFbos[i].begin();
 			ofBackground(50, 50);
-			//inputs->image_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
+			if (i == activeVid) {
+				inputs->image_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+			}
+			else {
+				inputs->image_drawThumbs(i, tileXpos, tileYpos, tileWidth, tileHeight);
+			}
 			//Overpass.drawString("image " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 			ImageFbos[i].end();
 		}
@@ -545,40 +563,29 @@ void GuiColourGradient::oscillator(int* oscillator_param) {
 */
 //--------------------------------------------------------------
 void GuiColourGradient::Resolutions() {
-	const char* resolutions[] = { "custom", "1280 x 720 (720p)", "1920 x 1080 (1080p)", "2560 x 1440 (QHD)", "3840 x 2160 (4k)", "7680 x 4320 (8k)" };
+	static float customWidth = 1920, customHeight = 1080;
+	ofVec2f custom = {customWidth, customHeight};
+	vector<ofVec2f> resolutions = { custom, {256, 144}, {384, 216}, {512, 218}, {640, 360}, {768, 432}, {1280, 720}, {1920, 1080}, {2560, 1440}, {3840, 2160}, {7680, 4320} };
+	const char* resolutions1[] = { "custom", "256 x 144", "384 x 216", "512 X 218", "640 x 360", "768 x 432", "1280 x 720 (720p)", "1920 x 1080 (1080p)", "2560 x 1440 (QHD)", "3840 x 2160 (4k)", "7680 x 4320 (8k)"};
 	static int resolutions2 = -1;
 
-	ImGui::Combo("output resolution", &resolutions2, resolutions, IM_ARRAYSIZE(resolutions));
+	ImGui::Combo("output resolution", &resolutions2, resolutions1, IM_ARRAYSIZE(resolutions1));
 
-	if (resolutions2 == 0) {
+	if(resolutions2 == 0) {
 		static int i0 = 1920;
 		static int i1 = 1080;
 		ImGui::InputInt("output_width", &i0);
 		ImGui::InputInt("output_height", &i1);
-		tileWidth = i0;
-		tileHeight = i1;
-	}
-	if (resolutions2 == 1) {
-		tileWidth = 1280;
-		tileHeight = 720;
-	}
-	if (resolutions2 == 2) {
-		tileWidth = 1920;
-		tileHeight = 1080;
-	}
-	if (resolutions2 == 3) {
-		tileWidth = 2560;
-		tileHeight = 1440;
-	}
-	if (resolutions2 == 4) {
-		tileWidth = 3840;
-		tileHeight = 2160;
-	}
-	if (resolutions2 == 5) {
-		tileWidth = 7680;
-		tileHeight = 4320;
+		customWidth = i0;
+		customHeight = i1;
 	}
 
+	for (int i = 0; i <= resolutions.size(); i++) {
+		if (resolutions2 == i) {
+			tileWidth = resolutions[i][0];
+			tileHeight = resolutions[i][1];
+		}
+	}
 }
 
 //------------------------------------------------
@@ -630,15 +637,20 @@ void GuiColourGradient::InputWindow(int selection) {
 		for (int j = 0; j <= 9; j++) {
 			
 			if (select_vect[selection][toggles[selection]] == j) {
-				
-				ImGui::PushStyleColor(ImGuiCol_Button, c2);
-			
 
+				ImGui::PushStyleColor(ImGuiCol_Button, c2);
 			}
 			else { ImGui::PushStyleColor(ImGuiCol_Button, c1); }
-
+			
+			//if input thumbnail is pressed the active output equals the thumbnail number
 			if (ImGui::ImageButton(tex_vect[selection][j], ofVec2f(160, 90))) {
 				select_vect[selection][toggles[selection]] = j;
+				
+				//for the video thumbnail trigger the path swapping function
+				if (selection == 1) {
+					inputs->video_swap(j);
+					activeVid = j;
+				}
 			}
 			
 			if (select_vect[selection][toggles[selection]] == j) {
