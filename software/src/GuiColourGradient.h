@@ -35,7 +35,11 @@ public:
 	vector<string> IDs;
 	vector<vector<ImTextureID>> tex_vect;
 	vector<vector<int>> select_vect;
-	vector<bool> spouts;
+	//vector<bool> spoutBool;
+	vector<vector<bool>> spoutBools;
+	
+	vector<bool> test_spout, video_spout, image_spout, camera_spout, shader_spout, spout_spout, ndi_spout;
+	
 	//bool spout;
 
 	int input_num; //number of input types //test, video, image, camera, shader, spout, ndi
@@ -53,6 +57,8 @@ public:
 	vector<ofFbo> GuiFbos, TestFbos, VideoFbos, ImageFbos, CameraFbos, ShaderFbos, SpoutFbos, NDIFbos;
 	vector<vector<ofFbo>> Fbos;
 	vector<bool> colours;
+	
+	//ofxSpoutSe
 
 	void Resolutions();
 	void Navigate();
@@ -78,9 +84,9 @@ private:
 	input_selector *inputs;
 	output_selector *outputs;
 
-	ofxSpout2::Sender SpoutSender;
-	vector<ofxSpout2::Sender> SpoutSenders;
-
+	ofxSpout2::Sender SpoutSender0, SpoutSender1, SpoutSender2;
+	//vector<ofxSpout2::Sender> SpoutSenders;
+	//vector < vector<ofxSpout2::Sender>> SpoutVecs;
 	ofMesh mesh;
 
 	ofShader shader;
