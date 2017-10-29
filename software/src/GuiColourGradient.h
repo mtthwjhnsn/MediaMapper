@@ -35,12 +35,13 @@ public:
 	vector<string> IDs;
 	vector<vector<ImTextureID>> tex_vect;
 	vector<vector<int>> select_vect;
-	//vector<bool> spoutBool;
-	vector<vector<bool>> spoutBools;
 	
-	vector<bool> test_spout, video_spout, image_spout, camera_spout, shader_spout, spout_spout, ndi_spout;
+
+	ImVector<ImVector<bool>> spoutBools;
+	ImVector<bool> test_spout, video_spout, image_spout, camera_spout, shader_spout, spout_spout, ndi_spout;
 	
-	//bool spout;
+	ImVector<ImVector<bool>> ndiBools;
+	ImVector<bool> test_ndi, video_ndi, image_ndi, camera_ndi, shader_ndi, spout_ndi, ndi_ndi;
 
 	int input_num; //number of input types //test, video, image, camera, shader, spout, ndi
 

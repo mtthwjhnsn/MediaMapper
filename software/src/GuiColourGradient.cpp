@@ -72,13 +72,10 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 		add_instances.push_back(0);
 		toggles.push_back(0);
 		selectors.push_back(0);
-		//SpoutSenders.push_back(SpoutSender);
-		//spoutBools.push_back(spoutBool);
 	}
 
 	for (int i = 0; i <= input_num; i++) {
 		select_vect.push_back(selectors);
-		//spoutBools.push_back(spoutBool);
 	}
 
 	//allocate and clear fbos
@@ -106,7 +103,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 		test_tex_ids.push_back(TestID);
 
 		test_spout.push_back(false);
-
+		test_ndi.push_back(false);
 	}
 
 	for (int i = 0; i <= 9; i++) {
@@ -121,7 +118,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 		video_tex_ids.push_back(VideoID);
 
 		video_spout.push_back(false);
-
+		video_ndi.push_back(false);
 	}
 
 	for (int i = 0; i <= 9; i++) {
@@ -136,6 +133,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 		image_tex_ids.push_back(ImageID);
 
 		image_spout.push_back(false);
+		image_ndi.push_back(false);
 	}
 
 	for (int i = 0; i <= 9; i++) {
@@ -150,6 +148,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 		camera_tex_ids.push_back(CameraID);
 
 		camera_spout.push_back(false);
+		camera_ndi.push_back(false);
 	}
 
 	for (int i = 0; i <= 9; i++) {
@@ -164,7 +163,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 		shader_tex_ids.push_back(ShaderID);
 
 		shader_spout.push_back(false);
-
+		shader_ndi.push_back(false);
 	}
 
 	for (int i = 0; i <= 9; i++) {
@@ -179,6 +178,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 		spout_tex_ids.push_back(SpoutID);
 
 		spout_spout.push_back(false);
+		spout_ndi.push_back(false);
 	}
 
 	for (int i = 0; i <= 9; i++) {
@@ -191,16 +191,30 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 
 		NDIID = (ImTextureID)NDIFbos[i].getTexture().texData.textureID;
 		ndi_tex_ids.push_back(NDIID);
+	
 		ndi_spout.push_back(false);
+		ndi_ndi.push_back(false);
 	}
 
+	spoutBools.push_back(test_spout);
+	spoutBools.push_back(video_spout);
+	spoutBools.push_back(image_spout);
+	spoutBools.push_back(camera_spout);
+	spoutBools.push_back(shader_spout);
+	spoutBools.push_back(spout_spout);
+	spoutBools.push_back(ndi_spout);
+
+	ndiBools.push_back(test_ndi);
+	ndiBools.push_back(video_ndi);
+	ndiBools.push_back(image_ndi);
+	ndiBools.push_back(camera_ndi);
+	ndiBools.push_back(shader_ndi);
+	ndiBools.push_back(spout_ndi);
+	ndiBools.push_back(ndi_ndi);
 
 
 	tex_vect = { test_tex_ids, video_tex_ids, image_tex_ids, camera_tex_ids, shader_tex_ids, spout_tex_ids, ndi_tex_ids };
-
 	Fbos = { GuiFbos, TestFbos, VideoFbos, ImageFbos, CameraFbos, ShaderFbos, SpoutFbos, NDIFbos };
-	
-	spoutBools = { test_spout, video_spout, image_spout, camera_spout, shader_spout, spout_spout, ndi_spout };
 	
 	//mesh
 	mesh.setMode(OF_PRIMITIVE_POINTS);
@@ -686,24 +700,8 @@ void GuiColourGradient::InputWindow(int selection) {
 //--------------------------------------------------------------
 void GuiColourGradient::OutputWindow(int selection) {
 
-	
-	static bool NDI, NDI1, NDI2, NDI3, NDI4, NDI5, NDI6 = false;
-	
-	static bool spout0, spout1, spout2, spout3, spout4, spout5, spout6, spout7, spout8, spout9 = spoutBools[selection][9];
-
-	//bool spout_toggle;
-	//static bool spout_toggle = spoutBools[selection][i];
-	
 	static char buf[64], buf1[64], buf2[64], buf3[64], buf4[64], buf5[64], buf6[64] = "";
 	
-	/*
-	static char buf[64] = "";
-	vector<char> bufs[64];
-
-	bufs[64].push_back(buf[64]);
-	*/
-
-
 	int mini_width = 320;
 	int mini_height = 180;
 
@@ -716,7 +714,7 @@ void GuiColourGradient::OutputWindow(int selection) {
 			// -------------Toggles
 			ImGui::SameLine();
 			ImGui::RadioButton(ofxImGui::GetUniqueName(ofToString(i)), &toggles[selection], i);
-
+		
 		}
 
 		for (int i = 0; i <= add_instances[selection]; i++) {
@@ -729,13 +727,10 @@ void GuiColourGradient::OutputWindow(int selection) {
 			Navigate();
 			ImGui::InputText("Send_ID" + i, buf, 64, ImGuiInputTextFlags_CharsNoBlank);
 			ImGui::SameLine();
-			
-		static ImVector<bool> ImSpout;
-		ImSpout.push_back(i)
-		static ImVector<ImVector<bool>> ImSpouts;
-		//ImSpouts.push_back(i);
-		//	ImGui::Checkbox(ofxImGui::GetUniqueName("spout" + ofToString(i)), &ImSpouts[selection][i]);
-			ImGui::Checkbox(ofxImGui::GetUniqueName("spout" + ofToString(i)), &ImSpouts[selection][i]);
+
+			ImGui::Checkbox(ofxImGui::GetUniqueName("spout" + ofToString(i)), &spoutBools[selection][i]);
+			ImGui::SameLine();
+			ImGui::Checkbox(ofxImGui::GetUniqueName("ndi" + ofToString(i)), &ndiBools[selection][i]);
 			
 		}
 	}
