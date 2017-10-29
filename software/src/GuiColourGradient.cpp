@@ -34,7 +34,7 @@ GuiColourGradient::GuiColourGradient() {
 //-------------------------------------------------
 void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, output_selector *_outputs) {
 
-
+	ofxSpout2::Sender placeholder;
 
 	//---------------
 	gui.setup();
@@ -104,6 +104,9 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 
 		test_spout.push_back(false);
 		test_ndi.push_back(false);
+
+		test_spout_sends.push_back(placeholder);
+
 	}
 
 	for (int i = 0; i <= 9; i++) {
@@ -119,6 +122,8 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 
 		video_spout.push_back(false);
 		video_ndi.push_back(false);
+
+		video_spout_sends.push_back(placeholder);
 	}
 
 	for (int i = 0; i <= 9; i++) {
@@ -134,6 +139,8 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 
 		image_spout.push_back(false);
 		image_ndi.push_back(false);
+
+		image_spout_sends.push_back(placeholder);
 	}
 
 	for (int i = 0; i <= 9; i++) {
@@ -149,6 +156,8 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 
 		camera_spout.push_back(false);
 		camera_ndi.push_back(false);
+
+		camera_spout_sends.push_back(placeholder);
 	}
 
 	for (int i = 0; i <= 9; i++) {
@@ -164,6 +173,8 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 
 		shader_spout.push_back(false);
 		shader_ndi.push_back(false);
+
+		shader_spout_sends.push_back(placeholder);
 	}
 
 	for (int i = 0; i <= 9; i++) {
@@ -179,6 +190,8 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 
 		spout_spout.push_back(false);
 		spout_ndi.push_back(false);
+
+		spout_spout_sends.push_back(placeholder);
 	}
 
 	for (int i = 0; i <= 9; i++) {
@@ -194,6 +207,8 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 	
 		ndi_spout.push_back(false);
 		ndi_ndi.push_back(false);
+	
+		ndi_spout_sends.push_back(placeholder);
 	}
 
 	spoutBools.push_back(test_spout);
@@ -213,8 +228,10 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 	ndiBools.push_back(ndi_ndi);
 
 
+	
+	spoutSenders = {test_spout_sends, video_spout_sends, image_spout_sends, camera_spout_sends, shader_spout_sends, spout_spout_sends, ndi_spout_sends };
 	tex_vect = { test_tex_ids, video_tex_ids, image_tex_ids, camera_tex_ids, shader_tex_ids, spout_tex_ids, ndi_tex_ids };
-	Fbos = { GuiFbos, TestFbos, VideoFbos, ImageFbos, CameraFbos, ShaderFbos, SpoutFbos, NDIFbos };
+	Fbos = {TestFbos, VideoFbos, ImageFbos, CameraFbos, ShaderFbos, SpoutFbos, NDIFbos};
 	
 	//mesh
 	mesh.setMode(OF_PRIMITIVE_POINTS);
@@ -710,7 +727,7 @@ void GuiColourGradient::OutputWindow(int selection) {
 		ImGui::Spacing();
 
 
-		for (int i = 0; i <= add_instances[selection]; i++) {
+		for (int i = 0; i < add_instances[selection]; i++) {
 			// -------------Toggles
 			ImGui::SameLine();
 			ImGui::RadioButton(ofxImGui::GetUniqueName(ofToString(i)), &toggles[selection], i);
@@ -731,9 +748,38 @@ void GuiColourGradient::OutputWindow(int selection) {
 			ImGui::Checkbox(ofxImGui::GetUniqueName("spout" + ofToString(i)), &spoutBools[selection][i]);
 			ImGui::SameLine();
 			ImGui::Checkbox(ofxImGui::GetUniqueName("ndi" + ofToString(i)), &ndiBools[selection][i]);
+	
+	//		cout << "spoutBools[selection][i] " << ofToString(selection) + " " + ofToString(i) + " " + ofToString(spoutBools[selection][i]) << endl;
+
+	//		cout << "spoutSenders[selection][i] " << ofToString(spoutSenders[selection][i]) << endl;
+
+	//		cout << "Fbos[selection][select_vect[selection][i]] " << ofToString(Fbos[selection][select_vect[selection][i]]) << endl;
 			
+			
+			//cout << "texture" << Fbos[selection][select_vect[selection][i]].getId() << endl;
+
+			//bool selector = ;
+			//ofTexture texture = ;
+			//string sendName = ;
+
+			if (spoutBools[selection][i] == true) {
+				spoutSenders[selection][i].sendTexture(Fbos[selection][select_vect[selection][i]].getTexture(), "Mapper" + ofToString(selection) + ofToString(i));
+			}
+
+			else {
+				spoutSenders[selection][i].exit();
+				spoutSenders[selection][i].exit();
+			}
+			
+			//	else { spoutSenders[selection][i].exit(); }
+			//	spoutSenders[selection][i].sendTexture(Fbos[selection][select_vect[selection][i]].getTexture(), ofToString(selection) + ofToString(i));
+
+				
+			//	else { spoutSenders[selection][i].exit(); }
 		}
 	}
+
+	
 
 
 	////else spoutSender.exit();
