@@ -38,6 +38,8 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 
 	//---------------
 	gui.setup();
+	spoutReciever.setup();
+	
 	guiVisible = true;
 
 	colour = _colour;
@@ -491,7 +493,11 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		for (int i = 0; i < SpoutFbos.size(); i++) {
 			SpoutFbos[i].begin();
 			ofBackground(50, 50);
-			//inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+			//spoutReciever(tileXpos, tileYpos, tileWidth, tileHeight);
+			
+			spoutReciever.updateTexture();
+			spoutReciever.getTexture().draw(tileXpos, tileYpos, tileWidth, tileHeight);
+			
 			//Overpass.drawString("spout " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 			SpoutFbos[i].end();
 		}
@@ -718,7 +724,7 @@ void GuiColourGradient::InputWindow(int selection) {
 void GuiColourGradient::OutputWindow(int selection) {
 
 	static char buf[64], buf1[64], buf2[64], buf3[64], buf4[64], buf5[64], buf6[64] = "";
-	
+
 	int mini_width = 320;
 	int mini_height = 180;
 
@@ -726,12 +732,11 @@ void GuiColourGradient::OutputWindow(int selection) {
 		ImGui::InputInt(ofxImGui::GetUniqueName("textures"), &add_instances[selection]);
 		ImGui::Spacing();
 
-
 		for (int i = 0; i < add_instances[selection]; i++) {
 			// -------------Toggles
 			ImGui::SameLine();
 			ImGui::RadioButton(ofxImGui::GetUniqueName(ofToString(i)), &toggles[selection], i);
-		
+
 		}
 
 		for (int i = 0; i <= add_instances[selection]; i++) {
@@ -747,57 +752,27 @@ void GuiColourGradient::OutputWindow(int selection) {
 
 			ImGui::Checkbox(ofxImGui::GetUniqueName("spout" + ofToString(i)), &spoutBools[selection][i]);
 			ImGui::SameLine();
-			ImGui::Checkbox(ofxImGui::GetUniqueName("ndi" + ofToString(i)), &ndiBools[selection][i]);
-	
-	//		cout << "spoutBools[selection][i] " << ofToString(selection) + " " + ofToString(i) + " " + ofToString(spoutBools[selection][i]) << endl;
-
-	//		cout << "spoutSenders[selection][i] " << ofToString(spoutSenders[selection][i]) << endl;
-
-	//		cout << "Fbos[selection][select_vect[selection][i]] " << ofToString(Fbos[selection][select_vect[selection][i]]) << endl;
 			
-			
-			//cout << "texture" << Fbos[selection][select_vect[selection][i]].getId() << endl;
-
-			//bool selector = ;
-			//ofTexture texture = ;
-			//string sendName = ;
-
 			if (spoutBools[selection][i] == true) {
 				spoutSenders[selection][i].sendTexture(Fbos[selection][select_vect[selection][i]].getTexture(), "Mapper" + ofToString(selection) + ofToString(i));
+				cout << "sending spout" << "type: " + ofToString(selection) + " number: " + ofToString(i) << endl;
+
+
 			}
 
-			else {
-				spoutSenders[selection][i].exit();
-				spoutSenders[selection][i].exit();
-			}
-			
-			//	else { spoutSenders[selection][i].exit(); }
-			//	spoutSenders[selection][i].sendTexture(Fbos[selection][select_vect[selection][i]].getTexture(), ofToString(selection) + ofToString(i));
+			//if (ImGui::Button("Close Spout"))
+			//{
+			//	spoutSenders[selection][i].exit();
+			//}
 
-				
-			//	else { spoutSenders[selection][i].exit(); }
+			ImGui::Checkbox(ofxImGui::GetUniqueName("ndi" + ofToString(i)), &ndiBools[selection][i]);
+
+			//else {
+				//spoutSenders[selection][i].exit();
+				//cout << "closing spout" << "type: " + ofToString(selection) + " number: " + ofToString(i) << endl;
+			//}
 		}
 	}
-
-	
-
-
-	////else spoutSender.exit();
-	//if (&test_spouts == true) SpoutSender0.sendTexture(VideoFbos[selection].getTexture(), buf1);
-	//else SpoutSender0.exit();
-	//if (&video_spouts == true) SpoutSender1.sendTexture(ImageFbos[selection].getTexture(), buf2);
-	//else SpoutSender1.exit();
-	//if (&image_spouts == true)	SpoutSender2.sendTexture(CameraFbos[selection].getTexture(), buf3);
-	//else SpoutSender2.exit();
-
-	//if (spout4 == true)	spoutSender4.sendTexture(fboGradients.getTexture(), buf4);
-	//else spoutSender4.exit();
-	//if (spout5 == true) spoutSender5.sendTexture(fboSpouts.getTexture(), buf5);
-	//else spoutSender5.exit();
-	//if (spout6 == true) spoutSender6.sendTexture(fboNDIs.getTexture(), buf6);
-	//else spoutSender6.exit();
-	//*/
-
 }
 
 /*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -925,6 +900,13 @@ bool GuiColourGradient::imGui()
 			}
 			ofxImGui::EndWindow(mainSettings);
 		}
+
+
+
+
+
+
+
 
 		if (inputs->params.input_type == 4)
 		{/*

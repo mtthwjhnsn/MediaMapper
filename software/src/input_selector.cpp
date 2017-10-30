@@ -25,6 +25,7 @@ void input_selector::setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid
 		splashes.push_back(splash);
 	}
 
+	//spout->setup();
 
 }
 
@@ -60,10 +61,10 @@ void input_selector::image_swap(int selection) {
 void input_selector::camera_draw(int selection, int x, int y, int w, int h) {
 	cam->draw(selection, x, y, w, h);
 }
-/*
-void input_selector::spout_draw(int x, int y, int w, int h) {
-	//spout.draw(x, y, w, h);
-}*/
+
+//void input_selector::spout_draw(int x, int y, int w, int h) {
+//	spout->draw(x, y, w, h);
+//}
 
 void input_selector::selection() {
 	int menu_input = params.input_type;
@@ -186,7 +187,7 @@ void input_selector::selection() {
 		//cam->close();
 
 		//spout.exit();
-		//spout.setup();
+		//spout->setup();
 
 		params.setup = false;
 	}

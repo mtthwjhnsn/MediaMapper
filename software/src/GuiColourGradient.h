@@ -17,6 +17,7 @@
 #include "input_selector.h"
 #include "output_selector.h"
 #include "ofxSpout2Sender.h"
+#include "ofxSpout2Receiver.h"
 
 class GuiColourGradient {
 public:
@@ -24,6 +25,9 @@ public:
 	GuiColourGradient();
 
 	ofTrueTypeFont Overpass;
+
+
+	ofxSpout2::Receiver spoutReciever;
 
 	int activeVid;
 	int activeImg;
@@ -37,8 +41,7 @@ public:
 	vector<vector<ImTextureID>> tex_vect;
 	vector<vector<int>> select_vect;
 	
-	vector < vector<ofFbo>> fbo_vect;
-	//vector<vector<int>> select_fbo_vect;
+	vector<vector<ofFbo>> fbo_vect;
 
 	ImVector<ImVector<bool>> spoutBools;
 	ImVector<bool> test_spout, video_spout, image_spout, camera_spout, shader_spout, spout_spout, ndi_spout;
@@ -91,9 +94,9 @@ private:
 	input_selector *inputs;
 	output_selector *outputs;
 
-	
 	//vector<ofxSpout2::Sender> SpoutSenders;
 	//vector < vector<ofxSpout2::Sender>> SpoutVecs;
+	
 	ofMesh mesh;
 
 	ofShader shader;

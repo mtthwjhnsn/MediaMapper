@@ -45,7 +45,7 @@ public:
 
 	void camera_draw(int selection, int x, int y, int w, int h);
 	//void gradient_draw(int x, int y, int w, int h);
-	//void spout_draw(int x, int y, int w, int h);
+	void spout_draw(int x, int y, int w, int h);
 	//void NDI_draw(int x, int y, int w, int h);
 
 	//void draw(ofFbo fbo, int x, int y, int w, int h);
@@ -62,7 +62,7 @@ public:
 	CamLoader *cam;
 	
 	//ColourGradient gradient;
-	//Spout2Reciever spout;
+	Spout2Reciever *spout;
 
 	InputParams params;
 
