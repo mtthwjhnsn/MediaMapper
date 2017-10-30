@@ -25,10 +25,7 @@ public:
 	GuiColourGradient();
 
 	ofTrueTypeFont Overpass;
-
-
-	ofxSpout2::Receiver spoutReciever;
-
+	
 	int activeVid;
 	int activeImg;
 
@@ -93,10 +90,7 @@ private:
 	//Sound *sound;
 	input_selector *inputs;
 	output_selector *outputs;
-
-	//vector<ofxSpout2::Sender> SpoutSenders;
-	//vector < vector<ofxSpout2::Sender>> SpoutVecs;
-	
+		
 	ofMesh mesh;
 
 	ofShader shader;

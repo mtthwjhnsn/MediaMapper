@@ -38,7 +38,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 
 	//---------------
 	gui.setup();
-	spoutReciever.setup();
+	inputs->spout_setup();
 	
 	guiVisible = true;
 
@@ -486,17 +486,18 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		for (int i = 0; i < ShaderFbos.size(); i++) {
 			ShaderFbos[i].begin();
 			ofBackground(50, 50);
-			//inputs->gradient_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-			//Overpass.drawString("shader " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
+			inputs->spout_update();
+			inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
 			ShaderFbos[i].end();
 		}
 		for (int i = 0; i < SpoutFbos.size(); i++) {
 			SpoutFbos[i].begin();
 			ofBackground(50, 50);
 			//spoutReciever(tileXpos, tileYpos, tileWidth, tileHeight);
-			
-			spoutReciever.updateTexture();
-			spoutReciever.getTexture().draw(tileXpos, tileYpos, tileWidth, tileHeight);
+			inputs->spout_update();
+			inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+
+			//spoutReciever.showSenders();
 			
 			//Overpass.drawString("spout " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 			SpoutFbos[i].end();
@@ -504,8 +505,8 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		for (int i = 0; i < NDIFbos.size(); i++) {
 			NDIFbos[i].begin();
 			ofBackground(50, 50);
-			//inputs->NDI_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-			//Overpass.drawString("ndi " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
+			inputs->spout_update();
+			inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
 			NDIFbos[i].end();
 		}
 	}

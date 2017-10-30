@@ -6,7 +6,8 @@
 #include "ImageLoader.h"
 #include "CamLoader.h"
 #include "ColourGradient.h"
-#include "Spout2Reciever.h"
+//#include "Spout2Reciever.h"
+#include "ofxSpout2Receiver.h"
 
 struct InputParams {
 
@@ -45,6 +46,8 @@ public:
 
 	void camera_draw(int selection, int x, int y, int w, int h);
 	//void gradient_draw(int x, int y, int w, int h);
+	void spout_setup();
+	void spout_update();
 	void spout_draw(int x, int y, int w, int h);
 	//void NDI_draw(int x, int y, int w, int h);
 
@@ -62,7 +65,7 @@ public:
 	CamLoader *cam;
 	
 	//ColourGradient gradient;
-	Spout2Reciever *spout;
+	//Spout2Reciever *spout;
 
 	InputParams params;
 
@@ -71,16 +74,9 @@ public:
 
 	bool camera, video, image, colour, no_input, Spout2;
 
+	ofxSpout2::Receiver spoutReciever;
+
 private:
-
-
-	//GLuint getTextureID8();
-
-//private:
-	//ofFbo fbo8;
-	//GLuint textureid8;
-
-	
 	
 	
 };
