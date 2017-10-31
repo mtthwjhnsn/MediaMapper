@@ -75,7 +75,8 @@ public:
 	bool camera, video, image, colour, no_input, Spout2;
 
 	ofxSpout2::Receiver spoutReciever;
-
+	ofTexture tex;
+	ofFbo fbo;
 private:
 	
 	

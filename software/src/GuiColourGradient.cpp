@@ -38,7 +38,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 
 	//---------------
 	gui.setup();
-	inputs->spout_setup();
+	//inputs->spout_setup();
 	
 	guiVisible = true;
 
@@ -486,27 +486,32 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		for (int i = 0; i < ShaderFbos.size(); i++) {
 			ShaderFbos[i].begin();
 			ofBackground(50, 50);
-			inputs->spout_update();
-			inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+			//inputs->spout_update();
+			//inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
 			ShaderFbos[i].end();
 		}
 		for (int i = 0; i < SpoutFbos.size(); i++) {
-			SpoutFbos[i].begin();
+			SpoutFbos[0].begin();
 			ofBackground(50, 50);
-			//spoutReciever(tileXpos, tileYpos, tileWidth, tileHeight);
-			inputs->spout_update();
+	
+			//inputs->spout_update();
+
 			inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+			inputs->fbo.draw(0, 0, 1920, 1080);
 
 			//spoutReciever.showSenders();
 			
 			//Overpass.drawString("spout " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
-			SpoutFbos[i].end();
+			SpoutFbos[0].end();
 		}
+
+		//inputs->fbo.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+
 		for (int i = 0; i < NDIFbos.size(); i++) {
 			NDIFbos[i].begin();
 			ofBackground(50, 50);
-			inputs->spout_update();
-			inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+			//inputs->spout_update();
+			//inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
 			NDIFbos[i].end();
 		}
 	}
@@ -757,8 +762,6 @@ void GuiColourGradient::OutputWindow(int selection) {
 			if (spoutBools[selection][i] == true) {
 				spoutSenders[selection][i].sendTexture(Fbos[selection][select_vect[selection][i]].getTexture(), "Mapper" + ofToString(selection) + ofToString(i));
 				cout << "sending spout" << "type: " + ofToString(selection) + " number: " + ofToString(i) << endl;
-
-
 			}
 
 			//if (ImGui::Button("Close Spout"))

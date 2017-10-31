@@ -26,6 +26,10 @@ void input_selector::setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid
 	}
 
 	spoutReciever.setup();
+	fbo.allocate(1920, 1080);
+
+	//spoutReciever.setup();
+
 	//spout->setup();
 
 }
@@ -63,18 +67,22 @@ void input_selector::camera_draw(int selection, int x, int y, int w, int h) {
 	cam->draw(selection, x, y, w, h);
 }
 
-void input_selector::spout_update() {
-	spoutReciever.updateTexture();
-}
+//void input_selector::spout_update() {
+//	spoutReciever.updateTexture();
+//}
 
 void input_selector::spout_draw(int x, int y, int w, int h) {
-	ofTexture S_R = spoutReciever.getTexture();
-	S_R.draw(x, y, w, h);
+	spoutReciever.updateTexture();
+	tex = spoutReciever.getTexture();
+	fbo.attachTexture(tex, GL_RGBA16F, 0);
+	//fbo.draw(x, y, w, h);
+
 }
 
-void input_selector::spout_setup() {
-	//spoutReciever.setup();
-}
+//void input_selector::spout_setup() {
+//	spoutReciever.setup();
+//	fbo.allocate(1920, 1080);
+//}
 
 void input_selector::selection() {
 	int menu_input = params.input_type;
