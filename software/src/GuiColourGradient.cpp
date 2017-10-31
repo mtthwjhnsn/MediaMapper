@@ -35,6 +35,7 @@ GuiColourGradient::GuiColourGradient() {
 void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, output_selector *_outputs) {
 
 	ofxSpout2::Sender placeholder;
+	NDI_reciever.setup();
 
 	//---------------
 	gui.setup();
@@ -455,7 +456,7 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 			VideoFbos[i].begin();
 			ofBackground(50, 50);
 			if (i == activeVid) {
-				inputs->video_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+				inputs->video_draw(0, 0, 1920, 1080);
 			}
 			else {
 				inputs->video_drawThumbs(i, tileXpos, tileYpos, tileWidth, tileHeight);
@@ -501,6 +502,7 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		for (int i = 0; i < NDIFbos.size(); i++) {
 			NDIFbos[i].begin();
 			ofBackground(50, 50);
+			NDI_reciever.draw(tileXpos, tileYpos, tileWidth, tileHeight);
 			NDIFbos[i].end();
 		}
 	}

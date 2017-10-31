@@ -18,6 +18,7 @@
 #include "output_selector.h"
 #include "ofxSpout2Sender.h"
 #include "ofxSpout2Receiver.h"
+#include "NDIreciever.h"
 
 class GuiColourGradient {
 public:
@@ -81,6 +82,8 @@ public:
 
 	vector<ofxSpout2::Sender> test_spout_sends, video_spout_sends, image_spout_sends, camera_spout_sends, shader_spout_sends, spout_spout_sends, ndi_spout_sends;
 	vector<vector<ofxSpout2::Sender>> spoutSenders;
+
+	NDIreciever NDI_reciever;
 
 private:
 
