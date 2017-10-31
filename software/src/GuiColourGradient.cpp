@@ -32,11 +32,15 @@ GuiColourGradient::GuiColourGradient() {
 
 
 //-------------------------------------------------
-void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, output_selector *_outputs) {
+void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs /*, output_selector *_outputs*/) {
 
 	ofxSpout2::Sender placeholder;
 
 	NDIsearching, SpoutSearching, setup_spout = false;
+	
+	spoutNum, ndiNum = 0;
+	
+	
 	NDI_reciever.setup();
 
 	//---------------
@@ -48,7 +52,7 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, 
 	colour = _colour;
 	//sound = _sound;
 	inputs = _inputs;
-	outputs = _outputs;
+	//outputs = _outputs;
 
 	activeVid = 0;
 	activeImg = 0;
@@ -486,13 +490,14 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 			//Overpass.drawString("camera " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
 			CameraFbos[i].end();
 		}
-		for (int i = 0; i < ShaderFbos.size(); i++) {
+		for (int i = 0; i < 10; i++) {
 			ShaderFbos[i].begin();
 			ofBackground(50, 50);
+			inputs->shader_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
 			ShaderFbos[i].end();
 		}
 
-		for (int i = 0; i < SpoutFbos.size(); i++) {
+		for (int i = 0; i < spoutNum; i++) {
 			if (SpoutSearching == true && setup_spout == true) {
 				inputs->spout_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
 			}
@@ -504,7 +509,7 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 			SpoutFbos[i].end();
 		}
 
-		for (int i = 0; i < NDIFbos.size(); i++) {
+		for (int i = 0; i < ndiNum; i++) {
 			NDIFbos[i].begin();
 			ofBackground(50, 50);
 			if (NDIsearching == true) {
@@ -680,19 +685,18 @@ void GuiColourGradient::Navigate() {
 
 void GuiColourGradient::InputWindow(int selection) {
 
-	int columns = 3;
+	int columns = 2;
 	ImGui::Columns(columns);
 	ImGui::SetColumnOffset(0, 0);
 	ImGui::SetColumnOffset(1, 160);
 	ImGui::SetColumnOffset(2, 320);
-	
+
 	ImVec4 c2 = ImColor::HSV(1.00f, 0.80f, 0.80f);
 	ImVec4 c1 = ImColor::HSV(0.14f, 0.24f, 0.30f);
 
-
-
 	if (ImGui::CollapsingHeader(ofxImGui::GetUniqueName(IDs[selection]), true)) {
 		
+		//spout toggle searching and setup
 		if (selection == 5) {
 			if (setup_spout == false) {
 				if (ImGui::Button("configure")) {
@@ -703,38 +707,41 @@ void GuiColourGradient::InputWindow(int selection) {
 			else {
 				ImGui::Checkbox("Spout_Searching", &SpoutSearching);
 			}
-			
 		}
 
+		if (selection == 5) {
+			ImGui::InputInt("Spout_Textures", &spoutNum);
+		}
+
+		//NDI toggle searching
 		if (selection == 6) {
 			ImGui::Checkbox("NDI_Searching", &NDIsearching);
+			ImGui::InputInt("NDI_Textures", &ndiNum);
 		}
 
 		int loop = 9;
 		if (selection == 3) { loop = 0; }
+		if (selection == 4) { loop = 8; }
+		if (selection == 5) { loop = spoutNum; }
+		if (selection == 6) { loop = ndiNum; }
+
 
 		for (int j = 0; j <= loop; j++) {
-			
+			//spoutmenu
+			if (selection == 5) {
+				if (ImGui::Button(ofxImGui::GetUniqueName("Choose_Spout" + ofToString(j)))) {
+					inputs->spout_list(j);
+				}
+			}
+			// active senders are highlighted
 			if (select_vect[selection][toggles[selection]] == j) {
-
 				ImGui::PushStyleColor(ImGuiCol_Button, c2);
 			}
 			else { ImGui::PushStyleColor(ImGuiCol_Button, c1); }
-			
-			//if input thumbnail is pressed the active output equals the thumbnail number
-			
-			if (selection == 5)
-			{
-				if (ImGui::Button(ofxImGui::GetUniqueName("Choose_Spout" + ofToString(j))))
-				{
-					inputs->spout_list(j);
 
-				}
-			}		
-			
+			//if input thumbnail is pressed the active output equals the thumbnail number
 			if (ImGui::ImageButton(tex_vect[selection][j], ofVec2f(160, 90))) {
 				select_vect[selection][toggles[selection]] = j;
-				
 				//for the video thumbnail trigger the path swapping function
 				if (selection == 1) {
 					inputs->video_swap(j);
@@ -745,7 +752,7 @@ void GuiColourGradient::InputWindow(int selection) {
 					activeImg = j;
 				}
 			}
-			
+
 			if (select_vect[selection][toggles[selection]] == j) {
 				ImGui::PopStyleColor();
 			}
@@ -800,6 +807,9 @@ void GuiColourGradient::OutputWindow(int selection) {
 			//}
 
 			ImGui::Checkbox(ofxImGui::GetUniqueName("ndi" + ofToString(i)), &ndiBools[selection][i]);
+						if (ndiBools[selection][i] == true) {
+							inputs->NDI_out(Fbos[selection][select_vect[selection][i]], tileXpos, tileYpos, tileWidth, tileHeight);
+			}
 		}
 	}
 }
@@ -879,7 +889,7 @@ bool GuiColourGradient::imGui()
 
 			if (ImGui::BeginMenu("Outputs"))
 			{
-
+/*
 				if (ImGui::MenuItem("no_output")) {
 					outputs->params.output_type = 0;
 					outputs->selection();
@@ -896,7 +906,7 @@ bool GuiColourGradient::imGui()
 				{
 					ImGui::MenuItem("fish_hat.c");
 					ImGui::EndMenu();
-				}
+				}*/
 
 				ImGui::EndMenu();
 			}

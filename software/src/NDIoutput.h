@@ -12,7 +12,7 @@ public:
 
 
 	void setup();
-	void send(ofFbo fbo);
+	void send(ofFbo fbo, int x, int y, int w, int h);
 	void exit();
 
 	//ofFbo fbo;

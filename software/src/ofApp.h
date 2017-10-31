@@ -28,7 +28,8 @@
 #include "CamLoader.h"
 #include "ColourGradient.h"
 #include "Spout2Reciever.h"
-
+#include "ShaderToy.h"
+#include "NDIoutput.h"
 
 
 
@@ -86,11 +87,13 @@ public:
 //	Sound sound;
 	GuiColourGradient gui;
 	input_selector input;
-	output_selector outs;
+//	output_selector outs;
 	ImageLoader image;
 	CamLoader camera;
 	VideoLoader video;
 	Spout2Reciever spoutIn;
+	ShaderToy shaders;
+	NDIoutput ndiOut;
 
 //	NDIoutput NDI;
 //	Spout2Sender Spout2;

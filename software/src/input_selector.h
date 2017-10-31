@@ -8,6 +8,8 @@
 #include "ColourGradient.h"
 #include "Spout2Reciever.h"
 #include "ofxSpout2Receiver.h"
+#include "ShaderToy.h"
+#include "NDIoutput.h"
 
 struct InputParams {
 
@@ -31,7 +33,7 @@ public:
 	~input_selector() {};
 	input_selector() {};
 
-	void setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid, Spout2Reciever * SpoutIn);
+	void setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid, Spout2Reciever * SpoutIn, ShaderToy * _shaderToy, NDIoutput * _ndiOut);
 	//void update();
 
 	void selection();
@@ -43,6 +45,8 @@ public:
 	void image_drawThumbs(int selection, int x, int y, int w, int h);
 	void image_draw(int x, int y, int w, int h);
 	void image_swap(int selection);
+	void shader_draw(int selection, int x, int y, int w, int h);
+	void NDI_out(ofFbo fbo, int x, int y, int w, int h);
 
 	void camera_draw(int selection, int x, int y, int w, int h);
 	//void gradient_draw(int x, int y, int w, int h);
@@ -62,7 +66,9 @@ public:
 	ImageLoader *img;
 	CamLoader *cam;
 	Spout2Reciever *spoutIn;
-	
+	ShaderToy *shaderToy;
+	NDIoutput *ndiOut;
+
 	//ColourGradient gradient;
 	//Spout2Reciever *spout;
 

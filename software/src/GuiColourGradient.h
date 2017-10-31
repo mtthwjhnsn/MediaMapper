@@ -15,7 +15,7 @@
 #include "ColourGradient.h"
 #include "Sound.h"
 #include "input_selector.h"
-#include "output_selector.h"
+//#include "output_selector.h"
 #include "ofxSpout2Sender.h"
 #include "ofxSpout2Receiver.h"
 #include "NDIreciever.h"
@@ -49,7 +49,7 @@ public:
 	
 	int input_num; //number of input types //test, video, image, camera, shader, spout, ndi
 
-	void setup(ColourGradient *_colour, input_selector *_inputs, output_selector *_outputs);
+	void setup(ColourGradient *_colour, input_selector *_inputs /*, output_selector *_outputs*/);
 	void update();
 	void draw(ofFbo fboinput);
 
@@ -90,6 +90,9 @@ public:
 	bool SpoutSearching;
 	bool setup_spout;
 
+	int spoutNum;
+	int ndiNum;
+
 private:
 
 	ofFbo::Settings fboSettings;
@@ -97,7 +100,7 @@ private:
 	ColourGradient *colour;
 	//Sound *sound;
 	input_selector *inputs;
-	output_selector *outputs;
+	//output_selector *outputs;
 		
 	ofMesh mesh;
 

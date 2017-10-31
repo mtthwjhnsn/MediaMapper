@@ -56,7 +56,7 @@ void NDIoutput::setup() {
 }
 
 
-void NDIoutput::send(ofFbo fbo){
+void NDIoutput::send(ofFbo fbo, int x, int y, int w, int h){
 	
 	ndiFbo.begin();
 	ofClear(13, 25, 76, 255); // background as required
@@ -65,7 +65,7 @@ void NDIoutput::send(ofFbo fbo){
 
 	ofSetColor(255);
 	ofClear(0, 0, 0, 255);
-	fbo.draw(0, 0);
+	fbo.draw(x, y, 1920, 1080);
 
 	// =============================================================
 

@@ -26,9 +26,9 @@ void ofApp::setup() {
 	colour.setup(gui.tileWidth, gui.tileHeight);
 	//sound.setup();
 	
-	input.setup(&image, &camera, &video, &spoutIn);
-	gui.setup(&colour, &input, &outs);
-	outs.setup();
+	input.setup(&image, &camera, &video, &spoutIn, &shaders, &ndiOut);
+	gui.setup(&colour, &input /*&outs*/);
+	//outs.setup();
 	
 	ofFbo::Settings fboSettings;
 	fboSettings.width = 1920; //2560
@@ -88,7 +88,7 @@ void ofApp::OutputController() {
 }
 
 void ofApp::output() {
-	outs.draw(fbo);
+	//outs.draw(fbo);
 	gui.draw(fbo);
 }
 
