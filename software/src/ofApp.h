@@ -44,7 +44,6 @@ class ofApp : public ofBaseApp {
 public:
 
 	void setup();
-	//void assign();
 	void update();
 	void draw();
 
@@ -91,15 +90,17 @@ public:
 	ImageLoader image;
 	CamLoader camera;
 	VideoLoader video;
+	Spout2Reciever spoutIn;
 
 //	NDIoutput NDI;
 //	Spout2Sender Spout2;
 
-	VideoLoader vid;
-	ImageLoader img;
-	CamLoader cam;
-	ColourGradient col;
-	Spout2Reciever spout;
+	//VideoLoader vid;
+	//ImageLoader img;
+	//CamLoader cam;
+	//ColourGradient col;
+	//Spout2Reciever spout;
+	
 
 	void OutputController();
 	void output();

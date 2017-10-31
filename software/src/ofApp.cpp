@@ -26,7 +26,7 @@ void ofApp::setup() {
 	colour.setup(gui.tileWidth, gui.tileHeight);
 	//sound.setup();
 	
-	input.setup(&image, &camera, &video);
+	input.setup(&image, &camera, &video, &spoutIn);
 	gui.setup(&colour, &input, &outs);
 	outs.setup();
 	

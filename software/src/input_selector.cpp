@@ -1,11 +1,12 @@
 #include "input_selector.h"
 
 //-----------------------------
-void input_selector::setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid) {
+void input_selector::setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid, Spout2Reciever * _spoutIn) {
 
 	vid = _vid;
 	img = _img;
 	cam = _cam;
+	spoutIn = _spoutIn;
 	//gradient = _gradient;
 	//spout = _spout;
 
@@ -25,13 +26,7 @@ void input_selector::setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid
 		splashes.push_back(splash);
 	}
 
-	spoutReciever.setup();
-	fbo.allocate(1920, 1080);
-
-	//spoutReciever.setup();
-
-	//spout->setup();
-
+	spoutIn->setup();
 }
 
 void input_selector::splash_draw(int test_pattern, int x, int y, int w, int h) {
@@ -67,20 +62,11 @@ void input_selector::camera_draw(int selection, int x, int y, int w, int h) {
 	cam->draw(selection, x, y, w, h);
 }
 
-//void input_selector::spout_update() {
-//	spoutReciever.updateTexture();
-//}
-
-void input_selector::spout_draw(int x, int y, int w, int h) {
-	spoutReciever.updateTexture();
-	tex = spoutReciever.getTexture();
-	//fbo.attachTexture(tex, GL_RGBA16F, 0);
-	//fbo.draw(x, y, w, h);
-
+void input_selector::spout_draw(int selection, int x, int y, int w, int h) {
+	spoutIn->draw(selection, x, y, w, h);
 }
-void input_selector::spout_list() {
-	spoutReciever.showSenders();
-//	fbo.allocate(1920, 1080);
+void input_selector::spout_list(int selection) {
+	spoutIn->spout_list(selection);
 }
 
 void input_selector::selection() {

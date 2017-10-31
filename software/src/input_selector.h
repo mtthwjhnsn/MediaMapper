@@ -6,7 +6,7 @@
 #include "ImageLoader.h"
 #include "CamLoader.h"
 #include "ColourGradient.h"
-//#include "Spout2Reciever.h"
+#include "Spout2Reciever.h"
 #include "ofxSpout2Receiver.h"
 
 struct InputParams {
@@ -31,7 +31,7 @@ public:
 	~input_selector() {};
 	input_selector() {};
 
-	void setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid);
+	void setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid, Spout2Reciever * SpoutIn);
 	//void update();
 
 	void selection();
@@ -46,9 +46,9 @@ public:
 
 	void camera_draw(int selection, int x, int y, int w, int h);
 	//void gradient_draw(int x, int y, int w, int h);
-	void spout_list();
-	void spout_update();
-	void spout_draw(int x, int y, int w, int h);
+	void spout_list(int selection);
+	//void spout_update();
+	void spout_draw(int selection,  int x, int y, int w, int h);
 	//void NDI_draw(int x, int y, int w, int h);
 
 	//void draw(ofFbo fbo, int x, int y, int w, int h);
@@ -59,10 +59,9 @@ public:
 	vector<string> paths;
 
 	VideoLoader *vid;
-	
 	ImageLoader *img;
-	
 	CamLoader *cam;
+	Spout2Reciever *spoutIn;
 	
 	//ColourGradient gradient;
 	//Spout2Reciever *spout;
@@ -74,9 +73,6 @@ public:
 
 	bool camera, video, image, colour, no_input, Spout2;
 
-	ofxSpout2::Receiver spoutReciever;
-	ofTexture tex;
-	ofFbo fbo;
 private:
 	
 	

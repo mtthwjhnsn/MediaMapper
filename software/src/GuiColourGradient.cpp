@@ -490,11 +490,11 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		}
 		for (int i = 0; i < SpoutFbos.size(); i++) {
 			
-			inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
+			inputs->spout_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
 
 			SpoutFbos[i].begin();
 			ofBackground(50, 50);
-			inputs->tex.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+			inputs->spoutIn->texs[i].draw(tileXpos, tileYpos, tileWidth, tileHeight);
 			SpoutFbos[i].end();
 		}
 
@@ -682,13 +682,6 @@ void GuiColourGradient::InputWindow(int selection) {
 
 	if (ImGui::CollapsingHeader(ofxImGui::GetUniqueName(IDs[selection]), true)) {
 		
-		if (selection == 5)
-		{
-			if (ImGui::Button("spout_list")) {
-				inputs->spout_list();
-			}
-		}
-
 		for (int j = 0; j <= 9; j++) {
 			
 			if (select_vect[selection][toggles[selection]] == j) {
@@ -698,6 +691,16 @@ void GuiColourGradient::InputWindow(int selection) {
 			else { ImGui::PushStyleColor(ImGuiCol_Button, c1); }
 			
 			//if input thumbnail is pressed the active output equals the thumbnail number
+			
+			if (selection == 5)
+			{
+				if (ImGui::Button(ofxImGui::GetUniqueName("Choose_Spout" + ofToString(j))))
+				{
+					inputs->spout_list(j);
+
+				}
+			}		
+			
 			if (ImGui::ImageButton(tex_vect[selection][j], ofVec2f(160, 90))) {
 				select_vect[selection][toggles[selection]] = j;
 				
@@ -758,7 +761,6 @@ void GuiColourGradient::OutputWindow(int selection) {
 			
 			if (spoutBools[selection][i] == true) {
 				spoutSenders[selection][i].sendTexture(Fbos[selection][select_vect[selection][i]].getTexture(), "Mapper" + ofToString(selection) + ofToString(i));
-				cout << "sending spout" << "type: " + ofToString(selection) + " number: " + ofToString(i) << endl;
 			}
 
 			//if (ImGui::Button("Close Spout"))
@@ -767,11 +769,6 @@ void GuiColourGradient::OutputWindow(int selection) {
 			//}
 
 			ImGui::Checkbox(ofxImGui::GetUniqueName("ndi" + ofToString(i)), &ndiBools[selection][i]);
-
-			//else {
-				//spoutSenders[selection][i].exit();
-				//cout << "closing spout" << "type: " + ofToString(selection) + " number: " + ofToString(i) << endl;
-			//}
 		}
 	}
 }
