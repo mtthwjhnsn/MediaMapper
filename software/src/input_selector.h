@@ -46,7 +46,7 @@ public:
 
 	void camera_draw(int selection, int x, int y, int w, int h);
 	//void gradient_draw(int x, int y, int w, int h);
-	void spout_setup();
+	void spout_list();
 	void spout_update();
 	void spout_draw(int x, int y, int w, int h);
 	//void NDI_draw(int x, int y, int w, int h);

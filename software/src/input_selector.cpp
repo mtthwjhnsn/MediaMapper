@@ -74,15 +74,14 @@ void input_selector::camera_draw(int selection, int x, int y, int w, int h) {
 void input_selector::spout_draw(int x, int y, int w, int h) {
 	spoutReciever.updateTexture();
 	tex = spoutReciever.getTexture();
-	fbo.attachTexture(tex, GL_RGBA16F, 0);
+	//fbo.attachTexture(tex, GL_RGBA16F, 0);
 	//fbo.draw(x, y, w, h);
 
 }
-
-//void input_selector::spout_setup() {
-//	spoutReciever.setup();
+void input_selector::spout_list() {
+	spoutReciever.showSenders();
 //	fbo.allocate(1920, 1080);
-//}
+}
 
 void input_selector::selection() {
 	int menu_input = params.input_type;

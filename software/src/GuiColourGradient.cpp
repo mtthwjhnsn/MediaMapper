@@ -486,32 +486,21 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		for (int i = 0; i < ShaderFbos.size(); i++) {
 			ShaderFbos[i].begin();
 			ofBackground(50, 50);
-			//inputs->spout_update();
-			//inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
 			ShaderFbos[i].end();
 		}
 		for (int i = 0; i < SpoutFbos.size(); i++) {
-			SpoutFbos[0].begin();
-			ofBackground(50, 50);
-	
-			//inputs->spout_update();
-
-			inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
-			inputs->fbo.draw(0, 0, 1920, 1080);
-
-			//spoutReciever.showSenders();
 			
-			//Overpass.drawString("spout " + ofToString(i) + " " + ofToString(tileWidth) + " x " + ofToString(tileHeight), 50, 150);
-			SpoutFbos[0].end();
-		}
+			inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
 
-		//inputs->fbo.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+			SpoutFbos[i].begin();
+			ofBackground(50, 50);
+			inputs->tex.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+			SpoutFbos[i].end();
+		}
 
 		for (int i = 0; i < NDIFbos.size(); i++) {
 			NDIFbos[i].begin();
 			ofBackground(50, 50);
-			//inputs->spout_update();
-			//inputs->spout_draw(tileXpos, tileYpos, tileWidth, tileHeight);
 			NDIFbos[i].end();
 		}
 	}
@@ -692,6 +681,14 @@ void GuiColourGradient::InputWindow(int selection) {
 	ImVec4 c1 = ImColor::HSV(0.14f, 0.24f, 0.30f);
 
 	if (ImGui::CollapsingHeader(ofxImGui::GetUniqueName(IDs[selection]), true)) {
+		
+		if (selection == 5)
+		{
+			if (ImGui::Button("spout_list")) {
+				inputs->spout_list();
+			}
+		}
+
 		for (int j = 0; j <= 9; j++) {
 			
 			if (select_vect[selection][toggles[selection]] == j) {
