@@ -26,7 +26,7 @@ void input_selector::setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid
 		splashes.push_back(splash);
 	}
 
-	spoutIn->setup();
+	
 }
 
 void input_selector::splash_draw(int test_pattern, int x, int y, int w, int h) {

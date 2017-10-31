@@ -144,21 +144,21 @@ void NDIreciever::draw(int x, int y, int w, int h) {
 		if (nSenders > 0) {
 			if (bNDIreceiver) {
 				sprintf_s(str, 256, "[%s] (%dx%d) - fps %2.0f", senderName, senderWidth, senderHeight, fps);
-				ofDrawBitmapString(str, 20, 30);
+				//ofDrawBitmapString(str, 20, 30);
 			}
 
 			if (nSenders == 1) {
-				ofDrawBitmapString("1 network source", 20, ofGetHeight() - 20);
+				//ofDrawBitmapString("1 network source", 20, ofGetHeight() - 20);
 			}
 			else {
 				sprintf_s(str, 256, "%d network sources", nSenders);
-				ofDrawBitmapString(str, 20, ofGetHeight() - 40);
-				ofDrawBitmapString("'SPACE' to list senders or RH click to open sender dialog", 20, ofGetHeight() - 20);
+				//ofDrawBitmapString(str, 20, ofGetHeight() - 40);
+				//ofDrawBitmapString("'SPACE' to list senders or RH click to open sender dialog", 20, ofGetHeight() - 20);
 			}
 		}
 	}
 	else {
-		ofDrawBitmapString("Connecting . . .", 20, 30);
+		//ofDrawBitmapString("Connecting . . .", 20, 30);
 	}
 
 }

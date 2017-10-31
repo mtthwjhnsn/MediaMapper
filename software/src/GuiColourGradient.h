@@ -85,6 +85,11 @@ public:
 
 	NDIreciever NDI_reciever;
 
+	bool NDIsearching;
+
+	bool SpoutSearching;
+	bool setup_spout;
+
 private:
 
 	ofFbo::Settings fboSettings;

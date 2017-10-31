@@ -3,7 +3,6 @@
 void Spout2Reciever::setup() {
 
 	ofxSpout2::Receiver add;
-	//add.setup();
 
 	ofTexture addTex;
 

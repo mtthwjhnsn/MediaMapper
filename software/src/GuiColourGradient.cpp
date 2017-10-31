@@ -35,6 +35,8 @@ GuiColourGradient::GuiColourGradient() {
 void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs, output_selector *_outputs) {
 
 	ofxSpout2::Sender placeholder;
+
+	NDIsearching, SpoutSearching, setup_spout = false;
 	NDI_reciever.setup();
 
 	//---------------
@@ -489,20 +491,25 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 			ofBackground(50, 50);
 			ShaderFbos[i].end();
 		}
-		for (int i = 0; i < SpoutFbos.size(); i++) {
-			
-			inputs->spout_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
 
+		for (int i = 0; i < SpoutFbos.size(); i++) {
+			if (SpoutSearching == true && setup_spout == true) {
+				inputs->spout_draw(i, tileXpos, tileYpos, tileWidth, tileHeight);
+			}
 			SpoutFbos[i].begin();
 			ofBackground(50, 50);
-			inputs->spoutIn->texs[i].draw(tileXpos, tileYpos, tileWidth, tileHeight);
+			if (SpoutSearching == true && setup_spout == true) {
+				inputs->spoutIn->texs[i].draw(tileXpos, tileYpos, tileWidth, tileHeight);
+			}
 			SpoutFbos[i].end();
 		}
 
 		for (int i = 0; i < NDIFbos.size(); i++) {
 			NDIFbos[i].begin();
 			ofBackground(50, 50);
-			NDI_reciever.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+			if (NDIsearching == true) {
+				NDI_reciever.draw(tileXpos, tileYpos, tileWidth, tileHeight);
+			}
 			NDIFbos[i].end();
 		}
 	}
@@ -682,9 +689,31 @@ void GuiColourGradient::InputWindow(int selection) {
 	ImVec4 c2 = ImColor::HSV(1.00f, 0.80f, 0.80f);
 	ImVec4 c1 = ImColor::HSV(0.14f, 0.24f, 0.30f);
 
+
+
 	if (ImGui::CollapsingHeader(ofxImGui::GetUniqueName(IDs[selection]), true)) {
 		
-		for (int j = 0; j <= 9; j++) {
+		if (selection == 5) {
+			if (setup_spout == false) {
+				if (ImGui::Button("configure")) {
+					inputs->spoutIn->setup();
+					setup_spout = true;
+				}
+			}
+			else {
+				ImGui::Checkbox("Spout_Searching", &SpoutSearching);
+			}
+			
+		}
+
+		if (selection == 6) {
+			ImGui::Checkbox("NDI_Searching", &NDIsearching);
+		}
+
+		int loop = 9;
+		if (selection == 3) { loop = 0; }
+
+		for (int j = 0; j <= loop; j++) {
 			
 			if (select_vect[selection][toggles[selection]] == j) {
 
