@@ -275,7 +275,7 @@ void GuiColourGradient::draw() {
 		imGui();
 
 	}
-		
+	
 		for (int i = 0; i < TestFbos.size(); i++) {
 			TestFbos[i].begin();
 			ofBackground(50, 50);
@@ -287,7 +287,7 @@ void GuiColourGradient::draw() {
 			VideoFbos[i].begin();
 			ofBackground(50, 50);
 			if (i == activeVid) {
-				inputs->video_draw(0, 0, 1920, 1080);
+				inputs->video_draw(tileXpos, tileYpos, tileWidth, tileHeight);
 			}
 			else {
 				inputs->video_drawThumbs(i, tileXpos, tileYpos, tileWidth, tileHeight);
@@ -300,7 +300,7 @@ void GuiColourGradient::draw() {
 			ImageFbos[i].begin();
 			ofBackground(50, 50);
 			if (i == activeImg) {
-				inputs->image_draw(0, 0, 1920, 1080);
+				inputs->image_draw(tileXpos, tileYpos, tileWidth, tileHeight);
 			}
 			else {
 				inputs->image_drawThumbs(i, tileXpos, tileYpos, tileWidth, tileHeight);
@@ -432,6 +432,14 @@ void GuiColourGradient::Resolutions() {
 		customWidth = i0;
 		customHeight = i1;
 	}
+
+	//int select = resolutions2;
+
+	//resolutions[select][0] = tileWidth;
+	//resolutions[select][1] = tileHeight;
+
+	cout << ofToString(tileWidth) + "  " + ofToString(tileHeight) << endl;
+	
 
 	for (int i = 0; i <= resolutions.size(); i++) {
 		if (resolutions2 == i) {
@@ -589,8 +597,8 @@ void GuiColourGradient::OutputWindow(int selection) {
 			Resolutions();
 			ImGui::Image(tex_vect[selection][select_vect[selection][i]], ofVec2f(mini_width, mini_height));
 			Navigate();
-			ImGui::InputText("Send_ID" + i, buf, 64, ImGuiInputTextFlags_CharsNoBlank);
-			ImGui::SameLine();
+			//ImGui::InputText("Send_ID" + i, buf, 64, ImGuiInputTextFlags_CharsNoBlank);
+			//ImGui::SameLine();
 
 			ImGui::Checkbox(ofxImGui::GetUniqueName("spout" + ofToString(i)), &spoutBools[selection][i]);
 			ImGui::SameLine();
