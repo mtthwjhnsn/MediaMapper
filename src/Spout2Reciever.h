@@ -6,11 +6,22 @@ class Spout2Reciever
 {
 public:
 
+	~Spout2Reciever() {};
+	Spout2Reciever() {};
+
+
 	void setup();
-	void draw(int x, int y, int w, int h);
+	void draw(int selection, int x, int y, int w, int h);
+	void spout_list(int selection);
+	void add_reciever(int selection);
 	void exit();
 
-	ofxSpout2::Receiver spoutReceiver;
+
+	//vector<ofxSpout2::Receiver> adds;
+	vector<ofxSpout2::Receiver> spoutRecievers;
+	//ofxSpout2::Receiver spoutReciever;
+	vector<ofTexture> texs;
+
 
 };
 

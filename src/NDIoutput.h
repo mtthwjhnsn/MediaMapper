@@ -2,30 +2,26 @@
 
 #include "ofMain.h"
 #include "ofxNDI.h"
-#include "input_selector.h"
 
-#include "VideoLoader.h"
-#include "ImageLoader.h"
-#include "CamLoader.h"
-#include "ColourGradient.h"
-#include "Spout2Reciever.h"
 class NDIoutput
 {
 public:
 
+	~NDIoutput() {};
+	NDIoutput() {};
+
+
 	void setup();
-	void update();
-	void send();
+	void send(ofFbo fbo, int x, int y, int w, int h);
 	void exit();
 
-	ofFbo fbo;
+	//ofFbo fbo;
 
-	input_selector input;
+	//input_selector input;
 
 	GLuint textureid;
 
-
-
+	
 private:
 
 	ofxNDIsender ndiSender;    // NDI sender object
@@ -43,11 +39,5 @@ private:
 	int NextPboIndex;
 	bool bUsePBO;
 	bool ReadFboPixels(ofFbo fbo, unsigned int width, unsigned int height, unsigned char *data);
-	
-	VideoLoader vid;
-	ImageLoader img;
-	CamLoader cam;
-	ColourGradient col;
-	Spout2Reciever spout;
 
 };

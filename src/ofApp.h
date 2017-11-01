@@ -12,21 +12,13 @@
 
 #include "ofMain.h"
 #include "GuiColourGradient.h"
-#include "ColourGradient.h"
-#include "Sound.h"
-#include "ofxMaxim.h"
 #include "input_selector.h"
-#include "output_selector.h"
-
-#include "Spout2Sender.h"
-#include "NDIoutput.h"
-
 #include "VideoLoader.h"
 #include "ImageLoader.h"
 #include "CamLoader.h"
-#include "ColourGradient.h"
 #include "Spout2Reciever.h"
-
+#include "ShaderToy.h"
+#include "NDIoutput.h"
 
 
 
@@ -42,9 +34,10 @@ class ofApp : public ofBaseApp {
 public:
 
 	void setup();
-
 	void update();
 	void draw();
+
+	void backgrounddraw();
 
 	void keyPressed(int key);
 	void keyReleased(int key);
@@ -58,39 +51,20 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 
-	//sound 
-	void audioOut(float * output, int bufferSize, int nChannels);
-
-	unsigned bufferSize, sampleRate;
-	double currentSample;
-	float frequency_red, modulationIndex_red, modulationFrequency_red,   frequency_green, modulationIndex_green, modulationFrequency_green, frequency_blue, modulationIndex_blue, modulationFrequency_blue;
-	double outputs[2];
-
-	maxiOsc osc_red, mod_red, osc_green, mod_green, osc_blue, mod_blue, phaser;
-	maxiMix mix;
-	maxiEnv env_red, env_green, env_blue;
-	
-
-	//ofFbo fbo;
-
-
-	ColourGradient colour;
-	Sound sound;
+	ofImage background;
 	GuiColourGradient gui;
 	input_selector input;
-	output_selector output;
+	ImageLoader image;
+	CamLoader camera;
+	VideoLoader video;
+	Spout2Reciever spoutIn;
+	ShaderToy shaders;
+	NDIoutput ndiOut;
 
-	NDIoutput NDI;
-	Spout2Sender Spout2;
+	void gui_draw();
 
-	VideoLoader vid;
-	ImageLoader img;
-	CamLoader cam;
-	ColourGradient col;
-	Spout2Reciever spout;
 
 private:
-
 
 
 };

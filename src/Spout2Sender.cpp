@@ -3,27 +3,25 @@
 
 
 void Spout2Sender::setup() {
-	
-	input.setup(&vid, &img, &cam, &col, &spout1);
+	Spout2fbo.allocate(1920, 1080);
 
-	fbo.allocate(ofGetWidth(), ofGetHeight());
 }
 
-void Spout2Sender::send() {
+void Spout2Sender::send(ofFbo fbo) {
 
-	//SPOUT
-	fbo.begin();
+		//SPOUT
+	Spout2fbo.begin();
 	
 	// ============ your application draw goes here ===============
 
-	input.draw(0, 0, 1920, 1080);
+	fbo.draw(0, 0, 1920, 1080);
 	
 	// =============================================================
 	
 	//SPOUT
-	fbo.end();
+	Spout2fbo.end();
 
-	spout.sendTexture(fbo.getTexture(), "GradientMapper");
+	spout.sendTexture(Spout2fbo.getTexture(), "GradientMapper");
 
 }
 

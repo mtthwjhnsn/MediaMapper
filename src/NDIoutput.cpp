@@ -4,13 +4,11 @@
 
 void NDIoutput::setup() {
 
-	input.setup(&vid, &img, &cam, &col, &spout);
-	fbo.allocate(ofGetWidth(), ofGetHeight());
+//	fbo.allocate(1920, 1080);
 
 	//NDI
-
 	strcpy(senderName, "Openframeworks NDI Sender"); // Set the sender name
-	ofSetWindowTitle(senderName); // show it on the title bar
+	//ofSetWindowTitle(senderName); // show it on the title bar
 	cout << "NDI SDK copyright NewTek (http:\\NDI.NewTek.com)" << endl;
 
 	// Set the dimensions of the sender output here
@@ -56,20 +54,8 @@ void NDIoutput::setup() {
 	
 }
 
-void NDIoutput::update() {
 
-	fbo.begin();
-	// ============ your application draw goes here ===============
-	
-	input.draw(0, 0, 1920, 1080);
-
-	// =============================================================
-	//SPOUT
-	fbo.end();
-}
-
-
-void NDIoutput::send(){
+void NDIoutput::send(ofFbo fbo, int x, int y, int w, int h){
 	
 	ndiFbo.begin();
 	ofClear(13, 25, 76, 255); // background as required
@@ -78,7 +64,7 @@ void NDIoutput::send(){
 
 	ofSetColor(255);
 	ofClear(0, 0, 0, 255);
-	fbo.draw(0, 0);
+	fbo.draw(x, y, 1920, 1080);
 
 	// =============================================================
 
@@ -113,10 +99,10 @@ void NDIoutput::send(){
 	// Show what it is sending
 	char str[256];
 	sprintf(str, "Sending as : [%s] (%dx%d)", senderName, senderWidth, senderHeight);
-	ofDrawBitmapString(str, 20, 30);
+	//ofDrawBitmapString(str, 20, 30);
 	// Show fps
 	sprintf(str, "fps: %3.3d", (int)ofGetFrameRate());
-	ofDrawBitmapString(str, ofGetWidth() - 120, 30);
+	//ofDrawBitmapString(str, ofGetWidth() - 120, 30);
 	}
 
 }

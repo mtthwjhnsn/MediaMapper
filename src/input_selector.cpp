@@ -1,172 +1,71 @@
 #include "input_selector.h"
 
 //-----------------------------
-void input_selector::setup(VideoLoader *_vid, ImageLoader *_img, CamLoader *_cam, ColourGradient *_gradient, Spout2Reciever *_spout) {
+void input_selector::setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid, Spout2Reciever * _spoutIn, ShaderToy * _shaderToy, NDIoutput * _ndiOut) {
 
 	vid = _vid;
 	img = _img;
 	cam = _cam;
-	gradient = _gradient;
-	spout = _spout;
+	spoutIn = _spoutIn;
+	shaderToy = _shaderToy;
+	ndiOut = _ndiOut;
 
-	video = true;
-	image = false;
-	camera = false;
-	colour = false;
-	no_input = false;
-	Spout2 = false;
+	vector<string> select = {"input0.png", "input1.png", "input2.png", "input3.png", "input4.png", "input5.png", "input6.png", "input7.png", "input8.png", "input9.png" };
+	
+	for (int i = 0; i <= 9; i++) {
+		splash.load(select[i]);
+		splashes.push_back(splash);
+	}
 
-	select = "input1.png";
-	splash.load(select);
-
-
-
+	shaderToy->setup();
+	ndiOut->setup();
 
 }
 
-void input_selector::draw(int x, int y, int w, int h) {
-
-	if (no_input == true) {
-		splash.draw(x, y, w, h);
-		ofSetColor(255);
-		ofEllipse(sin(ofGetFrameNum()), 0, 600, 600);
-	}
-
-	if (video == true) {
-		vid->draw(x, y, w, h);
-	}
-
-	else if (image == true) {
-		img->draw(x, y, w, h);
-	}
-
-	else if (camera == true) {
-		cam->draw(x, y, w, h);
-	}
-
-	else if (colour == true) {
-		gradient->draw();
-	}
-
-	else if (Spout2 == true) {
-		spout->draw(x, y, w, h);
-	}
+void input_selector::splash_draw(int test_pattern, int x, int y, int w, int h) {
+	splashes[test_pattern].draw(x, y, w, h);
 
 }
 
-void input_selector::selection() {
-	int menu_input = params.input_type;
+void input_selector::video_draw(int x, int y, int w, int h) {
+	vid->draw(x, y, w, h);
+}
 
-	if (menu_input == 0) {
+void input_selector::video_drawThumbs(int selection, int x, int y, int w, int h) {
+	vid->drawThumbs(selection, x, y, w, h);
+}
 
-		video = false;
-		image = false;
-		camera = false;
-		colour = false;
-		no_input = true;
-		Spout2 = false;
+void input_selector::video_swap(int selection) {
+	vid->swap(selection);
+}
 
-		img->clear();
-		cam->close();
-		vid->close();
-		spout->exit();
+void input_selector::image_drawThumbs(int selection, int x, int y, int w, int h) {
+	img->drawThumbs(selection, x, y, w, h);
+}
 
-		splash.clear();
-		splash.load(select);
-	}
+void input_selector::image_draw(int x, int y, int w, int h) {
+	img->draw(x, y, w, h);
+}
 
-	if (menu_input == 1) {
+void input_selector::image_swap(int selection) {
+	img->swap(selection);
+}
 
-		video = true;
-		image = false;
-		camera = false;
-		colour = false;
-		no_input = false;
-		Spout2 = false;
+void input_selector::camera_draw(int selection, int x, int y, int w, int h) {
+	cam->draw(selection, x, y, w, h);
+}
 
-		splash.clear();
+void input_selector::spout_draw(int selection, int x, int y, int w, int h) {
+	spoutIn->draw(selection, x, y, w, h);
+}
+void input_selector::spout_list(int selection) {
+	spoutIn->spout_list(selection);
+}
 
-		img->clear();
-		cam->close();
-		spout->exit();
+void input_selector::shader_draw(int selection, int x, int y, int w, int h){
+	shaderToy->draw(selection, x, y, w, h);
+}
 
-		//vid.close();
-		vid->setup();
-	}
-
-	else if (menu_input == 2) {
-
-		video = false;
-		image = true;
-		camera = false;
-		colour = false;
-		no_input = false;
-		Spout2 = false;
-
-		splash.clear();
-
-		vid->close();
-		cam->close();
-		spout->exit();
-
-		img->clear();
-		img->setup();
-	}
-
-	else if (menu_input == 3) {
-
-		video = false;
-		image = false;
-		camera = true;
-		colour = false;
-		no_input = false;
-		Spout2 = false;
-
-		splash.clear();
-
-		img->clear();
-		vid->close();
-		spout->exit();
-
-		cam->close();
-		cam->setup();
-	}
-
-	else if (menu_input == 4) {
-
-		video = false;
-		image = false;
-		camera = false;
-		colour = true;
-		no_input = false;
-		Spout2 = false;
-
-		splash.clear();
-
-		img->clear();
-		vid->close();
-		spout->exit();
-		cam->close();
-
-		gradient->setup(ofGetWidth(), ofGetHeight());
-	}
-
-	else if (menu_input == 5) {
-
-		video = false;
-		image = false;
-		camera = false;
-		colour = false;
-		no_input = false;
-		Spout2 = true;
-
-		splash.clear();
-
-		img->clear();
-		vid->close();
-		cam->close();
-
-		spout->exit();
-		spout->setup();
-	}
+void input_selector::NDI_out(ofFbo fbo, int x, int y, int w, int h) {
+	ndiOut->send(fbo, x, y, w, h);
 }

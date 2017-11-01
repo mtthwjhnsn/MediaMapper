@@ -5,48 +5,46 @@
 #include "VideoLoader.h"
 #include "ImageLoader.h"
 #include "CamLoader.h"
-#include "ColourGradient.h"
 #include "Spout2Reciever.h"
-
-struct InputParams {
-
-	int input_type;
-
-};
+#include "ofxSpout2Receiver.h"
+#include "ShaderToy.h"
+#include "NDIoutput.h"
 
 class input_selector
 {
 public:
+	~input_selector() {};
+	input_selector() {};
 
-	void setup(VideoLoader *_vid, ImageLoader *_img, CamLoader *_cam, ColourGradient *_gradient, Spout2Reciever *_spout);
-	//void update();
-	void draw(int x, int y, int w, int h);
-	void selection();
+	void setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid, Spout2Reciever * SpoutIn, ShaderToy * _shaderToy, NDIoutput * _ndiOut);
 
+	void splash_draw(int test_pattern, int x, int y, int w, int h);
+	void video_draw(int x, int y, int w, int h);
+	void video_drawThumbs(int selection, int x, int y, int w, int h);
+	void video_swap(int selection);
+	void image_drawThumbs(int selection, int x, int y, int w, int h);
+	void image_draw(int x, int y, int w, int h);
+	void image_swap(int selection);
+	void shader_draw(int selection, int x, int y, int w, int h);
+	void NDI_out(ofFbo fbo, int x, int y, int w, int h);
+	void camera_draw(int selection, int x, int y, int w, int h);
+	void spout_list(int selection);
+	void spout_draw(int selection,  int x, int y, int w, int h);
 
-	
-	InputParams params;
+	string path;
+	vector<string> paths;
 
-	ofImage splash;
-	string select;
-
-	bool camera, video, image, colour, no_input, Spout2;
-
-private:
 	VideoLoader *vid;
 	ImageLoader *img;
 	CamLoader *cam;
-	ColourGradient *gradient;
-	Spout2Reciever *spout;
+	Spout2Reciever *spoutIn;
+	ShaderToy *shaderToy;
+	NDIoutput *ndiOut;
 
-	//GLuint getTextureID8();
+	ofImage splash;
+	vector<ofImage> splashes;
 
-//private:
-	//ofFbo fbo8;
-	//GLuint textureid8;
-
-	
+private:
 	
 	
 };
-
