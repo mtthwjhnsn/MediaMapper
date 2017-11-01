@@ -16,7 +16,7 @@
 //#include "Sound.h"
 #include "ofxMaxim.h"
 #include "input_selector.h"
-#include "output_selector.h"
+//#include "output_selector.h"
 
 //#include "ofxNDI.h"
 
@@ -61,33 +61,18 @@ public:
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
-
-	//sound 
-//	void audioOut(float * output, int bufferSize, int nChannels);
-
-//	unsigned bufferSize, sampleRate;
-//	double currentSample;
-//	float frequency_red, modulationIndex_red, modulationFrequency_red,   frequency_green, modulationIndex_green, modulationFrequency_green, frequency_blue, modulationIndex_blue, modulationFrequency_blue;
-	//double outputs[2];
-
-//	maxiOsc osc_red, mod_red, osc_green, mod_green, osc_blue, mod_blue, phaser;
-//	maxiMix mix;
-//	maxiEnv env_red, env_green, env_blue;
 	
 	ofFbo fbo;
 
 	ofImage background;
 
-//	void coloursetup();
 	void colourfbo();
 
 	ofFbo fbo1;
 
 	ColourGradient colour;
-//	Sound sound;
 	GuiColourGradient gui;
 	input_selector input;
-//	output_selector outs;
 	ImageLoader image;
 	CamLoader camera;
 	VideoLoader video;
@@ -95,20 +80,7 @@ public:
 	ShaderToy shaders;
 	NDIoutput ndiOut;
 
-//	NDIoutput NDI;
-//	Spout2Sender Spout2;
-
-	//VideoLoader vid;
-	//ImageLoader img;
-	//CamLoader cam;
-	//ColourGradient col;
-	//Spout2Reciever spout;
-	
-
-	void OutputController();
-	void output();
-
-	//bool spout2Sender, NDIsender, noSender;
+	void gui_draw();
 
 
 private:

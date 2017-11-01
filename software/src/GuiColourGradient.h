@@ -93,8 +93,13 @@ public:
 	int spoutNum;
 	int ndiNum;
 
-private:
+	ImGuiIO * io;
+	ImFontConfig font_config;
+	ImFont* f;
 
+
+private:
+	//ImFont *font1;
 	ofFbo::Settings fboSettings;
 
 	ColourGradient *colour;

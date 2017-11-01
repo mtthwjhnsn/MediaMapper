@@ -36,7 +36,7 @@ public:
 	void setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid, Spout2Reciever * SpoutIn, ShaderToy * _shaderToy, NDIoutput * _ndiOut);
 	//void update();
 
-	void selection();
+	//void selection();
 
 	void splash_draw(int test_pattern, int x, int y, int w, int h);
 	void video_draw(int x, int y, int w, int h);

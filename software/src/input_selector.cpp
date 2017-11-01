@@ -10,9 +10,6 @@ void input_selector::setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid
 	shaderToy = _shaderToy;
 	ndiOut = _ndiOut;
 
-	//gradient = _gradient;
-	//spout = _spout;
-
 	video = false;
 	image = false;
 	camera = false;
@@ -83,129 +80,129 @@ void input_selector::NDI_out(ofFbo fbo, int x, int y, int w, int h) {
 	ndiOut->send(fbo, x, y, w, h);
 }
 
-void input_selector::selection() {
-	int menu_input = params.input_type;
-
-	if (menu_input == 0) {
-
-		video = false;
-		image = false;
-		camera = false;
-		colour = false;
-		no_input = true;
-		Spout2 = false;
-
-		//img->clear();
-		//cam->close();
-		//vid->close();
-		//spout->exit();
-
-		splash.clear();
-
-		params.setup = false;
-	}
-
-	if (menu_input == 1) {
-
-		video = true;
-		image = false;
-		camera = false;
-		colour = false;
-		no_input = false;
-		Spout2 = false;
-
-		//splash.clear();
-
-		//img->clear();
-		//cam->close();
-		//spout->exit();
-
-		vid->setup();
-
-		params.setup = false;
-	}
-
-	else if (menu_input == 2) {
-
-		video = false;
-		image = true;
-		camera = false;
-		colour = false;
-		no_input = false;
-		Spout2 = false;
-
-		//splash.clear();
-
-		//vid->close();
-		//cam->close();
-		//spout->exit();
-
-		//img->clear();
-
-
-		img->setup();
-
-		params.setup = false;
-	}
-
-	else if (menu_input == 3) {
-
-		video = false;
-		image = false;
-		camera = true;
-		colour = false;
-		no_input = false;
-		Spout2 = false;
-
-		//splash.clear();
-
-		//img->clear();
-		//vid->close();
-		//spout->exit();
-
-		//cam.close();
-		cam->setup();
-
-		params.setup = false;
-	}
-
-	else if (menu_input == 4) {
-
-		video = false;
-		image = false;
-		camera = false;
-		colour = true;
-		no_input = false;
-		Spout2 = false;
-
-		//splash.clear();
-
-		//img->clear();
-		//vid->close();
-		//spout->exit();
-		//cam->close();
-
-		params.setup = true;
-	}
-
-	else if (menu_input == 5) {
-
-		video = false;
-		image = false;
-		camera = false;
-		colour = false;
-		no_input = false;
-		Spout2 = true;
-
-		//splash.clear();
-
-		//img->clear();
-		//vid->close();
-		//cam->close();
-
-		//spout.exit();
-		//spout->setup();
-
-		params.setup = false;
-	}
-}
+//void input_selector::selection() {
+//	int menu_input = params.input_type;
+//
+//	if (menu_input == 0) {
+//
+//		video = false;
+//		image = false;
+//		camera = false;
+//		colour = false;
+//		no_input = true;
+//		Spout2 = false;
+//
+//		//img->clear();
+//		//cam->close();
+//		//vid->close();
+//		//spout->exit();
+//
+//		splash.clear();
+//
+//		params.setup = false;
+//	}
+//
+//	if (menu_input == 1) {
+//
+//		video = true;
+//		image = false;
+//		camera = false;
+//		colour = false;
+//		no_input = false;
+//		Spout2 = false;
+//
+//		//splash.clear();
+//
+//		//img->clear();
+//		//cam->close();
+//		//spout->exit();
+//
+//		vid->setup();
+//
+//		params.setup = false;
+//	}
+//
+//	else if (menu_input == 2) {
+//
+//		video = false;
+//		image = true;
+//		camera = false;
+//		colour = false;
+//		no_input = false;
+//		Spout2 = false;
+//
+//		//splash.clear();
+//
+//		//vid->close();
+//		//cam->close();
+//		//spout->exit();
+//
+//		//img->clear();
+//
+//
+//		img->setup();
+//
+//		params.setup = false;
+//	}
+//
+//	else if (menu_input == 3) {
+//
+//		video = false;
+//		image = false;
+//		camera = true;
+//		colour = false;
+//		no_input = false;
+//		Spout2 = false;
+//
+//		//splash.clear();
+//
+//		//img->clear();
+//		//vid->close();
+//		//spout->exit();
+//
+//		//cam.close();
+//		cam->setup();
+//
+//		params.setup = false;
+//	}
+//
+//	else if (menu_input == 4) {
+//
+//		video = false;
+//		image = false;
+//		camera = false;
+//		colour = true;
+//		no_input = false;
+//		Spout2 = false;
+//
+//		//splash.clear();
+//
+//		//img->clear();
+//		//vid->close();
+//		//spout->exit();
+//		//cam->close();
+//
+//		params.setup = true;
+//	}
+//
+//	else if (menu_input == 5) {
+//
+//		video = false;
+//		image = false;
+//		camera = false;
+//		colour = false;
+//		no_input = false;
+//		Spout2 = true;
+//
+//		//splash.clear();
+//
+//		//img->clear();
+//		//vid->close();
+//		//cam->close();
+//
+//		//spout.exit();
+//		//spout->setup();
+//
+//		params.setup = false;
+//	}
+//}

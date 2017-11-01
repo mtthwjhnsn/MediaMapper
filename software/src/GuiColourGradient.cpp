@@ -42,10 +42,15 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs /
 	
 	
 	NDI_reciever.setup();
+	//------------------------
+
+	io = &ImGui::GetIO();
+	font_config; font_config.OversampleH = 1; font_config.OversampleV = 1; font_config.PixelSnapH = 1;
+	f = io->Fonts->AddFontFromFileTTF("data/Overpass/Overpass-Regular.ttf", 16.0f, NULL, io->Fonts->GetGlyphRangesChinese());
+
 
 	//---------------
 	gui.setup();
-	//inputs->spout_setup();
 	
 	guiVisible = true;
 
@@ -801,11 +806,6 @@ void GuiColourGradient::OutputWindow(int selection) {
 				spoutSenders[selection][i].sendTexture(Fbos[selection][select_vect[selection][i]].getTexture(), "Mapper" + ofToString(selection) + ofToString(i));
 			}
 
-			//if (ImGui::Button("Close Spout"))
-			//{
-			//	spoutSenders[selection][i].exit();
-			//}
-
 			ImGui::Checkbox(ofxImGui::GetUniqueName("ndi" + ofToString(i)), &ndiBools[selection][i]);
 						if (ndiBools[selection][i] == true) {
 							inputs->NDI_out(Fbos[selection][select_vect[selection][i]], tileXpos, tileYpos, tileWidth, tileHeight);
@@ -848,6 +848,8 @@ bool GuiColourGradient::imGui()
 	ImGui::PushStyleColor(ImGuiCol_SliderGrabActive, col1);
 	ImGui::PushStyleColor(ImGuiCol_CheckMark, col);
 	ImGui::PushStyleColor(ImGuiCol_TitleBgActive, col1);
+	ImFontAtlas* atlas = ImGui::GetIO().Fonts;
+
 
 
 	this->gui.begin();
@@ -861,27 +863,27 @@ bool GuiColourGradient::imGui()
 				ImGui::MenuItem("(dummy menu)", NULL, false, false);
 				if (ImGui::MenuItem("No_Input")) {
 					inputs->params.input_type = 0;
-					inputs->selection();
+					//inputs->selection();
 				}
 				if (ImGui::MenuItem("Video", "Ctrl+V")) {
 					inputs->params.input_type = 1;
-					inputs->selection();
+					//inputs->selection();
 				}
 				if (ImGui::MenuItem("Image", "Ctrl+I")) {
 					inputs->params.input_type = 2;
-					inputs->selection();
+					//inputs->selection();
 				}
 				if (ImGui::MenuItem("Camera", "Ctrl+C")) {
 					inputs->params.input_type = 3;
-					inputs->selection();
+					//inputs->selection();
 				}
 				if (ImGui::MenuItem("Gradient", "Ctrl+G")) {
 					inputs->params.input_type = 4;
-					inputs->selection();
+					//inputs->selection();
 				}
 				if (ImGui::MenuItem("Spout2", "Ctrl+O")) {
 					inputs->params.input_type = 5;
-					inputs->selection();
+					//inputs->selection();
 				}
 				ImGui::EndMenu();
 			}
@@ -934,14 +936,43 @@ bool GuiColourGradient::imGui()
 
 		if (ofxImGui::BeginWindow("INPUT_TEXTURES", mainSettings, false)) {
 			ImGui::Separator();
+			
+
+			
+			
 			for (int i = 0; i < input_num; i++) {
 				InputWindow(i);
 			}
 			ofxImGui::EndWindow(mainSettings);
 		}
 
+		if (ofxImGui::BeginWindow("Sending_Moniter", mainSettings, false)) {
+			ImGui::Separator();
+			ImGui::Text("Spout");
+			for (int i = 0; i < input_num; i++) {
+				for (int j = 0; j < spoutBools[i].size(); j++) {
+					if (spoutBools[i][j] == true) {
+						ImGui::Text(ofxImGui::GetUniqueName("SENDING type: " + ofToString(IDs[i]) + ", number: " + ofToString(j) + " ID: Mapper" + ofToString(i) + ofToString(j)));
+					}
+					else {
+						if (j == 0 && i == 0) { ImGui::Text("NO SPOUT SENDING"); }
+					}
+				}
+			}
+			ImGui::Text("NDI");
+			for (int i = 0; i < input_num; i++) {
+				for (int j = 0; j < ndiBools[i].size(); j++) {
+					if (ndiBools[i][j] == true) {
+						ImGui::Text(ofxImGui::GetUniqueName("SENDING type: " + ofToString(IDs[i]) + ", number: " + ofToString(j) + " ID: Mapper" + ofToString(i) + ofToString(j)));
+					}
+					else {
+						if (j == 0 && i == 0) { ImGui::Text("NO NDI SENDING"); }
+					}
+				}
+			}
 
-
+			ofxImGui::EndWindow(mainSettings);
+		}
 
 
 

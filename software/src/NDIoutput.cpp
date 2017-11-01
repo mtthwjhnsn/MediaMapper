@@ -7,9 +7,8 @@ void NDIoutput::setup() {
 //	fbo.allocate(1920, 1080);
 
 	//NDI
-
 	strcpy(senderName, "Openframeworks NDI Sender"); // Set the sender name
-	ofSetWindowTitle(senderName); // show it on the title bar
+	//ofSetWindowTitle(senderName); // show it on the title bar
 	cout << "NDI SDK copyright NewTek (http:\\NDI.NewTek.com)" << endl;
 
 	// Set the dimensions of the sender output here
@@ -100,10 +99,10 @@ void NDIoutput::send(ofFbo fbo, int x, int y, int w, int h){
 	// Show what it is sending
 	char str[256];
 	sprintf(str, "Sending as : [%s] (%dx%d)", senderName, senderWidth, senderHeight);
-	ofDrawBitmapString(str, 20, 30);
+	//ofDrawBitmapString(str, 20, 30);
 	// Show fps
 	sprintf(str, "fps: %3.3d", (int)ofGetFrameRate());
-	ofDrawBitmapString(str, ofGetWidth() - 120, 30);
+	//ofDrawBitmapString(str, ofGetWidth() - 120, 30);
 	}
 
 }
