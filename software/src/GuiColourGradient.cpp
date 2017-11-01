@@ -30,17 +30,16 @@ GuiColourGradient::GuiColourGradient() {
 	tileZoom = 0.25;
 }
 
-
 //-------------------------------------------------
-void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs /*, output_selector *_outputs*/) {
+void GuiColourGradient::setup(input_selector *_inputs) {
 
 	ofxSpout2::Sender placeholder;
 
-	NDIsearching, SpoutSearching, setup_spout = false;
-	
+	NDIsearching, SpoutSearching, setup_spout = false;	
 	spoutNum, ndiNum = 0;
-	
-	
+
+	assign_styles = false;
+
 	NDI_reciever.setup();
 	//------------------------
 
@@ -48,16 +47,12 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs /
 	font_config; font_config.OversampleH = 1; font_config.OversampleV = 1; font_config.PixelSnapH = 1;
 	f = io->Fonts->AddFontFromFileTTF("data/Overpass/Overpass-Regular.ttf", 16.0f, NULL, io->Fonts->GetGlyphRangesChinese());
 
-
 	//---------------
 	gui.setup();
 	
 	guiVisible = true;
 
-	colour = _colour;
-	//sound = _sound;
 	inputs = _inputs;
-	//outputs = _outputs;
 
 	activeVid = 0;
 	activeImg = 0;
@@ -90,19 +85,6 @@ void GuiColourGradient::setup(ColourGradient *_colour, input_selector *_inputs /
 
 	for (int i = 0; i <= input_num; i++) {
 		select_vect.push_back(selectors);
-	}
-
-	//allocate and clear fbos
-	for (int i = 0; i <= 9; i++) {
-
-		GuiFbo.allocate(fboSettings);
-		GuiFbo.begin();
-		ofClear(255, 255, 255, 0);
-		GuiFbo.end();
-		GuiFbos.push_back(GuiFbo);
-		GuiID = (ImTextureID)GuiFbos[i].getTexture().texData.textureID;
-		gui_tex_ids.push_back(GuiID);
-
 	}
 
 	for (int i = 0; i <= 9; i++) {
@@ -283,7 +265,7 @@ void GuiColourGradient::update() {
 }
 
 //-------------------------------------------------
-void GuiColourGradient::draw(ofFbo fboinput) {
+void GuiColourGradient::draw() {
 
 	int w = 800;
 	int h = 180;
@@ -293,168 +275,6 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 		imGui();
 
 	}
-	float H = h * .5;
-
-	float t = ofGetElapsedTimef();
-	float speed = (colour->params.animate_speed*3.0)*t;
-
-	float dc1 = colour->params.dc.x;
-	float amp1 = colour->params.amp.x;
-	float freq1 = colour->params.freq.x;
-	float phase1 = colour->params.phase.x;
-
-
-	float dc2 = colour->params.dc.y;
-	float amp2 = colour->params.amp.y;
-	float freq2 = colour->params.freq.y;
-	float phase2 = colour->params.phase.y;
-
-	float dc3 = colour->params.dc.z;
-	float amp3 = colour->params.amp.z;
-	float freq3 = colour->params.freq.z;
-	float phase3 = colour->params.phase.z;
-
-	float freq_lfo_amp = colour->params.freq_lfo_amp;
-	float freq_lfo_speed = colour->params.freq_lfo_speed;
-	float freq_cycle_speed = colour->params.freq_cycle_speed;
-
-	float amp_lfo_amp = colour->params.amp_lfo_amp;
-	float amp_lfo_speed = colour->params.amp_lfo_speed;
-	float amp_cycle_speed = colour->params.amp_cycle_speed;
-
-	float phase_lfo_amp = colour->params.phase_lfo_amp;
-	float phase_lfo_speed = colour->params.phase_lfo_speed;
-	float phase_cycle_speed = colour->params.phase_cycle_speed;
-
-	//float phase3 = colour->params.phase.z;
-	if (inputs->params.input_type == 4)
-	{
-		//FBO
-		GuiFbos[0].begin();
-
-		ofSetColor(50, 50, 50, 50);
-		ofRect(0, 0, w, h);
-
-		for (int i = 0; i < w; i++) {
-
-			float xval = ofMap(i, 0, w, 0.00, 1.00, true);
-
-			float red_wave = (colour->ColourGradient::lfo(colour->params.palette_lfo_red, 6.28318*(freq1*(speed + xval) + phase1)));
-			float green_wave = colour->ColourGradient::lfo(colour->params.palette_lfo_green, 6.28318*(freq2*(speed + xval) + phase2));
-			float blue_wave = colour->ColourGradient::lfo(colour->params.palette_lfo_blue, 6.28318*(freq3*(speed + xval) + phase3));
-
-			mesh.addVertex(ofVec2f(i, dc1 * H + H * amp1 * red_wave));
-			mesh.addColor(ofFloatColor(1.0, 0.0, 0.0));
-
-			mesh.addVertex(ofVec2f(i, dc2 * H + H * amp2 * green_wave));
-			mesh.addColor(ofFloatColor(0.0, 1.0, 0.0));
-
-			mesh.addVertex(ofVec2f(i, dc3 * H + H * amp3 * blue_wave));
-			mesh.addColor(ofFloatColor(0.0, 0.0, 1.0));
-		}
-
-		mesh.drawVertices();
-		mesh.clearVertices();
-		mesh.clearColors();
-		GuiFbos[0].end();
-
-		int _w = w / 3;
-		int _h = h / 2;
-		int _H = _h * .5;
-
-		//frequency lfo
-		GuiFbos[1].begin();
-		ofSetColor(50, 50);
-		ofRect(0, 0, _w, _h);
-		for (int i = 0; i < _w; i++) {
-			float xval = ofMap(i, 0, _w, 0.00, 1.00, true);
-			float freq_wave = (colour->ColourGradient::lfo(colour->params.freq_lfo_type, 6.28318*(freq_cycle_speed * xval + 1)));
-			mesh.addVertex(ofVec2f(i, H / 2 + H * freq_lfo_amp * freq_wave));
-			mesh.addColor(ofFloatColor(1.0, 1.0, 1.0));
-		}
-		mesh.drawVertices();
-		mesh.clearVertices();
-		mesh.clearColors();
-		GuiFbos[1].end();
-
-		// amp lfo
-		GuiFbos[2].begin();
-		ofSetColor(50, 50);
-		ofRect(0, 0, _w, _h);
-		for (int i = 0; i < _w; i++) {
-			float xval = ofMap(i, 0, _w, 0.00, 1.00, true);
-			float amp_wave = (colour->ColourGradient::lfo(colour->params.amp_lfo_type, 6.28318*(amp_cycle_speed * xval + 1)));
-			mesh.addVertex(ofVec2f(i, H / 2 + H * amp_lfo_amp * amp_wave));
-			mesh.addColor(ofFloatColor(1.0, 1.0, 1.0));
-		}
-		mesh.drawVertices();
-		mesh.clearVertices();
-		mesh.clearColors();
-		GuiFbos[2].end();
-
-		// phase lfo
-		GuiFbos[3].begin();
-		ofSetColor(50, 50);
-		ofRect(0, 0, _w, _h);
-		for (int i = 0; i < _w; i++) {
-			float xval = ofMap(i, 0, _w, 0.00, 1.00, true);
-			float phase_wave = (colour->ColourGradient::lfo(colour->params.phase_lfo_type, 6.28318*(phase_cycle_speed * xval + 1)));
-			mesh.addVertex(ofVec2f(i, H / 2 + H * phase_lfo_amp * phase_wave));
-			mesh.addColor(ofFloatColor(1.0, 1.0, 1.0));
-		}
-		mesh.drawVertices();
-		mesh.clearVertices();
-		mesh.clearColors();
-		GuiFbos[3].end();
-
-		// red adsr visual
-				GuiFbos[4].begin();
-				/*float red_attack = ofMap(sound->s_params.red_Attack, 0, 10000.0, 0, _w);
-				float red_decay = ofMap(sound->s_params.red_Decay, 0, 10000.0, 0, _w);
-				float red_sustain = ofMap(sound->s_params.red_Sustain, 0, 10000.0, 0, _h);
-				float red_release = ofMap(sound->s_params.red_Release, 0, 10000.0, 0, _w);
-
-				ofSetColor(255, 50);
-				ofRect(0, 0, _w, _h);
-				ofSetColor(255, 0, 0);
-				ofLine(0, _h, red_attack, 0);
-				ofLine(red_attack, 0, red_attack + red_decay, _h - red_sustain);
-				ofLine(red_attack + red_decay, _h - red_sustain, _w - red_release, _h - red_sustain);
-				ofLine(_w - red_release, _h - red_sustain, _w, _h);
-				*/GuiFbos[4].end();
-
-				// green adsr visual
-				GuiFbos[5].begin();
-				/*float green_attack = ofMap(sound->s_params.green_Attack, 0, 10000.0, 0, _w);
-				float green_decay = ofMap(sound->s_params.green_Decay, 0, 10000.0, 0, _w);
-				float green_sustain = ofMap(sound->s_params.green_Sustain, 0, 10000.0, 0, _h);
-				float green_release = ofMap(sound->s_params.green_Release, 0, 10000.0, 0, _w);
-
-				ofSetColor(50, 50);
-				ofRect(0, 0, _w, _h);
-				ofSetColor(0, 255, 0);
-				ofLine(0, _h, green_attack, 0);
-				ofLine(green_attack, 0, green_attack + green_decay, _h - green_sustain);
-				ofLine(green_attack + green_decay, _h - green_sustain, _w - green_release, _h - green_sustain);
-				ofLine(_w - green_release, _h - green_sustain, _w, _h);
-				*/GuiFbos[5].end();
-
-				// blue adsr visual
-				GuiFbos[6].begin();/*
-				float blue_attack = ofMap(sound->s_params.blue_Attack, 0, 10000.0, 0, _w);
-				float blue_decay = ofMap(sound->s_params.blue_Attack, 0, 10000.0, 0, _w);
-				float blue_sustain = ofMap(sound->s_params.blue_Sustain, 0, 10000.0, 0, _h);
-				float blue_release = ofMap(sound->s_params.blue_Release, 0, 10000.0, 0, _w);
-
-				ofSetColor(50, 50);
-				ofRect(0, 0, _w, _h);
-				ofSetColor(0, 0, 255);
-				ofLine(0, _h, blue_attack, 0);
-				ofLine(blue_attack, 0, blue_attack + blue_decay, _h - blue_sustain);
-				ofLine(blue_attack + blue_decay, _h - blue_sustain, _w - blue_release, _h - blue_sustain);
-				ofLine(_w - blue_release, _h - blue_sustain, _w, _h); */
-				GuiFbos[6].end();
-			}
 		
 		for (int i = 0; i < TestFbos.size(); i++) {
 			TestFbos[i].begin();
@@ -523,110 +343,77 @@ void GuiColourGradient::draw(ofFbo fboinput) {
 			NDIFbos[i].end();
 		}
 	}
+//--------------------------------------------------------------
+void GuiColourGradient::styles() {
 	
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.Colors[ImGuiCol_Text] = ImVec4(0.61f, 1.00f, 0.77f, 1.00f);
+	style.Colors[ImGuiCol_TextDisabled] = ImVec4(1.00f, 1.00f, 1.00f, 0.96f);
+	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.00f, 0.00f, 0.05f, 0.84f);
+	style.Colors[ImGuiCol_ChildWindowBg] = ImVec4(1.00f, 1.00f, 1.00f, 0.11f);
+	style.Colors[ImGuiCol_PopupBg] = ImVec4(0.49f, 0.44f, 0.35f, 1.00f);
+	style.Colors[ImGuiCol_Border] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+	style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.13f, 0.14f, 0.17f, 0.00f);
+	style.Colors[ImGuiCol_FrameBg] = ImVec4(0.49f, 0.44f, 0.35f, 0.88f);
+	style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.49f, 0.44f, 0.24f, 1.00f);
+	style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
+	style.Colors[ImGuiCol_TitleBg] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
+	style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(1.00f, 1.00f, 1.00f, 0.75f);
+	style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.01f, 0.13f, 1.00f, 0.58f);
+	style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.90f);
+	style.Colors[ImGuiCol_ScrollbarBg] = ImVec4(0.02f, 0.00f, 0.00f, 1.00f);
+	style.Colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.61f, 1.00f, 0.77f, 1.00f);
+	style.Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.00f, 0.00f, 0.00f, 0.43f);
+	style.Colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.00f, 0.00f, 1.00f, 0.47f);
+	style.Colors[ImGuiCol_ComboBg] = ImVec4(0.01f, 0.13f, 1.00f, 0.58f);
+	style.Colors[ImGuiCol_CheckMark] = ImVec4(0.01f, 0.13f, 1.00f, 0.58f);
+	style.Colors[ImGuiCol_SliderGrab] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
+	style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.01f, 0.13f, 1.00f, 0.58f);
+	style.Colors[ImGuiCol_Button] = ImVec4(0.00f, 0.00f, 0.00f, 0.59f);
+	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.00f, 0.00f, 0.00f, 0.59f);
+	style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.01f, 0.13f, 1.00f, 0.58f);
+	style.Colors[ImGuiCol_Header] = ImVec4(0.00f, 0.00f, 0.00f, 0.84f);
+	style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.00f, 0.00f, 0.00f, 0.59f);
+	style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.01f, 0.13f, 1.00f, 0.58f);
+	style.Colors[ImGuiCol_Column] = ImVec4(0.47f, 0.77f, 0.83f, 0.32f);
+	style.Colors[ImGuiCol_ColumnHovered] = ImVec4(0.00f, 0.00f, 0.00f, 0.59f);
+	style.Colors[ImGuiCol_ColumnActive] = ImVec4(0.01f, 0.13f, 1.00f, 0.58f);
+	style.Colors[ImGuiCol_ResizeGrip] = ImVec4(0.47f, 0.77f, 0.83f, 0.04f);
+	style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.01f, 0.13f, 1.00f, 0.58f);
+	style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
+	style.Colors[ImGuiCol_CloseButton] = ImVec4(0.86f, 0.93f, 0.89f, 0.16f);
+	style.Colors[ImGuiCol_CloseButtonHovered] = ImVec4(0.86f, 0.93f, 0.89f, 0.39f);
+	style.Colors[ImGuiCol_CloseButtonActive] = ImVec4(0.86f, 0.93f, 0.89f, 1.00f);
+	style.Colors[ImGuiCol_PlotLines] = ImVec4(0.86f, 0.93f, 0.89f, 0.63f);
+	style.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(0.82f, 0.18f, 0.29f, 1.00f);
+	style.Colors[ImGuiCol_PlotHistogram] = ImVec4(0.86f, 0.93f, 0.89f, 0.49f);
+	style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.82f, 0.18f, 0.29f, 0.56f);
+	style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.82f, 0.18f, 0.29f, 0.50f);
+	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.20f, 0.22f, 0.27f, 0.74f);
 
-	/*
-	for (int i = 0; i < GuiFbos.size(); i++) {
-		GuiFbos[i].begin();
-		ofBackground(50, 50);
-		Overpass.drawString("GUI elements " + ofToString(i), 50, 50);
-		GuiFbos[i].end();
-	}*/
 
-	/*
-	for (int i = 0; i <= 9; i++) {
-		TestFbos[i].draw(i + (100* i), i + (100 * i), 1920, 1080);
-		Overpass.drawString(ofToString(TestFbos[i].getId()), i + (100 * i), i + (100 * i));
-	}*/
-//}
+	//style.WindowPadding = ImVec2(20);
 
-//--------------------------------------------------------------
-void GuiColourGradient::lfo_selection(int* type_param) {
-	vector<string> types = { "sine","tri","saw","sqr","rnd" };
-	ImGui::Columns(types.size());
-	for (int i = 0; i < types.size(); i++) {
-		ImGui::RadioButton(ofxImGui::GetUniqueName(types[i]), type_param, i);
-		ImGui::NextColumn();
-	}
-	ImGui::Columns(1);
-	ImGui::Separator();
-}
-/*
-//--------------------------------------------------------------
-void GuiColourGradient::lfo_selection_red(int* type_param_red) {
-	ImGui::Text("RED WAVE");
-	ImGui::SameLine();
-	if (ImGui::CollapsingHeader("Red_Wave_Type"))
-	{
-		vector<string> types = { "sine","tri","saw","sqr","rnd" };
-		ImGui::Columns(types.size(), "", false);
-		for (int i = 0; i < types.size(); i++) {
-			ImGui::RadioButton(ofxImGui::GetUniqueName(types[i]), type_param_red, i);
-			ImGui::NextColumn();
-		}
-		ImGui::Columns(1);
-		ImGui::Separator();
-	}
-}
+	ImGuiStyle* style1 = &ImGui::GetStyle();
 
-//--------------------------------------------------------------
-void GuiColourGradient::lfo_selection_green(int* type_param_green) {
-	ImGui::Text("GREEN WAVE");
-	ImGui::SameLine();
-	if (ImGui::CollapsingHeader("Green_Wave_Type"))
-	{
-		vector<string> types = { "sine","tri","saw","sqr","rnd" };
-		ImGui::Columns(types.size(), "", false);
-		for (int i = 0; i < types.size(); i++) {
-			ImGui::RadioButton(ofxImGui::GetUniqueName(types[i]), type_param_green, i);
-			ImGui::NextColumn();
-		}
-		ImGui::Columns(1);
-		ImGui::Separator();
-	}
-}
+	style1->WindowPadding = ImVec2(20.0f, 20.0f);
+	style1->WindowRounding = 0.0f;
+	style1->ChildWindowRounding = 0.0f;
+	style1->FramePadding = ImVec2(5.0f, 5.0f);
+	style1->FrameRounding = 0.0f;
+	style1->ItemSpacing = ImVec2(20.0f, 2.0f);
+	style1->ItemInnerSpacing = ImVec2(3.0f, 0.0f);
+	style1->TouchExtraPadding = ImVec2(3.0f, 0.0f);
+	style1->IndentSpacing = 10.0f;
+	style1->ScrollbarSize = 13.0f;
+	style1->ScrollbarRounding = 16.0f;
+	style1->GrabMinSize = 5.0f;
+	style1->GrabRounding = 0.0f;
+	style1->WindowMinSize = ImVec2(550.0f, 360.0f);
 
-//--------------------------------------------------------------
-void GuiColourGradient::lfo_selection_blue(int* type_param_blue) {
-	ImGui::Text("BLUE WAVE");
-	ImGui::SameLine();
-	if (ImGui::CollapsingHeader("Blue_Wave_Type"))
-	{
-		vector<string> types = { "sine","tri","saw","sqr","rnd" };
-		ImGui::Columns(types.size(), "", false);
-		for (int i = 0; i < types.size(); i++) {
-			ImGui::RadioButton(ofxImGui::GetUniqueName(types[i]), type_param_blue, i);
-			ImGui::NextColumn();
-		}
-		ImGui::Columns(1);
-		ImGui::Separator();
-	}
+	ImFontAtlas* atlas = ImGui::GetIO().Fonts;
 }
 
-//--------------------------------------------------------------
-void GuiColourGradient::sound_selection(int* sound_param) {
-	vector<string> types = { "OFF", "RED","GREEN","BLUE" };
-	ImGui::Columns(types.size());
-	for (int i = 0; i < types.size(); i++) {
-		ImGui::RadioButton(ofxImGui::GetUniqueName(types[i]), sound_param, i);
-		ImGui::NextColumn();
-	}
-	ImGui::Columns(1);
-	ImGui::Separator();
-}
-
-//--------------------------------------------------------------
-void GuiColourGradient::oscillator(int* oscillator_param) {
-	vector<string> types = { "sine","tri","saw", "sqr", "noise" };
-	ImGui::Columns(types.size());
-	for (int i = 0; i < types.size(); i++) {
-		ImGui::RadioButton(ofxImGui::GetUniqueName(types[i]), oscillator_param, i);
-		ImGui::NextColumn();
-	}
-	ImGui::Columns(1);
-	ImGui::Separator();
-}
-*/
 //--------------------------------------------------------------
 void GuiColourGradient::Resolutions() {
 	static float customWidth = 1920, customHeight = 1080;
@@ -690,17 +477,17 @@ void GuiColourGradient::Navigate() {
 
 void GuiColourGradient::InputWindow(int selection) {
 
-	int columns = 2;
-	ImGui::Columns(columns);
-	ImGui::SetColumnOffset(0, 0);
-	ImGui::SetColumnOffset(1, 160);
-	ImGui::SetColumnOffset(2, 320);
-
-	ImVec4 c2 = ImColor::HSV(1.00f, 0.80f, 0.80f);
-	ImVec4 c1 = ImColor::HSV(0.14f, 0.24f, 0.30f);
+	ImVec4 c1 = ImColor::HSV(0.61f, 1.00f, 0.77f, 1.00f);
+	ImVec4 c2 = ImColor(0.61f, 1.00f, 0.77f, 1.00f);
+	
 
 	if (ImGui::CollapsingHeader(ofxImGui::GetUniqueName(IDs[selection]), true)) {
 		
+		if (selection == 1 || selection == 2) {
+			ImGui::Text("Drag media from your drives into the Window to Load!");
+		}
+
+
 		//spout toggle searching and setup
 		if (selection == 5) {
 			if (setup_spout == false) {
@@ -713,10 +500,10 @@ void GuiColourGradient::InputWindow(int selection) {
 				ImGui::Checkbox("Spout_Searching", &SpoutSearching);
 			}
 		}
-
 		if (selection == 5) {
 			ImGui::InputInt("Spout_Textures", &spoutNum);
 		}
+
 
 		//NDI toggle searching
 		if (selection == 6) {
@@ -730,6 +517,11 @@ void GuiColourGradient::InputWindow(int selection) {
 		if (selection == 5) { loop = spoutNum; }
 		if (selection == 6) { loop = ndiNum; }
 
+		int columns = 2;
+		ImGui::Columns(columns);
+		ImGui::SetColumnOffset(0, 0);
+		ImGui::SetColumnOffset(1, 160);
+		ImGui::SetColumnOffset(2, 320);
 
 		for (int j = 0; j <= loop; j++) {
 			//spoutmenu
@@ -752,7 +544,7 @@ void GuiColourGradient::InputWindow(int selection) {
 					inputs->video_swap(j);
 					activeVid = j;
 				}
-				if (selection == 1) {
+				if (selection == 2) {
 					inputs->image_swap(j);
 					activeImg = j;
 				}
@@ -765,6 +557,7 @@ void GuiColourGradient::InputWindow(int selection) {
 			ImGui::NextColumn();
 		}
 	}
+
 	ImGui::Columns(1);
 }
 
@@ -828,30 +621,18 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 bool GuiColourGradient::imGui()
 {
+	if (assign_styles == false) {
+		styles();
+		assign_styles = true;
+	}
+
 	int gui_width = 700;
 	auto mainSettings = ofxImGui::Settings();
-	ofVec2f pos(640, 140);
-	ofVec2f pos4(680, 180);
-	ofVec2f pos1(640, 290);
-	ofVec2f pos2(1500, 140);
-	ofVec2f pos3(25, 140);
+	ofVec2f pos(180, 40);
+	ofVec2f pos1(650, 40);
+	ofVec2f pos2(1250, 40);
 
 	mainSettings.windowPos = pos;
-
-	ImVec4 col = ImColor::HSV(0.14f, 0.24f, 0.42f);
-	ImVec4 col1 = ImColor::HSV(0.14f, 0.24f, 0.30f);
-	ImGui::PushStyleColor(ImGuiCol_Header, col);
-	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, col1);
-	//ImGui::PushStyleColor(ImGuiCol_Button, col);
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, col1);
-	ImGui::PushStyleColor(ImGuiCol_SliderGrab, col);
-	ImGui::PushStyleColor(ImGuiCol_SliderGrabActive, col1);
-	ImGui::PushStyleColor(ImGuiCol_CheckMark, col);
-	ImGui::PushStyleColor(ImGuiCol_TitleBgActive, col1);
-	ImFontAtlas* atlas = ImGui::GetIO().Fonts;
-
-
-
 	this->gui.begin();
 
 	{
@@ -862,27 +643,27 @@ bool GuiColourGradient::imGui()
 			{
 				ImGui::MenuItem("(dummy menu)", NULL, false, false);
 				if (ImGui::MenuItem("No_Input")) {
-					inputs->params.input_type = 0;
+					//inputs->params.input_type = 0;
 					//inputs->selection();
 				}
 				if (ImGui::MenuItem("Video", "Ctrl+V")) {
-					inputs->params.input_type = 1;
+					//inputs->params.input_type = 1;
 					//inputs->selection();
 				}
 				if (ImGui::MenuItem("Image", "Ctrl+I")) {
-					inputs->params.input_type = 2;
+					//inputs->params.input_type = 2;
 					//inputs->selection();
 				}
 				if (ImGui::MenuItem("Camera", "Ctrl+C")) {
-					inputs->params.input_type = 3;
+					//inputs->params.input_type = 3;
 					//inputs->selection();
 				}
 				if (ImGui::MenuItem("Gradient", "Ctrl+G")) {
-					inputs->params.input_type = 4;
+					//inputs->params.input_type = 4;
 					//inputs->selection();
 				}
 				if (ImGui::MenuItem("Spout2", "Ctrl+O")) {
-					inputs->params.input_type = 5;
+					//inputs->params.input_type = 5;
 					//inputs->selection();
 				}
 				ImGui::EndMenu();
@@ -916,13 +697,11 @@ bool GuiColourGradient::imGui()
 		}
 		//TEXTURES
 
-
-
 		//WINDOWS---------------------------------------------------------------
 		//WINDOWS---------------------------------------------------------------
 		//WINDOWS---------------------------------------------------------------
 
-
+		mainSettings.windowPos = pos1;
 		if (ofxImGui::BeginWindow("OUTPUT_TEXTURES", mainSettings, false)) {
 			ImGui::Separator();
 			for (int i = 0; i < input_num; i++) {
@@ -934,18 +713,20 @@ bool GuiColourGradient::imGui()
 		}
 
 
+		ImGuiStyle* style1 = &ImGui::GetStyle();
+		style1->WindowMinSize = ImVec2(320.0f, 360.0f);
+		mainSettings.windowPos = pos;
 		if (ofxImGui::BeginWindow("INPUT_TEXTURES", mainSettings, false)) {
 			ImGui::Separator();
-			
-
-			
-			
+						
 			for (int i = 0; i < input_num; i++) {
 				InputWindow(i);
 			}
 			ofxImGui::EndWindow(mainSettings);
 		}
 
+		mainSettings.windowPos = pos2;
+		style1->WindowMinSize = ImVec2(180.0f, 180.0f);
 		if (ofxImGui::BeginWindow("Sending_Moniter", mainSettings, false)) {
 			ImGui::Separator();
 			ImGui::Text("Spout");
@@ -973,356 +754,6 @@ bool GuiColourGradient::imGui()
 
 			ofxImGui::EndWindow(mainSettings);
 		}
-
-
-
-
-
-		if (inputs->params.input_type == 4)
-		{/*
-			mainSettings.windowPos = pos4;
-
-			//BANDS AND SPEED------------------------------------------------------
-			//BANDS AND SPEED------------------------------------------------------
-			//BANDS AND SPEED------------------------------------------------------
-
-			if (ofxImGui::BeginWindow("Gradient Generator", mainSettings, true))
-			{
-				//Overpass.drawString(ImGui::GetWindowPos(), 10, 10);
-
-				ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
-
-				if (ofxImGui::BeginTree("Master", mainSettings))
-				{
-
-					ImGui::SliderFloat("num bands", &colour->params.num_bands, 1, 100);
-					ImGui::SliderFloat("animate speed", &colour->params.animate_speed, 0.0, 1.0);
-
-					ofxImGui::EndTree(mainSettings);
-				}
-				ofxImGui::EndWindow(mainSettings);
-			}
-
-			//COLOUR GRADIENT------------------------------------------------------
-			//COLOUR GRADIENT------------------------------------------------------
-			//COLOUR GRADIENT------------------------------------------------------
-			//COLOUR GRADIENT------------------------------------------------------
-
-
-			mainSettings.windowPos = pos1;
-
-			if (ofxImGui::BeginWindow("Colours", mainSettings, true))
-			{
-				//Overpass.drawString(ImGui::GetWindowPos(), 10, 20);
-
-				//----COLOURS
-				if (ofxImGui::BeginTree("COLOURS", mainSettings))
-				{
-
-					//ImGui::Image(TEX_ID getTextureID(), ofVec2f(w, h));
-
-					//ImGui::PlotLines("LFO", , 100);
-
-
-					//HEADINGS
-					ImGui::Columns(5);
-					ImGui::Text("");
-					ImGui::NextColumn();
-					ImGui::Text("DC");
-					ImGui::NextColumn();
-					ImGui::Text("AMP");
-					ImGui::NextColumn();
-					ImGui::Text("FREQ");
-					ImGui::NextColumn();
-					ImGui::Text("PHASE");
-					ImGui::Columns(1);
-					ImGui::Separator();
-
-
-
-					// red wave tyoe
-					lfo_selection_red(&colour->params.palette_lfo_red);
-
-
-					//red paramaters
-					ImGui::Columns(5);
-					ImGui::Separator();
-
-					if (ImGui::Button("rand_red"))
-					{
-						colour->params.dc[0] = ofRandom(-1.00, 1.00);
-						colour->params.amp[0] = ofRandom(-1.00, 1.00);
-						colour->params.freq[0] = ofRandom(0.00, 1.00);
-						colour->params.phase[0] = ofRandom(0.00, 1.00);
-					}
-
-					ImGui::NextColumn();
-					ImGui::SliderFloat("R_dc", &colour->params.dc[0], -1.0, 2.0);
-					ImGui::NextColumn();
-					ImGui::SliderFloat("R_amp", &colour->params.amp[0], -1.0, 1.0);
-					ImGui::NextColumn();
-					ImGui::SliderFloat("R_freq", &colour->params.freq[0], 0.0, 10.0);
-					ImGui::NextColumn();
-					ImGui::SliderFloat("R_phase", &colour->params.phase[0], 0.0, 1.0);
-					ImGui::Columns(1);
-					ImGui::Separator();
-
-
-					//green wave type
-					lfo_selection_green(&colour->params.palette_lfo_green);
-
-
-					//green paramaters
-					ImGui::Columns(5);
-					ImGui::Separator();
-					if (ImGui::Button("rand_green"))
-					{
-						colour->params.dc[1] = ofRandom(0.00, 1.00);
-						colour->params.amp[1] = ofRandom(-1.00, 1.00);
-						colour->params.freq[1] = ofRandom(0.00, 1.00);
-						colour->params.phase[1] = ofRandom(0.00, 1.00);
-					}
-
-					ImGui::NextColumn();
-					ImGui::SliderFloat("G_dc", &colour->params.dc[1], 0.0, 2.0);
-					ImGui::NextColumn();
-					ImGui::SliderFloat("G_amp", &colour->params.amp[1], -1.0, 1.0);
-					ImGui::NextColumn();
-					ImGui::SliderFloat("G_freq", &colour->params.freq[1], 0.0, 10.0);
-					ImGui::NextColumn();
-					ImGui::SliderFloat("G_phase", &colour->params.phase[1], 0.0, 1.0);
-					ImGui::Columns(1);
-					ImGui::Separator();
-
-
-					//blue wave type
-					lfo_selection_blue(&colour->params.palette_lfo_blue);
-
-					//blue paramaters
-					ImGui::Columns(5);
-					ImGui::Separator();
-
-					if (ImGui::Button("rand_blue"))
-					{
-						colour->params.dc[2] = ofRandom(0.00, 1.00);
-						colour->params.amp[2] = ofRandom(-1.00, 1.00);
-						colour->params.freq[2] = ofRandom(0.00, 1.00);
-						colour->params.phase[2] = ofRandom(0.00, 1.00);
-					}
-					ImGui::NextColumn();
-					ImGui::SliderFloat("B_dc", &colour->params.dc[2], 0.0, 2.0);
-					ImGui::NextColumn();
-					ImGui::SliderFloat("B_amp", &colour->params.amp[2], -1.0, 1.0);
-					ImGui::NextColumn();
-					ImGui::SliderFloat("B_freq", &colour->params.freq[2], 0.0, 10.0);
-					ImGui::NextColumn();
-					ImGui::SliderFloat("B_phase", &colour->params.phase[2], 0.0, 1.0);
-					ImGui::Columns(1);
-					ImGui::Separator();
-
-
-					ImGui::Columns(5);
-					ImGui::Separator();
-					if (ImGui::Button("rand_all"))
-					{
-						colour->params.dc[0] = ofRandom(0.00, 2.00);
-						colour->params.amp[0] = ofRandom(-1.00, 1.00);
-						colour->params.freq[0] = ofRandom(0.00, 10.00);
-						colour->params.phase[0] = ofRandom(0.00, 1.00);
-
-						colour->params.dc[1] = ofRandom(0.00, 2.00);
-						colour->params.amp[1] = ofRandom(-1.00, 1.00);
-						colour->params.freq[1] = ofRandom(0.00, 10.00);
-						colour->params.phase[1] = ofRandom(0.00, 1.00);
-
-						colour->params.dc[2] = ofRandom(0.00, 2.00);
-						colour->params.amp[2] = ofRandom(-1.00, 1.00);
-						colour->params.freq[2] = ofRandom(0.00, 10.00);
-						colour->params.phase[2] = ofRandom(0.00, 1.00);
-					}
-					ImGui::NextColumn();
-					if (ImGui::Button("rand_dc"))
-					{
-						colour->params.dc[0] = ofRandom(0.00, 2.00);
-						colour->params.dc[1] = ofRandom(0.00, 2.00);
-						colour->params.dc[2] = ofRandom(0.00, 2.00);
-					}
-					ImGui::NextColumn();
-					if (ImGui::Button("rand_amp"))
-					{
-						colour->params.amp[0] = ofRandom(-1.00, 1.00);
-						colour->params.amp[1] = ofRandom(-1.00, 1.00);
-						colour->params.amp[2] = ofRandom(-1.00, 1.00);
-					}
-					ImGui::NextColumn();
-					if (ImGui::Button("rand_freq"))
-					{
-						colour->params.freq[0] = ofRandom(0.00, 10.00);
-						colour->params.freq[1] = ofRandom(0.00, 10.00);
-						colour->params.freq[2] = ofRandom(0.00, 10.00);
-					}
-					ImGui::NextColumn();
-					if (ImGui::Button("rand_phase"))
-					{
-						colour->params.phase[0] = ofRandom(0.00, 1.00);
-						colour->params.phase[1] = ofRandom(0.00, 1.00);
-						colour->params.phase[2] = ofRandom(0.00, 1.00);
-					}
-					ImGui::Columns(1);
-					ImGui::Separator();
-
-					ofxImGui::EndTree(mainSettings);
-				}
-				ofxImGui::EndWindow(mainSettings);
-			}
-
-
-			//LFOS------------------------------------------------------
-			//LFOS------------------------------------------------------
-			//LFOS------------------------------------------------------
-			//LFOS------------------------------------------------------
-
-
-			mainSettings.windowPos = pos2;
-			if (ofxImGui::BeginWindow("LFOS", mainSettings, true))
-			{
-				//Overpass.drawString(ImGui::GetWindowPos(), 10, 30);
-
-				//----ALL
-				if (ofxImGui::BeginTree("LFOs", mainSettings)) {
-
-					//	ImGui::Image(TEX_ID1 getTextureID1(), ofVec2f(w / 3, h / 2));
-
-						//----FREQ LFO
-					if (ofxImGui::BeginTree("FREQ LFO", mainSettings)) {
-						lfo_selection(&colour->params.freq_lfo_type);
-						ImGui::SliderFloat("amp", &colour->params.freq_lfo_amp, 0.0, 1.0);
-						ImGui::SliderFloat("speed", &colour->params.freq_lfo_speed, 0.0, 1.0);
-						ImGui::SliderFloat("freq", &colour->params.freq_cycle_speed, 0.0, 10.0);
-						ofxImGui::EndTree(mainSettings);
-					}
-
-					//	ImGui::Image(TEX_ID2 getTextureID2(), ofVec2f(w / 3, h / 2));
-
-						//----AMP LFO
-					if (ofxImGui::BeginTree("AMP LFO", mainSettings)) {
-						lfo_selection(&colour->params.amp_lfo_type);
-						ImGui::SliderFloat("amp", &colour->params.amp_lfo_amp, 0.0, 1.0);
-						ImGui::SliderFloat("speed", &colour->params.amp_lfo_speed, 0.0, 1.0);
-						ImGui::SliderFloat("freq", &colour->params.amp_cycle_speed, 0.0, 10.0);
-						ofxImGui::EndTree(mainSettings);
-					}
-
-					//		ImGui::Image(TEX_ID3 getTextureID3(), ofVec2f(w / 3, h / 2));
-
-							//----PHASE LFO
-					if (ofxImGui::BeginTree("PHASE LFO", mainSettings)) {
-						lfo_selection(&colour->params.phase_lfo_type);
-						ImGui::SliderFloat("amp", &colour->params.phase_lfo_amp, 0.0, 1.0);
-						ImGui::SliderFloat("speed", &colour->params.phase_lfo_speed, 0.0, 1.0);
-						ImGui::SliderFloat("freq", &colour->params.phase_cycle_speed, 0.0, 10.0);
-						ofxImGui::EndTree(mainSettings);
-					}
-					ofxImGui::EndTree(mainSettings);
-
-				}
-				ofxImGui::EndWindow(mainSettings);
-
-			}
-
-			//SYNTHS------------------------------------------------------
-			//SYNTHS------------------------------------------------------
-			//SYNTHS------------------------------------------------------
-			//SYNTHS------------------------------------------------------
-
-			mainSettings.windowPos = pos3;
-			if (ofxImGui::BeginWindow("sound", mainSettings, true))
-			{
-
-				//Overpass.drawString(ImGui::GetWindowPos(), 10, 40);
-
-				ImGui::TextWrapped("PICK YOUR OSCILLATOR... HIT ANY KEY FOR TONE... USE COLOUR CONTROLS AND LFOS FOR FURTHER MODULATION... ENJOY");
-				sound_selection(&sound->s_params.sound_colour);
-
-				//----RED SYNTH
-
-				if (ofxImGui::BeginTree("RED_SYNTH", mainSettings)) {
-
-					ImGui::Columns(2);
-					ImGui::Text("RED ADSR");
-					ImGui::SliderFloat("Attack", &sound->s_params.red_Attack, 0.0, 10000.0);
-					ImGui::SliderFloat("Decay", &sound->s_params.red_Decay, 0.0, 10000.0);
-					ImGui::SliderFloat("Sustain", &sound->s_params.red_Sustain, 0.0, 10000.0);
-					ImGui::SliderFloat("Release", &sound->s_params.red_Release, 0.0, 10000.0);
-					ImGui::NextColumn();
-					//	ImGui::Image(TEX_ID4 getTextureID4(), ofVec2f(w / 3, h / 2));
-					ImGui::Columns(1);
-					oscillator(&sound->s_params.oscillator_type_red);
-					ImGui::Text("FREQUENCY MODULATION");
-					ImGui::SliderFloat("Freq", &sound->s_params.frequency_red, 0.10, 500);
-					ImGui::Columns(3);
-					ImGui::SliderFloat("Freq_Mod_Min", &sound->s_params.modFreq_min_red, 0.0, 500);
-					ImGui::NextColumn();
-					ImGui::SliderFloat("Freq_Mod_Max", &sound->s_params.modFreq_max_red, 0.0, 500);
-					ImGui::Columns(1);
-					ImGui::SliderFloat("Mod_Index", &sound->s_params.modIndex_red, 0.0, 500);
-					ofxImGui::EndTree(mainSettings);
-
-				}
-
-
-				//----GREEN SYNTH
-
-				if (ofxImGui::BeginTree("GREEN_SYNTH", mainSettings)) {
-					ImGui::Columns(2);
-					ImGui::Text("GREEN ADSR");
-					ImGui::SliderFloat("Attack", &sound->s_params.green_Attack, 0.0, 10000.0);
-					ImGui::SliderFloat("Decay", &sound->s_params.green_Decay, 0.0, 10000.0);
-					ImGui::SliderFloat("Sustain", &sound->s_params.green_Sustain, 0.0, 10000.0);
-					ImGui::SliderFloat("Release", &sound->s_params.green_Release, 0.0, 10000.0);
-					ImGui::NextColumn();
-					//	ImGui::Image(TEX_ID5 getTextureID5(), ofVec2f(w / 3, h / 2));
-					ImGui::Columns(1);
-					oscillator(&sound->s_params.oscillator_type_green);
-					ImGui::Text("FREQUENCY MODULATION");
-					ImGui::SliderFloat("Freq", &sound->s_params.frequency_green, 0.10, 500);
-					ImGui::Columns(3);
-					ImGui::SliderFloat("Freq_Mod_Min", &sound->s_params.modFreq_min_green, 0.0, 500);
-					ImGui::NextColumn();
-					ImGui::SliderFloat("Freq_Mod_Max", &sound->s_params.modFreq_max_green, 0.0, 500);
-					ImGui::Columns(1);
-					ImGui::SliderFloat("Mod_Index", &sound->s_params.modIndex_green, 0.0, 500);
-
-					ofxImGui::EndTree(mainSettings);
-				}
-
-				//----BLUE SYNTH
-
-
-				if (ofxImGui::BeginTree("BLUE_SYNTH", mainSettings)) {
-					ImGui::Columns(2);
-					ImGui::Text("BLUE ADSR");
-					ImGui::SliderFloat("Attack", &sound->s_params.blue_Attack, 0.0, 10000.0);
-					ImGui::SliderFloat("Decay", &sound->s_params.blue_Decay, 0.0, 10000.0);
-					ImGui::SliderFloat("Sustain", &sound->s_params.blue_Sustain, 0.0, 10000.0);
-					ImGui::SliderFloat("Release", &sound->s_params.blue_Release, 0.0, 10000.0);
-					ImGui::NextColumn();
-					//	ImGui::Image(TEX_ID6 getTextureID6(), ofVec2f(w / 3, h / 2));
-					ImGui::Columns(1);
-					oscillator(&sound->s_params.oscillator_type_blue);
-					ImGui::Text("FREQUENCY MODULATION");
-					ImGui::SliderFloat("Freq", &sound->s_params.frequency_blue, 0.10, 500);
-					ImGui::Columns(3);
-					ImGui::SliderFloat("Freq_Mod_Min", &sound->s_params.modFreq_min_blue, 0.0, 500);
-					ImGui::NextColumn();
-					ImGui::SliderFloat("Freq_Mod_Max", &sound->s_params.modFreq_max_blue, 0.0, 500);
-					ImGui::Columns(1);
-					ImGui::SliderFloat("Mod_Index", &sound->s_params.modIndex_blue, 0.0, 500);
-					ofxImGui::EndTree(mainSettings);
-				}
-				ofxImGui::EndWindow(mainSettings);
-			}
-		*/}
 
 		this->gui.end();
 		return mainSettings.mouseOverGui;

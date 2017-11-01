@@ -8,13 +8,15 @@ int main( ){
 	//ofGLWindowSettings settings;
 	ofGLFWWindowSettings settings;
 	settings.setGLVersion(3, 2);
-	settings.width = 1280; //1920 //3840
-	settings.height = 720; //1080 //2160
-
-
+		
+	settings.width = 1920; //1920 //3840
+	settings.height = 1080; //1080 //2160
+	
 	settings.decorated = false;
 	settings.resizable = true;
+
 	settings.windowMode = OF_WINDOW;
+	//settings.windowMode = OF_FULLSCREEN;
 
 	ofCreateWindow(settings);
 
@@ -24,18 +26,3 @@ int main( ){
 	ofRunApp(new ofApp());
 
 }
-
-/*
-int main()
-{
-	ofGLFWWindowSettings settings;
-
-	settings.width = 1024;
-	settings.height = 768;
-	settings.decorated = false;
-	settings.windowMode = OF_WINDOW;
-
-	ofCreateWindow(settings);
-	ofRunApp(new ofApp());
-}
-*/

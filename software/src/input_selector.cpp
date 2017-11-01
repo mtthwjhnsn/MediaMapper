@@ -10,15 +10,6 @@ void input_selector::setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid
 	shaderToy = _shaderToy;
 	ndiOut = _ndiOut;
 
-	video = false;
-	image = false;
-	camera = false;
-	colour = false;
-	no_input = true;
-	Spout2 = false;
-
-	params.setup = false;
-
 	vector<string> select = {"input0.png", "input1.png", "input2.png", "input3.png", "input4.png", "input5.png", "input6.png", "input7.png", "input8.png", "input9.png" };
 	
 	for (int i = 0; i <= 9; i++) {
@@ -29,7 +20,6 @@ void input_selector::setup(ImageLoader *_img, CamLoader *_cam, VideoLoader *_vid
 	shaderToy->setup();
 	ndiOut->setup();
 
-	
 }
 
 void input_selector::splash_draw(int test_pattern, int x, int y, int w, int h) {
@@ -79,130 +69,3 @@ void input_selector::shader_draw(int selection, int x, int y, int w, int h){
 void input_selector::NDI_out(ofFbo fbo, int x, int y, int w, int h) {
 	ndiOut->send(fbo, x, y, w, h);
 }
-
-//void input_selector::selection() {
-//	int menu_input = params.input_type;
-//
-//	if (menu_input == 0) {
-//
-//		video = false;
-//		image = false;
-//		camera = false;
-//		colour = false;
-//		no_input = true;
-//		Spout2 = false;
-//
-//		//img->clear();
-//		//cam->close();
-//		//vid->close();
-//		//spout->exit();
-//
-//		splash.clear();
-//
-//		params.setup = false;
-//	}
-//
-//	if (menu_input == 1) {
-//
-//		video = true;
-//		image = false;
-//		camera = false;
-//		colour = false;
-//		no_input = false;
-//		Spout2 = false;
-//
-//		//splash.clear();
-//
-//		//img->clear();
-//		//cam->close();
-//		//spout->exit();
-//
-//		vid->setup();
-//
-//		params.setup = false;
-//	}
-//
-//	else if (menu_input == 2) {
-//
-//		video = false;
-//		image = true;
-//		camera = false;
-//		colour = false;
-//		no_input = false;
-//		Spout2 = false;
-//
-//		//splash.clear();
-//
-//		//vid->close();
-//		//cam->close();
-//		//spout->exit();
-//
-//		//img->clear();
-//
-//
-//		img->setup();
-//
-//		params.setup = false;
-//	}
-//
-//	else if (menu_input == 3) {
-//
-//		video = false;
-//		image = false;
-//		camera = true;
-//		colour = false;
-//		no_input = false;
-//		Spout2 = false;
-//
-//		//splash.clear();
-//
-//		//img->clear();
-//		//vid->close();
-//		//spout->exit();
-//
-//		//cam.close();
-//		cam->setup();
-//
-//		params.setup = false;
-//	}
-//
-//	else if (menu_input == 4) {
-//
-//		video = false;
-//		image = false;
-//		camera = false;
-//		colour = true;
-//		no_input = false;
-//		Spout2 = false;
-//
-//		//splash.clear();
-//
-//		//img->clear();
-//		//vid->close();
-//		//spout->exit();
-//		//cam->close();
-//
-//		params.setup = true;
-//	}
-//
-//	else if (menu_input == 5) {
-//
-//		video = false;
-//		image = false;
-//		camera = false;
-//		colour = false;
-//		no_input = false;
-//		Spout2 = true;
-//
-//		//splash.clear();
-//
-//		//img->clear();
-//		//vid->close();
-//		//cam->close();
-//
-//		//spout.exit();
-//		//spout->setup();
-//
-//		params.setup = false;
-//	}
-//}

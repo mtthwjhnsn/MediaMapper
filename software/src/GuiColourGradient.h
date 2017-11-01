@@ -12,10 +12,8 @@
 
 #include "ofMain.h"
 #include "ofxImGui.h"
-#include "ColourGradient.h"
 #include "Sound.h"
 #include "input_selector.h"
-//#include "output_selector.h"
 #include "ofxSpout2Sender.h"
 #include "ofxSpout2Receiver.h"
 #include "NDIreciever.h"
@@ -49,9 +47,9 @@ public:
 	
 	int input_num; //number of input types //test, video, image, camera, shader, spout, ndi
 
-	void setup(ColourGradient *_colour, input_selector *_inputs /*, output_selector *_outputs*/);
+	void setup(input_selector *_inputs);
 	void update();
-	void draw(ofFbo fboinput);
+	void draw();
 
 	ImTextureID GuiID, TestID, VideoID, ImageID, CameraID, ShaderID, SpoutID, NDIID;
 	vector<ImTextureID> gui_tex_ids, test_tex_ids, video_tex_ids, image_tex_ids, camera_tex_ids, shader_tex_ids, spout_tex_ids, ndi_tex_ids;
@@ -69,7 +67,9 @@ public:
 	void Navigate();
 	void InputWindow(int selection);
 	void OutputWindow(int selection);
-	void lfo_selection(int* type_param);
+	void styles();
+	
+	//void lfo_selection(int* type_param);
 	//void lfo_selection_red(int* type_param_red);
 	//void lfo_selection_green(int* type_param_green);
 	//void lfo_selection_blue(int* type_param_blue);
@@ -96,13 +96,16 @@ public:
 	ImGuiIO * io;
 	ImFontConfig font_config;
 	ImFont* f;
+	//ImGuiStyle& style;
 
 
 private:
+	bool assign_styles;
+
 	//ImFont *font1;
 	ofFbo::Settings fboSettings;
-
-	ColourGradient *colour;
+	
+//	ColourGradient *colour;
 	//Sound *sound;
 	input_selector *inputs;
 	//output_selector *outputs;

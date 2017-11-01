@@ -19,51 +19,22 @@ void ofApp::setup() {
 	int w = ofGetWidth();
 	int h = ofGetHeight();
 
-	colour.setup(gui.tileWidth, gui.tileHeight);
-	
 	input.setup(&image, &camera, &video, &spoutIn, &shaders, &ndiOut);
-	gui.setup(&colour, &input);
-	
-	ofFbo::Settings fboSettings;
-	fboSettings.width = 1920; //2560
-	fboSettings.height = 1080; //1440
-	fboSettings.internalformat = GL_RGBA;
-	fboSettings.textureTarget = GL_TEXTURE_2D;
-
-	fbo.allocate(fboSettings);
-
-	fbo.begin();
-	ofClear(255, 255, 255, 0);
-	fbo.end();
-
-	fbo1.begin();
-	ofClear(255, 255, 255, 0);
-	fbo1.end();
-
+	gui.setup(&input);
 
 }
 
 void ofApp::backgrounddraw() {
 	background.draw(0, 0, ofGetWidth(), ofGetHeight());
 }
-//--------------------------------------------------------------
-void ofApp::colourfbo() {
-	fbo1.begin();
-	colour.draw();
-	fbo1.end();
-}
+
 //--------------------------------------------------------------
 void ofApp::update() {
 	ofSetWindowTitle(ofToString(ofGetFrameRate()));
-
-	fbo.begin();
-	colourfbo();
-
-	fbo.end();
 }
 //--------------------------------------------------------------
 void ofApp::gui_draw() {
-	gui.draw(fbo);
+	gui.draw();
 }
 
 //--------------------------------------------------------------
@@ -71,6 +42,10 @@ void ofApp::draw() {
 	backgrounddraw();
 	update();
 	gui_draw();
+
+	//ofSetColor(255);
+	//ofDrawBitmapString("mouse X: " + ofToString(ofGetMouseX()) + "mouse y: " + ofToString(ofGetMouseY()), ofGetWidth() - 200, ofGetHeight() - 200);
+	//ofSetColor(0, 0, 0, 0);
 }
 
 

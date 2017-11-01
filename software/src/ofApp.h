@@ -12,21 +12,10 @@
 
 #include "ofMain.h"
 #include "GuiColourGradient.h"
-#include "ColourGradient.h"
-//#include "Sound.h"
-#include "ofxMaxim.h"
 #include "input_selector.h"
-//#include "output_selector.h"
-
-//#include "ofxNDI.h"
-
-//#include "Spout2Sender.h"
-//#include "NDIoutput.h"
-
 #include "VideoLoader.h"
 #include "ImageLoader.h"
 #include "CamLoader.h"
-#include "ColourGradient.h"
 #include "Spout2Reciever.h"
 #include "ShaderToy.h"
 #include "NDIoutput.h"
@@ -61,16 +50,8 @@ public:
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
-	
-	ofFbo fbo;
 
 	ofImage background;
-
-	void colourfbo();
-
-	ofFbo fbo1;
-
-	ColourGradient colour;
 	GuiColourGradient gui;
 	input_selector input;
 	ImageLoader image;

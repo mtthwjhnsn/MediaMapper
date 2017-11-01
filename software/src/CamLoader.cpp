@@ -1,14 +1,12 @@
 #include "CamLoader.h"
 
 void CamLoader::setup() {
-	
 
 	for (int i = 0; i <= 0; i++) {
 		cam.setup(640, 480);
 		cams.push_back(cam);
 	}
 
-	//cam.setup(640, 480);
 }
 
 void CamLoader::draw(int selection, int x, int y, int w, int h) {
